@@ -1,0 +1,296 @@
+export const sk = {
+    backToHomeAria: 'Späť na domovskú stránku',
+    toggleThemeAria: 'Prepnúť vzhľad',
+    toggleLanguageAria: 'Zmeniť jazyk',
+    toggleMenuAria: 'Otvoriť/zatvoriť hlavné menu',
+    readMore: 'Čítať viac',
+    readMoreAria: (title: string) => `Čítať viac o ${title}`,
+    backToPosts: 'Späť na všetky príspevky',
+    authorBy: 'Autor:',
+    publishedOn: 'Publikované:',
+    sharePost: 'Zdieľať tento príspevok',
+    shareOn: (name: string) => `Zdieľať na ${name}`,
+    aiSummary: 'Zhrnutie pomocou AI',
+    summarizeGemini: 'Zhrnúť s Gemini',
+    generating: 'Generujem...',
+    comments: 'Komentáre',
+    noComments: 'Zatiaľ žiadne komentáre.',
+    beFirstComment: 'Buďte prvý, kto sa podelí o svoje myšlienky!',
+    leaveComment: 'Zanechať komentár',
+    yourName: 'Vaše meno',
+    yourNamePlaceholder: 'Ján Novák',
+    yourComment: 'Váš komentár',
+    yourCommentPlaceholder: 'Podeľte sa o svoje myšlienky...',
+    submitComment: 'Odoslať komentár',
+    submitting: 'Odosielam...',
+    formError: 'Prosím, vyplňte vaše meno aj komentár.',
+    postNotFound: 'Príspevok sa nenašiel.',
+    summaryError: 'Ospravedlňujeme sa, momentálne nie je možné vygenerovať zhrnutie. Skúste to prosím neskôr.',
+    summaryUnavailable: 'Funkcia zhrnutia pomocou AI je momentálne nedostupná, pretože nie je nakonfigurovaný API kľúč.',
+    footerRights: 'Všetky práva vyhradené.',
+    footerBuiltWith: 'Vytvorené s React, Tailwind CSS a Gemini AI.',
+    services: 'Služby',
+    blog: 'Blog',
+    pricing: 'Cenník',
+    referencie: 'Referencie',
+    about: 'O nás',
+    ourServices: 'Naše Služby',
+    servicesDescription: 'Poskytujeme komplexné služby v oblasti sťahovania, vypratávania a upratovania s dôrazom na kvalitu, spoľahlivosť a spokojnosť zákazníka.',
+    servicesContent: [
+        {
+            icon: 'HomeModernIcon',
+            title: 'Sťahovanie bytov',
+            usp: 'Presťahujte svoj byt bez stresu. VI&MO ponúka kompletné sťahovanie garsónok až po 4-izbové byty s balením, montážou a bezpečnou prepravou.',
+            featuresTitle: 'Kompletný servis pre byty',
+            features: [
+                { text: 'Demontáž a montáž nábytku' },
+                { text: 'Spoľahlivá logistika v Bratislave (doprava do 30 €)' },
+                { text: 'Férové ceny a transparentný cenník', link: 'pricing' },
+                { text: 'Ochrana a poistenie majetku v cene' }
+            ],
+            faqs: [
+                { q: 'Koľko stojí sťahovanie bytu v Bratislave?', a: 'Cena sa líši podľa veľkosti bytu. Garsónka začína od 65 €, 2-izbový byt od 140 €. Pre presnú cenu si pozrite náš cenník alebo nás kontaktujte.' },
+                { q: 'Čo všetko je zahrnuté v cene?', a: 'V cene je práca našich pracovníkov, doprava v rámci BA, a základné zabezpečenie nábytku. Doplnkové služby ako balenie sú za príplatok.' },
+                { q: 'Poskytujete aj balenie krabíc?', a: 'Áno, ponúkame kompletné baliace služby vrátane dodania materiálu. Túto službu si môžete objednať samostatne.' },
+                { q: 'Ako je chránený nábytok počas prevozu?', a: 'Váš nábytok balíme do ochranných fólií a diek. Všetok náklad je v aute bezpečne upevnený a poistený.' },
+                { q: 'Koľko pracovníkov príde na sťahovanie?', a: 'Zvyčajne dvaja pracovníci pre menšie byty, pre väčšie nasadzujeme troch alebo viacerých pre maximálnu efektivitu.' }
+            ]
+        },
+        {
+            icon: 'BuildingOfficeIcon',
+            title: 'Sťahovanie firiem',
+            usp: 'Spoľahlivé firemné sťahovanie s minimálnym výpadkom prevádzky. Presťahujeme kancelárie, sklady aj obchodné priestory – efektívne a v dohodnutom čase.',
+            featuresTitle: 'Efektívny plán firemného presunu',
+            features: [
+                { text: 'Časovanie s minimálnym výpadkom prevádzky' },
+                { text: 'Odborná manipulácia s IT technikou a nábytkom' },
+                { text: 'Poistenie a profesionálny prístup' },
+                { text: 'Referencie od firiem v Bratislave', link: 'references' }
+            ],
+            faqs: [
+                { q: 'Ako dlho trvá presťahovanie kancelárie?', a: 'Záleží na veľkosti, ale priemernú kanceláriu (5-10 zamestnancov) presťahujeme za 4-8 hodín.' },
+                { q: 'Čo ak potrebujeme sťahovať cez noc?', a: 'Ponúkame sťahovanie aj cez víkendy alebo v noci, aby sme minimalizovali dopad na vašu prevádzku.' },
+                { q: 'Dokážete zabezpečiť balenie IT techniky?', a: 'Áno, naši pracovníci sú školení na bezpečné balenie a prepravu počítačov, serverov a inej citlivej techniky.' },
+                { q: 'Je možné poistiť celý presun?', a: 'Áno, celý presun je krytý našim poistením zodpovednosti za škodu.' },
+                { q: 'Presťahujete aj archívne dokumenty?', a: 'Samozrejme, zabezpečíme diskrétny a bezpečný prevoz vašich archívov a dôležitých dokumentov.' }
+            ]
+        },
+        {
+            icon: 'TrashIcon',
+            title: 'Vypratávanie',
+            usp: 'Vypratáme byt, pivnicu, garáž aj celé firmy. Postaráme sa aj o ekologickú likvidáciu odpadu. Všetko vybavíme za vás, bez starostí.',
+            featuresTitle: 'Rýchle a kompletné vypratávanie',
+            features: [
+                { text: 'Vypratávanie bytov, domov, kancelárií, skladov' },
+                { text: 'Ekologická likvidácia odpadu a odvoz na skládku' },
+                { text: 'Transparentná cena a cenník', link: 'pricing' },
+                { text: 'Spoľahlivý tím s referenciami', link: 'references' }
+            ],
+            faqs: [
+                { q: 'Ako rýchlo viete vypratať byt?', a: 'Štandardný byt sme schopní vypratať v priebehu jedného dňa. Termín si dohodneme podľa vašich potrieb.' },
+                { q: 'Zabezpečíte aj odvoz odpadu?', a: 'Áno, kompletný odvoz a ekologická likvidácia na schválených miestach je súčasťou našej služby.' },
+                { q: 'Čo ak ide o veľký nábytok?', a: 'Náš tím si poradí aj s demontážou a vynesením veľkých kusov nábytku, ako sú skrine alebo sedačky.' },
+                { q: 'Likvidujete aj elektrospotrebiče?', a: 'Áno, zabezpečíme ekologickú likvidáciu starých elektrospotrebičov v súlade s platnou legislatívou.' },
+                { q: 'Je služba dostupná aj cez víkend?', a: 'Áno, vypratávacie práce poskytujeme aj počas víkendov bez príplatku.' }
+            ]
+        },
+        {
+            icon: 'TruckIcon',
+            title: 'Autodoprava',
+            usp: 'Rýchla a spoľahlivá doprava nábytku, balíkov a tovaru v Bratislave aj mimo mesta. Férové ceny: v rámci BA do 30 €, mimo mesta 0,80 €/km.',
+            featuresTitle: 'Doprava po Bratislave a okolí',
+            features: [
+                { text: 'Preprava pre byty, kancelárie a menšie presuny' },
+                { text: 'Mimo mesta za férovú sadzbu 0,80 €/km' },
+                { text: 'Kvalitné a priestranné vozidlá' },
+                { text: 'Cenník a minimálna suma výjazdu', link: 'pricing' }
+            ],
+            faqs: [
+                { q: 'Koľko stojí doprava v rámci Bratislavy?', a: 'Cena za dopravu v rámci celej Bratislavy je fixne do 30 €.' },
+                { q: 'Odveziete aj nábytok mimo mesta?', a: 'Áno, poskytujeme dopravu po celom Slovensku aj do zahraničia za cenu 0,80 €/km.' },
+                { q: 'Aký veľký nákladný priestor máte?', a: 'Disponujeme dodávkami s objemom nákladného priestoru od 12 m³ do 18 m³.' },
+                { q: 'Je možné si objednať vodiča s pomocníkom?', a: 'Áno, k doprave si môžete objednať aj jedného alebo viacerých našich pracovníkov na pomoc s nakládkou a vykládkou.' },
+                { q: 'Je minimálna cena fixná?', a: 'Áno, minimálna suma výjazdu je 70 €, ktorá pokrýva naše základné prevádzkové náklady.' }
+            ]
+        },
+        {
+            icon: 'BoxIcon',
+            title: 'Balenie',
+            usp: 'Profesionálne balenie pri sťahovaní. Krabice, fólie, obalenie krehkých vecí, demontáž a montáž nábytku. Šetríme váš čas a chránime váš majetok.',
+            featuresTitle: 'Kompletné balenie domácnosti aj firmy',
+            features: [
+                { text: 'Dodanie baliaceho materiálu (krabice, fólie)' },
+                { text: 'Odborné zabalenie krehkých predmetov' },
+                { text: 'Demontáž a následná montáž nábytku' },
+                { text: 'Prehľadný cenník ako doplnková služba', link: 'pricing' }
+            ],
+            faqs: [
+                { q: 'Dodávate aj krabice a fólie?', a: 'Áno, vieme zabezpečiť a priviezť všetok potrebný baliaci materiál priamo k vám.' },
+                { q: 'Ako balíte krehké veci?', a: 'Sklo, porcelán a elektroniku balíme do bublinkovej fólie a ukladáme do pevných krabíc s výplňou.' },
+                { q: 'Čo ak nemám čas pripraviť veci vopred?', a: 'To je presne situácia, kde pomôže naša baliaca služba. Prídeme a všetko bezpečne zabalíme za vás.' },
+                { q: 'Viete demontovať a zmontovať nábytok?', a: 'Áno, naši pracovníci majú náradie a skúsenosti s demontážou a montážou väčšiny typov nábytku.' },
+                { q: 'Je balenie zahrnuté v cene sťahovania?', a: 'Balenie je doplnková služba. Základná cena sťahovania zahŕňa naloženie, prevoz a vyloženie už pripravených vecí.' }
+            ]
+        },
+    ],
+    servicesCtaTitle: 'Potrebujete profesionálne sťahovanie?',
+    servicesCtaDescription: 'Chcete vedieť presnú cenu? Vyplňte nezáväzný formulár alebo si pozrite náš orientačný cenník. Odpovieme do 24 hodín.',
+    servicesCtaPricingBtn: 'Zobraziť cenník',
+    servicesCtaContactBtn: 'Kontaktovať pre ponuku',
+    includedServices: 'Zahrnuté služby',
+    getOffer: 'Získať ponuku',
+    getQuote: 'Cenová ponuka',
+    nonBindingOffer: 'Nezáväzná cenová ponuka už dnes',
+    offerDescription: 'Plánujete sťahovanie v Bratislave alebo okolí? Vyplňte krátky formulár a my Vám bezplatne pripravíme cenovú ponuku šitú presne na Vaše potreby. Žiadne závázky, len rýchle a férové informácie.',
+    offerDescriptionShort: 'Vyplňte krátky formulár a my Vám bezplatne pripravíme cenovú ponuku šitú presne na Vaše potreby.',
+    writeEmail: 'Napísať e-mail',
+    contactUs: 'Kontaktujte nás',
+    movingContact: 'Sťahovanie kontakt',
+    cleaningContact: 'Upratovanie kontakt',
+    businessInfo: 'Obchodné údaje',
+    privacy: 'Ochrana súkromia',
+    areYouMoving: 'Sťahujete sa? Napíšte nám.',
+    nameOrCompany: 'Meno / Firma *',
+    mobile: 'Mobil *',
+    email: 'Email *',
+    address: 'Adresa',
+    sendRequest: 'Odoslať požiadavku',
+    pricingAndQuote: 'Cenník & Cenová ponuka',
+    pricingDescription: 'Poskytujeme transparentné ceny a individuálne ponuky. Pozrite si náš základný cenník alebo si vyžiadajte ponuku na mieru.',
+    basePriceList: 'Základný cenník',
+    fromPrice: 'od',
+    priceTooltip: 'Ceny sú orientačné. Konečná cena závisí od rozsahu a podmienok.',
+    familyHouse: 'Rodinný dom',
+    familyHousePrice: 'Cenová ponuka',
+    workersPrice: 'Cena pracovníkov',
+    oneWorker: 'Jeden pracovník - šofér + sťahovák',
+    twoWorkers: 'Dvaja pracovníci',
+    threeOrMoreWorkers: 'Traja a viac',
+    pricePerHour: '€ / hod.',
+    priceByAgreement: 'cena dohodou',
+    transportPrice: 'Cena dopravy',
+    withinBratislava: 'V rámci Bratislavy do',
+    outsideCity: 'Mimo mesta',
+    pricePerKm: '€/km',
+    minTripPrice: 'Minimálna suma výjazdu:',
+    formFullName: 'Meno a priezvisko *',
+    formEmail: 'E-mail *',
+    formPhone: 'Telefón *',
+    formServiceType: 'Typ služby',
+    formFromAddress: 'Adresa odkiaľ',
+    formToAddress: 'Adresa kam',
+    formFromFloor: 'Poschodie odkiaľ',
+    formToFloor: 'Poschodie kam',
+    formElevator: 'Výťah',
+    formYes: 'Áno',
+    formNo: 'Nie',
+    formMoveDate: 'Termín sťahovania',
+    formExtraServices: 'Doplnkové služby',
+    servicePacking: 'Balenie',
+    serviceBubbleWrap: 'Bublinková fólia',
+    serviceAssembly: 'Demontáž/montáž nábytku',
+    serviceDisposal: 'Odvoz odpadu',
+    formNotes: 'Poznámka',
+    formGdpr: 'Súhlasím so spracovaním osobných údajov za účelom spracovania cenovej ponuky.',
+    formSubmit: 'Odoslať požiadavku',
+    formSubmitting: 'Odosiela sa...',
+    formSuccess: 'Ďakujeme! Vaša požiadavka bola odoslaná. Ozveme sa vám do 24 hodín.',
+    formQueued: 'Ste offline. Vaša požiadavka bude odoslaná po pripojení na internet.',
+    formNewRequest: 'Nová požiadavka',
+    errorRequired: 'Toto pole je povinné.',
+    errorEmail: 'Zadajte platný e-mail.',
+    errorPhone: 'Zadajte platné telefónne číslo.',
+    errorGdpr: 'Musíte súhlasiť so spracovaním údajov.',
+    faqTitle: 'Často kladené otázky',
+    faqQ1: 'Ako sa počíta cena za dopravu?',
+    faqA1: 'V rámci Bratislavy účtujeme fixný poplatok do 30 €. Pri sťahovaní mimo mesta je cena 0,80 € za každý kilometer cesty tam aj späť.',
+    faqQ2: 'Aká je minimálna suma za výjazd?',
+    faqA2: 'Minimálna fakturovaná suma za akýkoľvek výjazd je 70 €. Pokrýva to naše základné náklady a čas.',
+    faqQ3: 'Ako rýchlo dostanem cenovú ponuku?',
+    faqA3: 'Po odoslaní formulára sa vám ozveme s presnou cenovou ponukou zvyčajne do 24 hodín počas pracovných dní.',
+    estimateTitle: 'Orientačný odhad ceny',
+    estimateDescription: 'Táto kalkulácia je iba odhad. Presnú cenu vám zašleme po odoslaní formulára.',
+    estimateBase: 'Základná sadzba',
+    estimateFloors: 'Príplatok za poschodia',
+    estimateServices: 'Doplnkové služby',
+    estimateTotal: 'Celkový odhad',
+    skipToContent: 'Prejsť na hlavný obsah',
+    references: {
+        title: 'Naši spokojní zákazníci',
+        description: 'Dôvera a spokojnosť našich klientov je pre nás najväčšou odmenou. Prečítajte si, čo o nás hovoria tí, ktorým sme už pomohli.',
+        testimonials: [
+            {
+                quote: 'Sťahovanie nášho 3-izbového bytu prebehlo absolútne hladko a profesionálne. Chalani boli rýchli, opatrní a veľmi milí. Všetko prebehlo podľa dohody. Určite odporúčam!',
+                author: 'Katarína V.',
+                company: 'Sťahovanie bytu, Bratislava'
+            },
+            {
+                quote: 'Potrebovali sme presťahovať kanceláriu cez víkend, aby sme nenarušili prevádzku. Tím VI&MO to zvládol perfektne. V pondelok sme mohli fungovať bez problémov. Skvelá práca.',
+                author: 'Martin S.',
+                company: 'Konateľ, IT Firma s.r.o.'
+            },
+            {
+                quote: 'Rýchle a bezproblémové vypratanie pivnice po starých rodičoch. Všetko odviezli a postarali sa o likvidáciu. Ušetrili mi kopec času a starostí.',
+                author: 'Peter K.',
+                company: 'Vypratávanie, Petržalka'
+            },
+            {
+                quote: 'Využili sme kompletné služby vrátane balenia. Bolo úžasné sledovať, ako profesionálne a rýchlo dokážu zabaliť celú domácnosť. Nič sa nepoškodilo. Ďakujeme!',
+                author: 'Lenka a Tomáš M.',
+                company: 'Sťahovanie domu, Stupava'
+            },
+            {
+                quote: 'Spoľahlivá autodoprava. Potreboval som previezť väčší nábytok z obchodu a všetko prebehlo rýchlo a za dobrú cenu. Vodič bol veľmi ochotný.',
+                author: 'Jana D.',
+                company: 'Autodoprava, Bratislava'
+            },
+            {
+                quote: 'Maximálna spokojnosť. Sťahovanie firmy je vždy stres, ale s VI&MO to bola hračka. Efektívne, zorganizované a všetko presne podľa plánu. Odporúčam všetkým firmám.',
+                author: 'Eva H.',
+                company: 'Office Manager, Marketingová agentúra'
+            }
+        ]
+    },
+    chatbot: {
+      title: 'AI Asistent',
+      welcomeMessage: 'Dobrý deň! Som AI asistent VI&MO. Ako vám dnes môžem pomôcť so sťahovaním, vypratávaním alebo cenovou ponukou?',
+      placeholder: 'Napíšte svoju otázku...',
+      openChat: 'Otvoriť chat asistenta',
+      closeChat: 'Zavrieť chat',
+      errorInit: 'Nepodarilo sa spustiť AI asistenta.',
+      errorResponse: 'Ospravedlňujeme sa, nastala chyba. Skúste to prosím znova.',
+    },
+    // FIX: Renamed 'about' object to 'aboutPageContent' to avoid duplicate key error.
+    aboutPageContent: {
+        heroTitle: 'O nás – VI&MO',
+        heroSubtitle: 'Pevné ruky & poctivý prístup',
+        heroText: 'Profesionálne sťahovanie bytov, domov, firiem, odvoz a likvidácia odpadu, upratovanie. Rýchlo, spoľahlivo a výhodne – už 7 rokov v Bratislave a okolí.',
+        companyTitle: 'Sme silná partia v oblasti „moving & logistic“ služieb',
+        companyText1: 'Disponujeme viac než 7-ročnými skúsenosťami v oblasti profesionálneho sťahovania, odvozu ekologického odpadu a nadštandardných upratovacích služieb. Sťahujeme byty v lokalitách Ružinov a Petržalka, domy, kancelárie aj celé firmy, odvezieme nepotrebné veci a postaráme sa o dokonalý poriadok. Naše služby zahŕňajú aj balenie na sťahovanie a špeciálne úkony ako sťahovanie klavíra či sťahovanie trezoru.',
+        companyText2: 'Pracujeme rýchlo, efektívne a s ľudským prístupom. Pôsobíme najmä v Bratislave (Nové Mesto, Rača, Karlova Ves, Dúbravka) a okolí (Senec, Pezinok, Šamorín, Malacky) a zakladáme si na férovom prístupe, spoľahlivosti a poctivej práci. Či ide o sťahovanie firiem, vypratávanie bytov, alebo generálne upratovanie po rekonštrukcii – sme tu pre vás, s transparentným cenníkom sťahovania a možnosťou poistenia sťahovania. Ponúkame aj víkendové a nočné sťahovanie.',
+        servicesTitle: 'Naše Služby',
+        services: [
+            { title: 'Sťahovanie bytov a rodinných domov', description: 'Presťahujeme vás bez stresu a zbytočných starostí. Zabezpečíme demontáž a montáž nábytku, obalenie krehkých vecí, manipuláciu a prevoz – rýchlo, bezpečne a so zodpovednosťou.' },
+            { title: 'Sťahovanie firiem, skladov a prevádzok', description: 'Presťahovanie kancelárií, skladov či obchodných prevádzok s minimálnym výpadkom v prevádzke – efektívne plánovanie a spoľahlivá logistika, skúsený tím.' },
+            { title: 'Vypratávanie, likvidácia a odvoz odpadu', description: 'Vypratávanie bytov, pivníc, garáží a kompletné vypratávanie firiem vrátane ekologickej likvidácie nepotrebného nábytku a odpadu – žiadne starosti, všetko vyriešime za vás.' },
+            { title: 'Profesionálne upratovacie práce', description: 'Jednorazové aj pravidelné upratovanie bytov, domov, kancelárií a firiem po rekonštrukcii alebo vytvorenie priestoru pred sťahovaním – čistota, na ktorú sa môžete spoľahnúť.' }
+        ],
+        ctaTitle: '👉 Chcete vedieť cenu alebo si rovno rezervovať termín?',
+        ctaButtonPrimary: 'Cenová ponuka',
+        ctaButtonSecondary: 'Kontaktujte nás',
+        ctaButtonTertiary: 'Referencie'
+    },
+    // SEO Titles
+    seoTitleHome: 'VI&MO | Sťahovanie, Upratovanie a Vypratávanie v Bratislave',
+    seoTitlePricing: 'Cenník Sťahovania a Služieb | VI&MO Bratislava',
+    seoTitleReferences: 'Referencie a hodnotenia zákazníkov | VI&MO Bratislava',
+    seoTitleBlog: 'Blog o Sťahovaní a Bývaní | VI&MO Tipy a Rady',
+    seoTitleAbout: 'O nás | VI&MO - Váš partner pre sťahovanie v Bratislave',
+    // SEO Descriptions
+    seoDescHome: 'Profesionálne sťahovanie bytov a firiem, vypratávanie pivníc a odvoz odpadu, a upratovacie služby v Bratislave a okolí. Získajte nezáväznú cenovú ponuku od VI&MO.',
+    seoDescPricing: 'Prehľadný cenník sťahovacích a upratovacích služieb VI&MO v Bratislave. Získajte online odhad ceny alebo si vyžiadajte nezáväznú ponuku na mieru.',
+    seoDescReferences: 'Prečítajte si hodnotenia a skúsenosti našich spokojných zákazníkov. Zistite, prečo je VI&MO najlepšou voľbou pre vaše sťahovanie v Bratislave.',
+    seoDescBlog: 'Tipy, triky a rady pre bezproblémové sťahovanie, efektívne upratovanie a organizáciu bývania od expertov z VI&MO.',
+    seoDescAbout: 'Zistite viac o firme VI&MO. Sme váš spoľahlivý partner pre sťahovanie bytov a firiem, vypratávanie a autodopravu v Bratislave a okolí (Senec, Pezinok, Malacky).',
+    seoKeywordsAbout: 'o nás, sťahovanie Bratislava, sťahovanie firiem, vypratávanie bytov, autodoprava Bratislava, Ružinov, Petržalka, Nové Mesto, Rača, Karlova Ves, Dúbravka, Senec, Pezinok, Šamorín, Malacky, sťahovanie klavíra, sťahovanie trezoru, víkendové sťahovanie, nočné sťahovanie, poistenie sťahovania'
+  };

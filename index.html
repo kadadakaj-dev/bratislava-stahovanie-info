@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="sk">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags for VI&MO Services -->
+    <title>VI&MO | Sťahovanie, Upratovanie a Vypratávanie v Bratislave</title>
+    <meta name="description" content="Profesionálne sťahovanie bytov a firiem, vypratávanie pivníc a odvoz odpadu, a upratovacie služby v Bratislave a okolí. Získajte nezáväznú cenovú ponuku od VI&MO." />
+    <meta name="keywords" content="sťahovanie Bratislava, cenník sťahovania, cenová ponuka sťahovanie, vypratávanie Bratislava, upratovanie Bratislava, sťahovacia služba, odvoz nábytku, čistenie firiem, VI&MO, lacné sťahovanie, sťahovanie firiem, likvidácia odpadu, kalkulácia sťahovania" />
+    <link rel="canonical" href="https://viandmo.com" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://viandmo.com" />
+    <meta property="og:title" content="VI&MO | Sťahovanie, Upratovanie a Vypratávanie v Bratislave" />
+    <meta property="og:description" content="Profesionálne sťahovanie bytov a firiem, vypratávanie, odvoz odpadu a upratovacie služby v Bratislave. Kontaktujte nás pre nezáväznú ponuku." />
+    <meta property="og:image" content="https://picsum.photos/seed/stahovanie1/1200/630" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://viandmo.com" />
+    <meta property="twitter:title" content="VI&MO | Sťahovanie, Upratovanie a Vypratávanie v Bratislave" />
+    <meta property="twitter:description" content="Profesionálne sťahovanie bytov a firiem, vypratávanie, odvoz odpadu a upratovacie služby v Bratislave. Kontaktujte nás pre nezáväznú ponuku." />
+    <meta property="twitter:image" content="https://picsum.photos/seed/stahovanie1/1200/630" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="manifest" href="./public/manifest.json" />
+    <meta name="theme-color" content="#003844" />
+    <style>
+      /* Warhol 4D-X Theme CSS Variables & Global Styles */
+      :root {
+        --black: 0 0 0;
+        --white: 255 255 255;
+        --lime-viandmo: 53 216 109;
+        --teal-viandmo: 0 137 128;
+        --midnight-viandmo: 0 56 68;
+
+        /* THEME TOKENS: LIGHT */
+        --surface-1: var(--white);
+        --surface-2: 247 247 247; /* Slightly off-white for depth */
+        --text-primary: var(--midnight-viandmo);
+        --text-secondary: var(--teal-viandmo);
+        --text-muted: 0 56 68 / 0.72;
+        --primary: var(--lime-viandmo);
+        --accent: var(--teal-viandmo);
+        --on-primary: var(--black);
+        --border: 0 56 68 / 0.12;
+        --ring: var(--lime-viandmo);
+      }
+
+      .dark {
+        /* THEME TOKENS: DARK */
+        --surface-1: var(--midnight-viandmo);
+        --surface-2: 5 66 79; /* Slightly lighter midnight for depth */
+        --text-primary: var(--white);
+        --text-secondary: var(--lime-viandmo);
+        --text-muted: 255 255 255 / 0.78;
+        --primary: var(--lime-viandmo);
+        --accent: var(--teal-viandmo);
+        --on-primary: var(--black);
+        --border: 255 255 255 / 0.14;
+        --ring: var(--lime-viandmo);
+      }
+
+      /* Halftone Pattern Overlay */
+      .halftone-overlay {
+          position: relative;
+          overflow: hidden;
+      }
+      .halftone-overlay::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          pointer-events: none;
+          background-image: radial-gradient(rgb(var(--text-primary)) 15%, transparent 16%);
+          background-size: 6px 6px;
+          opacity: 0.04;
+      }
+
+      /* Duotone Image Effect Wrapper */
+      .duotone-wrapper {
+        position: relative;
+        background-color: rgb(var(--accent)); /* Teal */
+        overflow: hidden;
+      }
+      .duotone-wrapper img {
+        filter: grayscale(100%) contrast(1.1);
+        mix-blend-mode: screen;
+        opacity: 0.85;
+      }
+
+      /* Global Typography & Rendering */
+      html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        font-optical-sizing: auto;
+      }
+
+      ::selection {
+        background-color: rgb(var(--primary));
+        color: rgb(var(--on-primary));
+      }
+
+      body {
+          font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+          font-feature-settings: "calt", "liga", "ss01", "cv10";
+      }
+      
+      .faq-answer {
+        transition: grid-template-rows 0.3s ease-out;
+      }
+
+      /* Reduced Motion */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+             colors: {
+                'surface-1': 'rgb(var(--surface-1) / <alpha-value>)',
+                'surface-2': 'rgb(var(--surface-2) / <alpha-value>)',
+                'text-primary': 'rgb(var(--text-primary) / <alpha-value>)',
+                'text-secondary': 'rgb(var(--text-secondary) / <alpha-value>)',
+                'text-muted': 'rgb(var(--text-muted) / <alpha-value>)',
+                'primary': 'rgb(var(--primary) / <alpha-value>)',
+                'accent': 'rgb(var(--accent) / <alpha-value>)',
+                'on-primary': 'rgb(var(--on-primary) / <alpha-value>)',
+                'border': 'rgb(var(--border) / <alpha-value>)',
+                'ring': 'rgb(var(--ring) / <alpha-value>)',
+             },
+             fontFamily: {
+                sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+             },
+             boxShadow: {
+               'warhol': '4px 4px 0px rgb(var(--text-primary) / 1)',
+               'warhol-sm': '2px 2px 0px rgb(var(--text-primary) / 1)',
+               'glass': '0 4px 30px rgb(var(--black) / 0.1)',
+             },
+             typography: (theme) => ({
+                DEFAULT: {
+                    css: {
+                        '--tw-prose-body': 'rgb(var(--text-primary))',
+                        '--tw-prose-headings': 'rgb(var(--text-primary))',
+                        '--tw-prose-links': 'rgb(var(--accent))',
+                        '--tw-prose-bold': 'rgb(var(--text-primary))',
+                        '--tw-prose-counters': 'rgb(var(--text-muted))',
+                        '--tw-prose-bullets': 'rgb(var(--accent))',
+                        '--tw-prose-hr': 'rgb(var(--border))',
+                        '--tw-prose-quotes': 'rgb(var(--text-primary))',
+                        '--tw-prose-quote-borders': 'rgb(var(--accent))',
+                        '--tw-prose-captions': 'rgb(var(--text-muted))',
+                        '--tw-prose-code': 'rgb(var(--accent))',
+                        '--tw-prose-pre-code': 'rgb(var(--text-secondary))',
+                        '--tw-prose-pre-bg': 'rgb(var(--surface-2))',
+                        '--tw-prose-th-borders': 'rgb(var(--border))',
+                        '--tw-prose-td-borders': 'rgb(var(--border))',
+                        a: {
+                            fontWeight: '600',
+                            transition: 'color 0.2s ease',
+                            textDecoration: 'none',
+                            '&:hover': {
+                                color: 'rgb(var(--primary))',
+                                textDecoration: 'underline',
+                            },
+                        },
+                    },
+                },
+             }),
+          }
+        },
+      }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.17.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./index.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./public/sw.js').then(registration => {
+            console.log('SW registered: ', registration);
+          }).catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
