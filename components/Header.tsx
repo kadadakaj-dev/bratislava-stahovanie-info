@@ -1,13 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Theme } from '../types';
-import ThemeToggle from './ThemeToggle';
-import { VMLogo, MenuIcon, XIcon } from '../constants';
+import { VMLogo, MenuIcon, XIcon, FacebookIcon, WhatsAppIcon } from '../constants';
 import { Locale, Translations, View } from '../App';
 import { analyticsService } from '../services/analyticsService';
 
 interface HeaderProps {
-  theme: Theme;
-  onThemeToggle: () => void;
   onNavigate: (view: View) => void;
   locale: Locale;
   setLocale: (locale: Locale) => void;
@@ -15,7 +11,7 @@ interface HeaderProps {
   currentView: View;
 }
 
-const Header: React.FC<HeaderProps> = ({ theme, onThemeToggle, onNavigate, locale, setLocale, t, currentView }) => {
+const Header: React.FC<HeaderProps> = ({ onNavigate, locale, setLocale, t, currentView }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const openButtonRef = useRef<HTMLButtonElement>(null);
@@ -79,12 +75,6 @@ const Header: React.FC<HeaderProps> = ({ theme, onThemeToggle, onNavigate, local
       analyticsService.trackEvent('toggle_language', { to_locale: newLocale });
       setLocale(newLocale);
   };
-  
-  const handleThemeToggleWithAnalytics = () => {
-      analyticsService.trackEvent('toggle_theme', { to_theme: theme === 'light' ? 'dark' : 'light' });
-      onThemeToggle();
-  };
-
 
   const navLinkClasses = "font-bold px-3 py-1.5 rounded-md transition-all duration-200 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-surface-1";
   const activeLinkClasses = "bg-primary text-on-primary";
@@ -132,7 +122,24 @@ const Header: React.FC<HeaderProps> = ({ theme, onThemeToggle, onNavigate, local
             >
               {locale.toUpperCase()}
             </button>
-            <ThemeToggle theme={theme} onToggle={handleThemeToggleWithAnalytics} t={t} />
+            <a
+              href="https://www.facebook.com/viandmocom"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow us on Facebook"
+              className="fb-icon-link rounded-md text-text-primary transition-transform duration-200 ease-in-out hover:-translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface-1"
+            >
+              <FacebookIcon className="w-9 h-9" />
+            </a>
+            <a
+              href="https://api.whatsapp.com/send?phone=421911275755"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Contact us on WhatsApp"
+              className="wa-icon-link rounded-md text-text-primary transition-transform duration-200 ease-in-out hover:-translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface-1"
+            >
+              <WhatsAppIcon className="w-9 h-9" />
+            </a>
             <div className="md:hidden">
                 <button
                     ref={openButtonRef}
@@ -152,7 +159,7 @@ const Header: React.FC<HeaderProps> = ({ theme, onThemeToggle, onNavigate, local
       <div
         id="mobile-menu"
         ref={menuRef}
-        className={`md:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-surface-1/95 backdrop-blur-xl transition-opacity duration-300 ease-in-out ${
+        className={`md:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-surface-1 transition-opacity duration-300 ease-in-out ${
           isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         aria-hidden={!isMenuOpen}

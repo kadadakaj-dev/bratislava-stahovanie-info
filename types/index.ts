@@ -1,3 +1,9 @@
+// FIX: Add missing Theme enum required by ThemeToggle.tsx
+export enum Theme {
+  Light = 'light',
+  Dark = 'dark',
+}
+
 export interface Post {
   id: number;
   title: string;
@@ -8,11 +14,6 @@ export interface Post {
   date: string;
   datePublished: string; // ISO 8601 format for schema.org
   tags: string[];
-}
-
-export enum Theme {
-    Light = 'light',
-    Dark = 'dark'
 }
 
 export interface Comment {

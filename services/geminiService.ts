@@ -51,7 +51,7 @@ const buildSystemPrompt = (t: Translations): string => {
       - **Minimálny výjazd:** 70 €
 
       **Dôležité Pokyny:**
-      - NIKDY si nevymýšľaj ceny ani služby, ktoré nie sú uvedené.
+      - NIKDY si nevymýšaj ceny ani služby, ktoré nie sú uvedené.
       - Ak nevieš odpoveď, povedz: "Na túto otázku nemám presné informácie, ale odporúčam kontaktovať pána Danihela na čísle +421 911 275 755, ktorý vám rád pomôže."
       - Buď pozitívny a povzbudzuj používateľov, aby využili služby firmy.
     `;
@@ -122,6 +122,8 @@ export const summarizePost = async (post: Post): Promise<string> => {
                 topP: 0.95,
                 topK: 64,
                 maxOutputTokens: 150,
+                // FIX: Added thinkingConfig as it's required when maxOutputTokens is set for gemini-2.5-flash to avoid empty responses.
+                thinkingConfig: { thinkingBudget: 50 },
             }
         });
         

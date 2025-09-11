@@ -128,13 +128,19 @@ export const LinkedInIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
 );
 export const FacebookIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12c0-5.523-4.477-10-10-10s-10 4.477-10 10c0 5.523 4.477 10 10 10s10-4.477 10-10zm-10 8c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm-1-5h-2v-3h2v-1.5c0-2.21 1.28-3.5 3.5-3.5h1.5v3h-1.12c-.54 0-.88.34-.88.9v1.1h2l-.26 3h-1.74v5h-2z" /></svg>
+  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle className="fb-bg" cx="12" cy="12" r="12" />
+    <path className="fb-icon" d="M13.4375 20V12.375H16.125L16.5 9.375H13.4375V7.5C13.4375 6.625 13.6875 6 15.0625 6H16.625V3.375C16.375 3.3125 15.4375 3.25 14.375 3.25C12.1875 3.25 10.625 4.625 10.625 7.1875V9.375H8V12.375H10.625V20H13.4375Z" fill="white"/>
+  </svg>
 );
 export const GitHubIcon = ({ className }: { className?: string }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
 );
 export const WhatsAppIcon = ({ className }: { className?: string }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99 0-3.903-.52-5.687-1.475l-6.303 1.657s-.229.057-.229.057zm4.48-5.632c.273.935.634 1.822 1.122 2.627.488.806 1.08 1.54 1.79 2.185.71.644 1.516 1.205 2.382 1.666s1.82.802 2.73.996c1.823.383 3.733.158 5.492-.634 1.758-.792 3.279-2.076 4.396-3.73.597-.907 1.054-1.898 1.36-2.95.305-1.05.458-2.15.45-3.25.002-5.45-4.408-9.864-9.86-9.864-2.661 0-5.145 1.038-7.027 2.919-1.882 1.881-2.92 4.366-2.92 7.027 0 2.135.61 4.198 1.67 5.981.01.015.01.015.01.015z" /></svg>
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path className="wa-bg" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.84 3.12 1.32 4.79 1.32h.01c5.46 0 9.91-4.45 9.91-9.91s-4.45-9.91-9.91-9.91z" />
+        <path className="wa-icon" d="M17.47,14.38c-.28-1-1.3-1.61-2-1.22s-.52,1.31-.52,1.31a3.46,3.46,0,0,1-1.6-.9,10.23,10.23,0,0,1-2.21-2.5,2,2,0,0,1,.15-1.87c.21-.28.38-.45.38-.45a.73.73,0,0,0-.1-1.06s-.89-.87-.89-.87a.54.54,0,0,0-.81,0l-.58.58s-.24.22-.24.22a2.37,2.37,0,0,0-.39,2.06,6,6,0,0,0,1.9,3.13,11.45,11.45,0,0,0,5,3.13,3.52,3.52,0,0,0,2.18-.3,1.39,1.39,0,0,0,.7-.94s.21-.52.21-.52a.73.73,0,0,0-.6-1Z" />
+    </svg>
 );
 
 // Service Icons
@@ -156,13 +162,13 @@ export const TrashIcon = ({ className }: { className?: string }) => (
 
 // Navigation Icons
 export const MenuIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className} aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
     </svg>
 );
 
 export const XIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className} aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={className} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
     </svg>
 );

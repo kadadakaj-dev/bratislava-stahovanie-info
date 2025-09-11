@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { Theme } from './types';
 import { offlineService } from './services/offlineService';
 import { seoService } from './services/seoService';
 import { analyticsService } from './services/analyticsService';
 import { sk } from './locales/sk';
 import { en } from './locales/en';
 import { getPostById } from './services/blogService';
+import { themeService } from './services/themeService';
 
 const translations = { sk, en };
 
@@ -31,17 +31,6 @@ const LoadingSpinner = () => (
 );
 
 function App() {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const storedTheme = window.localStorage.getItem('theme') as Theme;
-      if (storedTheme) return storedTheme;
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return Theme.Dark;
-      }
-    }
-    return Theme.Light;
-  });
-
   const [locale, setLocale] = useState<Locale>(() => {
      if (typeof window !== 'undefined' && window.localStorage) {
       const storedLocale = window.localStorage.getItem('locale') as Locale;
@@ -56,14 +45,8 @@ function App() {
   const t = useMemo(() => translations[locale], [locale]);
 
   useEffect(() => {
-    const root = window.document.documentElement;
-    if (theme === Theme.Dark) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    themeService.applyTheme();
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('locale', locale);
@@ -98,10 +81,6 @@ function App() {
         offlineService.processQueue();
       }
     });
-  }, []);
-
-  const handleThemeToggle = useCallback(() => {
-    setTheme(prevTheme => (prevTheme === Theme.Light ? Theme.Dark : Theme.Light));
   }, []);
 
   const handleSelectPost = useCallback((id: number) => {
@@ -146,8 +125,6 @@ function App() {
         {t.skipToContent}
       </a>
       <Header 
-        theme={theme} 
-        onThemeToggle={handleThemeToggle} 
         onNavigate={handleNavigate}
         locale={locale}
         setLocale={setLocale}
