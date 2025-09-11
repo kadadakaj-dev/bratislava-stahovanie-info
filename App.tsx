@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { offlineService } from './services/offlineService';
@@ -53,6 +53,35 @@ function App() {
     document.documentElement.lang = locale;
   }, [locale]);
   
+  // Hash-based routing
+  useEffect(() => {
+    const parseHash = () => {
+        const hash = window.location.hash.slice(1);
+        const [path, idStr] = hash.split('/');
+
+        const validViews: View[] = ['blog', 'services', 'pricing', 'references', 'about'];
+
+        if (validViews.includes(path as View)) {
+            const newView = path as View;
+            const newPostId = (newView === 'blog' && idStr && !isNaN(parseInt(idStr))) ? parseInt(idStr) : null;
+            
+            setCurrentView(newView);
+            setSelectedPostId(newPostId);
+        } else {
+            // Default to services if hash is invalid or empty
+            setCurrentView('services');
+            setSelectedPostId(null);
+        }
+        window.scrollTo(0, 0);
+    };
+
+    parseHash(); // Parse on initial load
+    window.addEventListener('hashchange', parseHash);
+    return () => {
+        window.removeEventListener('hashchange', parseHash);
+    };
+  }, []);
+
   // Centralized SEO, Schema, and Page View Tracking
   useEffect(() => {
     const updateSeoAndTrackView = async () => {
@@ -82,41 +111,26 @@ function App() {
       }
     });
   }, []);
-
-  const handleSelectPost = useCallback((id: number) => {
-    setCurrentView('blog');
-    setSelectedPostId(id);
-    window.scrollTo(0, 0);
-  }, []);
-
-  const handleBackToList = useCallback(() => {
-    setSelectedPostId(null);
-    setCurrentView('blog');
-  }, []);
   
-  const handleNavigate = useCallback((view: View) => {
-    setSelectedPostId(null);
-    setCurrentView(view);
-    window.scrollTo(0, 0);
-  }, []);
-  
+  const handleNavigate = (view: View) => {
+    window.location.hash = `#${view}`;
+  };
+
   const renderContent = () => {
-    if (currentView === 'services') {
-      return <ServicesPage t={t} onNavigate={handleNavigate} />;
+    if (currentView === 'blog' && selectedPostId !== null) {
+      return <PostDetail postId={selectedPostId} t={t} />;
     }
-    if (currentView === 'pricing') {
-      return <PricingPage t={t} />;
+
+    switch(currentView) {
+        // FIX: Pass required 'onNavigate' prop to ServicesPage.
+        case 'services': return <ServicesPage t={t} onNavigate={handleNavigate} />;
+        case 'pricing': return <PricingPage t={t} />;
+        case 'references': return <ReferencesPage t={t} />;
+        case 'about': return <AboutPage t={t} />;
+        case 'blog': return <PostList t={t} />;
+        // FIX: Pass required 'onNavigate' prop to ServicesPage.
+        default: return <ServicesPage t={t} onNavigate={handleNavigate} />;
     }
-    if (currentView === 'references') {
-        return <ReferencesPage t={t} />;
-    }
-    if (currentView === 'about') {
-        return <AboutPage t={t} onNavigate={handleNavigate} />;
-    }
-    if (selectedPostId !== null) {
-      return <PostDetail postId={selectedPostId} onBack={handleBackToList} t={t} />;
-    }
-    return <PostList onSelectPost={handleSelectPost} t={t} />;
   };
 
   return (
@@ -124,19 +138,20 @@ function App() {
       <a href="#main-content" className="absolute z-[9999] -translate-y-full focus:translate-y-0 p-3 bg-primary text-on-primary font-bold transition-transform duration-300">
         {t.skipToContent}
       </a>
+      {/* FIX: Pass selectedPostId to Header component. */}
       <Header 
-        onNavigate={handleNavigate}
         locale={locale}
         setLocale={setLocale}
         t={t}
         currentView={currentView}
+        selectedPostId={selectedPostId}
       />
       <main id="main-content" className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <Suspense fallback={<LoadingSpinner />}>
           {renderContent()}
         </Suspense>
       </main>
-      <Footer t={t} onNavigate={handleNavigate}/>
+      <Footer t={t} />
       <Suspense fallback={null}>
         <Chatbot t={t} />
       </Suspense>

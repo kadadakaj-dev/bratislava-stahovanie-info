@@ -133,6 +133,7 @@ const mockPosts: Post[] = [
       <p>Zvládnutie sťahovania v Bratislave si vyžaduje plánovanie, ale s týmito tipmi a správnou sťahovacou firmou to bude pre vás pozitívna skúsenosť. Prajeme vám šťastný nový začiatok!</p>
     `,
     imageUrl: 'https://picsum.photos/seed/stahovanie1/800/400',
+    imageAlt: 'Sťahovacie krabice naskladané v prázdnej miestnosti pripravené na presun v Bratislave.',
     author: 'VI&MO Tím',
     date: '14. mája 2024',
     datePublished: '2024-05-14T09:00:00+02:00',
@@ -190,6 +191,7 @@ const mockPosts: Post[] = [
       <p class="mt-8">Gratulujeme! S trochou úsilia ste premenili svoju pivnicu na organizovaný a funkčný priestor. Užite si ten pocit kontroly a voľného miesta!</p>
     `,
     imageUrl: 'https://picsum.photos/seed/vypratavanie2/800/400',
+    imageAlt: 'Preplnená pivnica pred vyprataním plná starých vecí a neporiadku.',
     author: 'VI&MO Tím',
     date: '28. mája 2024',
     datePublished: '2024-05-28T10:00:00+02:00',
@@ -231,6 +233,7 @@ const mockPosts: Post[] = [
       <p class="mt-8">Dobre zorganizované sťahovanie môže byť pre firmu pozitívnym impulzom. Je to príležitosť na optimalizáciu procesov, modernizáciu a nový začiatok v priestoroch, ktoré lepšie zodpovedajú vašim potrebám. So správnym plánom a partnerom to zvládnete bez stresu.</p>
     `,
     imageUrl: 'https://picsum.photos/seed/firma3/800/400',
+    imageAlt: 'Moderná kancelária s pracovníkmi baliacimi počítače a vybavenie do krabíc pred sťahovaním firmy.',
     author: 'VI&MO Tím',
     date: '4. júna 2024',
     datePublished: '2024-06-04T11:00:00+02:00',
@@ -280,6 +283,7 @@ const mockPosts: Post[] = [
       <p class="mt-8">Správne naplánovaný <strong>odvoz odpadu</strong> je neoddeliteľnou súčasťou bezproblémového sťahovania. Ušetrí vám nielen starosti, ale aj peniaze za sťahovanie vecí, ktoré v skutočnosti nepotrebujete. Plánujete <strong>sťahovanie cez víkend</strong> a potrebujete všetko zorganizovať naraz? Kontaktujte nás a my vám pripravíme komplexné riešenie na mieru – od balenia až po finálne upratanie a odvoz odpadu.</p>
     `,
     imageUrl: 'https://picsum.photos/seed/odpad4/800/400',
+    imageAlt: 'Veľký kontajner na odpad pristavený pred domom počas vypratávania pred sťahovaním.',
     author: 'VI&MO Tím',
     date: '18. júna 2024',
     datePublished: '2024-06-18T09:00:00+02:00',

@@ -5,22 +5,27 @@ import { Translations } from '../App';
 
 interface PostCardProps {
   post: Post;
-  onSelectPost: (id: number) => void;
   t: Translations;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ post, onSelectPost, t }) => {
+const PostCard: React.FC<PostCardProps> = ({ post, t }) => {
   return (
     <article 
-      className="bg-surface-1 rounded-lg border-2 border-text-primary overflow-hidden transition-all duration-300 group hover:shadow-warhol flex flex-col"
+      className="bg-surface-1 rounded-lg border-2 border-text-primary overflow-hidden transition-all duration-300 group hover:shadow-warhol flex flex-col relative"
       aria-labelledby={`post-title-${post.id}`}
     >
+        <a 
+          href={`#blog/${post.id}`} 
+          className="absolute inset-0 z-10"
+          aria-label={t.readMoreAria(post.title)}
+         >
+           <span className="sr-only">{t.readMoreAria(post.title)}</span>
+        </a>
         <div className="duotone-wrapper">
              <img 
-                className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer" 
+                className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105" 
                 src={post.imageUrl} 
-                alt="" // Alt text is provided by the heading
-                onClick={() => onSelectPost(post.id)}
+                alt={post.imageAlt}
                 loading="lazy"
                 decoding="async"
             />
@@ -37,18 +42,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, onSelectPost, t }) => {
             id={`post-title-${post.id}`}
             className="text-xl font-bold text-text-primary mb-2 group-hover:text-accent transition-colors"
         >
-          <button 
-             onClick={() => onSelectPost(post.id)}
-             className="text-left"
-          >
-            <span className="absolute inset-0" aria-hidden="true"></span>
-            {post.title}
-          </button>
+          {post.title}
         </h3>
         <p className="text-text-muted text-base flex-grow">
           {post.excerpt}
         </p>
-         <div className="mt-4 pt-4 border-t border-border relative z-10">
+         <div className="mt-4 pt-4 border-t border-border relative z-20">
           <div
             className="inline-flex items-center font-bold text-accent group-hover:text-text-primary transition-colors"
             aria-hidden="true" // The whole card is clickable

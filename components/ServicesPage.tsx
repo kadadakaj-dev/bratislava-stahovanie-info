@@ -31,8 +31,9 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ t, onNavigate }) => {
       </header>
 
       <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+        {/* FIX: Remove onNavigate prop as it is not defined on ServiceCardProps. */}
         {t.servicesContent.map((service, index) => (
-            <ServiceCard key={index} service={service} onNavigate={onNavigate} />
+            <ServiceCard key={index} service={service} />
         ))}
       </div>
 

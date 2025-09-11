@@ -1,16 +1,8 @@
-import { GoogleGenAI, GenerateContentResponse, Chat } from "@google/genai";
 import { Post } from "../types";
 import { Translations } from "../App";
+import { Chat } from "@google/genai";
+import * as apiService from './apiService';
 
-// The API key is sourced from the environment variable `process.env.API_KEY`.
-// This is a hard requirement and is assumed to be configured in the execution environment.
-const apiKey = process.env.API_KEY;
-
-if (!apiKey) {
-    console.error("API_KEY environment variable not set. AI features will not work.");
-}
-// Initialize the GoogleGenAI client. The apiKey is mandatory.
-const ai = new GoogleGenAI({ apiKey: apiKey || "" });
 
 let chat: Chat | null = null;
 
@@ -59,26 +51,24 @@ const buildSystemPrompt = (t: Translations): string => {
 
 
 export const startChat = (t: Translations) => {
-    if (!apiKey) {
-        console.error("Cannot start chat, API key is missing.");
-        return;
+    try {
+        const systemInstruction = buildSystemPrompt(t);
+        chat = apiService.createChatInstance({
+            model: 'gemini-2.5-flash',
+            config: {
+              systemInstruction,
+            },
+        });
+        console.log("Chat started with system prompt.");
+    } catch (error) {
+        console.error("Cannot start chat:", error);
+        throw error;
     }
-    const systemInstruction = buildSystemPrompt(t);
-    chat = ai.chats.create({
-        model: 'gemini-2.5-flash',
-        config: {
-          systemInstruction,
-        },
-    });
-    console.log("Chat started with system prompt.");
 };
 
 export const sendChatMessage = async (message: string): Promise<AsyncGenerator<string, void, unknown>> => {
     if (!chat) {
         throw new Error("Chat is not initialized. Call startChat first.");
-    }
-    if (!apiKey) {
-        throw new Error("API key is not configured.");
     }
 
     try {
@@ -100,10 +90,6 @@ export const sendChatMessage = async (message: string): Promise<AsyncGenerator<s
 
 
 export const summarizePost = async (post: Post): Promise<string> => {
-    if (!apiKey) {
-         return "The AI summarization feature is currently unavailable because the API key is not configured.";
-    }
-
     const prompt = `Prosím, poskytni stručné, pútavé a ľahko zrozumiteľné zhrnutie nasledujúceho blogového príspevku v slovenčine. Zhrnutie by malo mať približne 3-4 vety.
 
     **Názov blogového príspevku:** ${post.title}
@@ -114,17 +100,12 @@ export const summarizePost = async (post: Post): Promise<string> => {
     **Zhrnutie:**`;
 
     try {
-        const response: GenerateContentResponse = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: prompt,
-            config: {
-                temperature: 0.5,
-                topP: 0.95,
-                topK: 64,
-                maxOutputTokens: 150,
-                // FIX: Added thinkingConfig as it's required when maxOutputTokens is set for gemini-2.5-flash to avoid empty responses.
-                thinkingConfig: { thinkingBudget: 50 },
-            }
+        const response = await apiService.callGeminiSummarize(prompt, {
+            temperature: 0.5,
+            topP: 0.95,
+            topK: 64,
+            maxOutputTokens: 150,
+            thinkingConfig: { thinkingBudget: 50 },
         });
         
         return response.text.trim();

@@ -8,14 +8,14 @@ import SocialShare from './SocialShare';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import { Translations } from '../App';
+import { sanitizeHtml } from '../utils/sanitizer';
 
 interface PostDetailProps {
   postId: number;
-  onBack: () => void;
   t: Translations;
 }
 
-const PostDetail: React.FC<PostDetailProps> = ({ postId, onBack, t }) => {
+const PostDetail: React.FC<PostDetailProps> = ({ postId, t }) => {
   const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -35,6 +35,33 @@ const PostDetail: React.FC<PostDetailProps> = ({ postId, onBack, t }) => {
     fetchPostAndComments();
   }, [postId]);
 
+  useEffect(() => {
+    if (loading || !contentRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const element = entry.target as HTMLElement;
+            if (element.dataset.width) {
+              element.style.width = element.dataset.width;
+            }
+            if (element.dataset.height) {
+              element.style.height = element.dataset.height;
+            }
+            observer.unobserve(element);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const elementsToAnimate = contentRef.current.querySelectorAll('.progress-bar-inner, .bar-chart-bar');
+    elementsToAnimate.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [loading]);
+
   const handleCommentSubmit = useCallback(async (commentData: { author: string; content: string }) => {
     const newComment = await addComment({ ...commentData, postId });
     setComments(prevComments => [...prevComments, newComment]);
@@ -47,17 +74,19 @@ const PostDetail: React.FC<PostDetailProps> = ({ postId, onBack, t }) => {
   if (!post) {
     return <div className="text-center text-text-muted">{t.postNotFound}</div>;
   }
+  
+  const cleanContent = sanitizeHtml(post.content);
 
   return (
     <article className="bg-surface-1 rounded-lg border-2 border-text-primary" aria-labelledby="post-title">
       <header className="p-4 sm:p-6 lg:p-8">
-        <button 
-          onClick={onBack} 
+        <a 
+          href="#blog"
           className="mb-6 inline-flex items-center gap-2 text-accent hover:underline"
         >
           <ArrowLeftIcon className="w-5 h-5" />
           {t.backToPosts}
-        </button>
+        </a>
 
         <h1 id="post-title" className="text-3xl sm:text-4xl font-extrabold text-text-primary mb-4 tracking-tight">
           {post.title}
@@ -71,11 +100,11 @@ const PostDetail: React.FC<PostDetailProps> = ({ postId, onBack, t }) => {
       </header>
       
       <div className="duotone-wrapper">
-        <img className="w-full h-64 md:h-96 object-cover" src={post.imageUrl} alt="" />
+        <img className="w-full h-64 md:h-96 object-cover" src={post.imageUrl} alt={post.imageAlt} />
       </div>
 
       <div className="p-4 sm:p-6 lg:p-8" ref={contentRef}>
-        <div className="prose prose-lg dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: post.content }} />
+        <div className="prose prose-lg dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: cleanContent }} />
         
         <div className="mt-12 pt-8 border-t border-border space-y-10">
             <SocialShare post={post} t={t} />

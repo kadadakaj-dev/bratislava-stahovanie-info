@@ -1,7 +1,7 @@
 const CACHE_NAME = 'viandmo-pwa-v2'; // Incremented version for cache busting
 const urlsToCache = [
-  '/',
-  '/index.html',
+  '.',
+  'index.html',
   // In a real build, asset URLs with hashes would be injected here.
   // Dynamic caching in the fetch handler will cache other assets on the fly.
 ];
@@ -56,7 +56,7 @@ self.addEventListener('fetch', event => {
         })
         .catch(() => {
           // If network fails, serve the page from the cache
-          return caches.match(request.url) || caches.match('/');
+          return caches.match(request.url) || caches.match('.');
         })
     );
     return;

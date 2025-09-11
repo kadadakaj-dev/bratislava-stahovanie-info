@@ -15,10 +15,9 @@ type Service = Translations['servicesContent'][0];
 
 interface ServiceCardProps {
     service: Service;
-    onNavigate: (view: View) => void;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ service, onNavigate }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
     const IconComponent = iconMap[service.icon as keyof typeof iconMap];
     
     return (
@@ -38,9 +37,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onNavigate }) => {
                   <li key={i} className="flex items-start">
                     <CheckCircleIcon className="w-5 h-5 text-primary flex-shrink-0 mr-2 mt-0.5" />
                     {item.link ? (
-                        <button onClick={() => onNavigate(item.link as View)} className="text-sm text-text-muted text-left underline hover:text-accent transition-colors">
+                        <a href={`#${item.link}`} className="text-sm text-text-muted text-left underline hover:text-accent transition-colors">
                             {item.text}
-                        </button>
+                        </a>
                     ) : (
                         <span className="text-sm text-text-muted">{item.text}</span>
                     )}

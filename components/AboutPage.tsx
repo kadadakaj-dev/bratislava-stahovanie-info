@@ -4,13 +4,11 @@ import { analyticsService } from '../services/analyticsService';
 
 interface AboutPageProps {
   t: Translations;
-  onNavigate: (view: View) => void;
 }
 
-const AboutPage: React.FC<AboutPageProps> = ({ t, onNavigate }) => {
+const AboutPage: React.FC<AboutPageProps> = ({ t }) => {
   const handleCtaClick = (targetView: View) => {
     analyticsService.trackEvent('click_cta', { target: targetView, location: 'about_page_bottom' });
-    onNavigate(targetView);
   }
 
   const handleContactClick = (e: React.MouseEvent) => {
@@ -55,15 +53,15 @@ const AboutPage: React.FC<AboutPageProps> = ({ t, onNavigate }) => {
        <section className="bg-text-primary text-surface-1 rounded-lg p-8 md:p-12 text-center halftone-overlay" aria-labelledby="about-cta-heading">
         <h2 id="about-cta-heading" className="text-2xl md:text-3xl font-bold mb-6">{t.aboutPageContent.ctaTitle}</h2>
         <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
-            <button onClick={() => handleCtaClick('pricing')} className="inline-block bg-primary text-on-primary font-bold px-8 py-3 rounded-md hover:brightness-110 transition-all duration-300 active:translate-y-0.5 text-lg">
+            <a href="#pricing" onClick={() => handleCtaClick('pricing')} className="inline-block bg-primary text-on-primary font-bold px-8 py-3 rounded-md hover:brightness-110 transition-all duration-300 active:translate-y-0.5 text-lg">
               {t.aboutPageContent.ctaButtonPrimary}
-            </button>
-            <button onClick={handleContactClick} className="inline-block bg-transparent border-2 border-surface-1 text-surface-1 font-bold px-8 py-3 rounded-md hover:bg-surface-1 hover:text-text-primary transition-all duration-300 active:translate-y-0.5 text-lg">
+            </a>
+            <a href="#contact" onClick={handleContactClick} className="inline-block bg-transparent border-2 border-surface-1 text-surface-1 font-bold px-8 py-3 rounded-md hover:bg-surface-1 hover:text-text-primary transition-all duration-300 active:translate-y-0.5 text-lg">
               {t.aboutPageContent.ctaButtonSecondary}
-            </button>
-            <button onClick={() => handleCtaClick('references')} className="inline-block bg-transparent border-2 border-accent text-accent font-bold px-8 py-3 rounded-md hover:bg-accent hover:text-surface-1 transition-all duration-300 active:translate-y-0.5 text-lg">
+            </a>
+            <a href="#references" onClick={() => handleCtaClick('references')} className="inline-block bg-transparent border-2 border-accent text-accent font-bold px-8 py-3 rounded-md hover:bg-accent hover:text-surface-1 transition-all duration-300 active:translate-y-0.5 text-lg">
               {t.aboutPageContent.ctaButtonTertiary}
-            </button>
+            </a>
         </div>
       </section>
     </div>

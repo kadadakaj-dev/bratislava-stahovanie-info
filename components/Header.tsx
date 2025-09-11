@@ -4,14 +4,15 @@ import { Locale, Translations, View } from '../App';
 import { analyticsService } from '../services/analyticsService';
 
 interface HeaderProps {
-  onNavigate: (view: View) => void;
   locale: Locale;
   setLocale: (locale: Locale) => void;
   t: Translations;
   currentView: View;
+  // FIX: Add selectedPostId to props to determine active blog link state.
+  selectedPostId: number | null;
 }
 
-const Header: React.FC<HeaderProps> = ({ onNavigate, locale, setLocale, t, currentView }) => {
+const Header: React.FC<HeaderProps> = ({ locale, setLocale, t, currentView, selectedPostId }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const openButtonRef = useRef<HTMLButtonElement>(null);
@@ -20,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, locale, setLocale, t, curre
     document.body.style.overflow = isMenuOpen ? 'hidden' : '';
 
     if (isMenuOpen) {
-      const focusableElements = menuRef.current?.querySelectorAll('button');
+      const focusableElements = menuRef.current?.querySelectorAll('a');
       if (focusableElements && focusableElements.length > 0) {
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
@@ -58,18 +59,6 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, locale, setLocale, t, curre
     return () => { document.body.style.overflow = ''; };
   }, [isMenuOpen]);
   
-  const handleNavClick = (view: View) => {
-    analyticsService.trackEvent('navigate', { target: view, location: 'header' });
-    onNavigate(view);
-    setIsMenuOpen(false);
-  };
-  
-  const handleMobileNavClick = (view: View) => {
-    analyticsService.trackEvent('navigate', { target: view, location: 'mobile_menu' });
-    onNavigate(view);
-    setIsMenuOpen(false);
-  };
-  
   const handleLocaleToggle = () => {
       const newLocale = locale === 'sk' ? 'en' : 'sk';
       analyticsService.trackEvent('toggle_language', { to_locale: newLocale });
@@ -86,8 +75,8 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, locale, setLocale, t, curre
     <header className="bg-surface-1/80 backdrop-blur-md sticky top-0 z-50 transition-colors duration-300 border-b border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <button 
-            onClick={() => handleNavClick('services')} 
+          <a 
+            href="#services"
             className="flex items-center gap-3 group focus:outline-none"
             aria-label={t.backToHomeAria}
           >
@@ -95,24 +84,24 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, locale, setLocale, t, curre
             <h1 className="text-xl md:text-2xl font-bold text-text-primary group-hover:text-accent transition-colors">
               VI&MO
             </h1>
-          </button>
+          </a>
           <div className="flex items-center gap-2 md:gap-4">
             <nav className="hidden md:flex items-center gap-1 md:gap-2">
-                <button onClick={() => handleNavClick('about')} className={`${navLinkClasses} ${currentView === 'about' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'about' ? 'page' : undefined}>
+                <a href="#about" className={`${navLinkClasses} ${currentView === 'about' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'about' ? 'page' : undefined}>
                     {t.about}
-                </button>
-                <button onClick={() => handleNavClick('services')} className={`${navLinkClasses} ${currentView === 'services' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'services' ? 'page' : undefined}>
+                </a>
+                <a href="#services" className={`${navLinkClasses} ${currentView === 'services' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'services' ? 'page' : undefined}>
                     {t.services}
-                </button>
-                <button onClick={() => handleNavClick('pricing')} className={`${navLinkClasses} ${currentView === 'pricing' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'pricing' ? 'page' : undefined}>
+                </a>
+                <a href="#pricing" className={`${navLinkClasses} ${currentView === 'pricing' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'pricing' ? 'page' : undefined}>
                     {t.pricing}
-                </button>
-                 <button onClick={() => handleNavClick('references')} className={`${navLinkClasses} ${currentView === 'references' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'references' ? 'page' : undefined}>
+                </a>
+                 <a href="#references" className={`${navLinkClasses} ${currentView === 'references' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'references' ? 'page' : undefined}>
                     {t.referencie}
-                </button>
-                <button onClick={() => handleNavClick('blog')} className={`${navLinkClasses} ${currentView === 'blog' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'blog' ? 'page' : undefined}>
+                </a>
+                <a href="#blog" className={`${navLinkClasses} ${currentView === 'blog' && selectedPostId === null ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'blog' && selectedPostId === null ? 'page' : undefined}>
                     {t.blog}
-                </button>
+                </a>
             </nav>
             <div className="w-px h-6 bg-border hidden md:block"></div>
              <button
@@ -159,59 +148,64 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, locale, setLocale, t, curre
       <div
         id="mobile-menu"
         ref={menuRef}
-        className={`md:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-surface-1 transition-opacity duration-300 ease-in-out ${
-          isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        className={`md:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-text-primary transform transition-all duration-300 ease-in-out ${
+          isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
         aria-hidden={!isMenuOpen}
         role="dialog"
         aria-modal="true"
       >
         <nav className="flex flex-col items-center justify-center h-full gap-8" role="menu">
-           <button
-            onClick={() => handleMobileNavClick('about')}
-            className={`${mobileNavLinkClasses} ${currentView === 'about' ? 'text-primary' : 'text-text-primary'}`}
+           <a
+            href="#about"
+            onClick={() => setIsMenuOpen(false)}
+            className={`${mobileNavLinkClasses} ${currentView === 'about' ? 'text-primary' : 'text-surface-1'}`}
             tabIndex={isMenuOpen ? 0 : -1}
             aria-current={currentView === 'about' ? 'page' : undefined}
             role="menuitem"
           >
             {t.about}
-          </button>
-          <button
-            onClick={() => handleMobileNavClick('services')}
-            className={`${mobileNavLinkClasses} ${currentView === 'services' ? 'text-primary' : 'text-text-primary'}`}
+          </a>
+          <a
+            href="#services"
+            onClick={() => setIsMenuOpen(false)}
+            className={`${mobileNavLinkClasses} ${currentView === 'services' ? 'text-primary' : 'text-surface-1'}`}
             tabIndex={isMenuOpen ? 0 : -1}
             aria-current={currentView === 'services' ? 'page' : undefined}
             role="menuitem"
           >
             {t.services}
-          </button>
-          <button
-            onClick={() => handleMobileNavClick('pricing')}
-            className={`${mobileNavLinkClasses} ${currentView === 'pricing' ? 'text-primary' : 'text-text-primary'}`}
+          </a>
+          <a
+            href="#pricing"
+            onClick={() => setIsMenuOpen(false)}
+            className={`${mobileNavLinkClasses} ${currentView === 'pricing' ? 'text-primary' : 'text-surface-1'}`}
             tabIndex={isMenuOpen ? 0 : -1}
             aria-current={currentView === 'pricing' ? 'page' : undefined}
             role="menuitem"
           >
             {t.pricing}
-          </button>
-           <button
-            onClick={() => handleMobileNavClick('references')}
-            className={`${mobileNavLinkClasses} ${currentView === 'references' ? 'text-primary' : 'text-text-primary'}`}
+          </a>
+           <a
+            href="#references"
+            onClick={() => setIsMenuOpen(false)}
+            className={`${mobileNavLinkClasses} ${currentView === 'references' ? 'text-primary' : 'text-surface-1'}`}
             tabIndex={isMenuOpen ? 0 : -1}
             aria-current={currentView === 'references' ? 'page' : undefined}
             role="menuitem"
           >
             {t.referencie}
-          </button>
-          <button
-            onClick={() => handleMobileNavClick('blog')}
-            className={`${mobileNavLinkClasses} ${currentView === 'blog' ? 'text-primary' : 'text-text-primary'}`}
+          </a>
+          <a
+            href="#blog"
+            onClick={() => setIsMenuOpen(false)}
+            className={`${mobileNavLinkClasses} ${currentView === 'blog' ? 'text-primary' : 'text-surface-1'}`}
             tabIndex={isMenuOpen ? 0 : -1}
             aria-current={currentView === 'blog' ? 'page' : undefined}
             role="menuitem"
           >
             {t.blog}
-          </button>
+          </a>
         </nav>
       </div>
     </header>

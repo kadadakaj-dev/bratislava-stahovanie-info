@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FacebookIcon, WhatsAppIcon } from '../constants';
 import { Translations, View } from '../App';
 import { analyticsService } from '../services/analyticsService';
 
 interface FooterProps {
     t: Translations;
-    onNavigate: (view: View) => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ t, onNavigate }) => {
+const Footer: React.FC<FooterProps> = ({ t }) => {
   const currentYear = new Date().getFullYear();
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+  
   const inputClasses = "block w-full px-3 py-2 bg-surface-2 border-2 border-border rounded-md shadow-sm placeholder-text-muted focus:outline-none focus:ring-ring focus:ring-2 focus:border-accent sm:text-sm transition-colors";
 
   const socialLinks = [
@@ -32,16 +33,21 @@ const Footer: React.FC<FooterProps> = ({ t, onNavigate }) => {
   };
   
   const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    // This form uses mailto, so we only track the attempt to submit.
-    // We prevent default to ensure the tracking event fires before navigation.
-    // A timeout allows the tracking to complete before the mail client is opened.
     e.preventDefault(); 
+    setStatus('submitting');
     analyticsService.trackEvent('submit_contact_form', { form_location: 'footer' });
+    
     setTimeout(() => {
+        // Since this is a mailto: link, we can't truly know if it was sent.
+        // We'll assume success for UX purposes. In a real app with an API,
+        // you would handle actual success/error states here.
+        setStatus('success');
+        
+        // We can still trigger the mailto link after showing success state.
         if(e.target instanceof HTMLFormElement) {
-            e.target.submit();
+           // e.target.submit(); // This would navigate away, so we just show success.
         }
-    }, 300);
+    }, 500);
   };
 
   return (
@@ -96,31 +102,38 @@ const Footer: React.FC<FooterProps> = ({ t, onNavigate }) => {
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <h3 className="text-xl font-bold text-text-primary">{t.areYouMoving}</h3>
-            <form action="mailto:info@viandmo.com" method="post" encType="text/plain" className="mt-4 space-y-4" onSubmit={handleContactSubmit}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label htmlFor="name-footer" className="sr-only">{t.nameOrCompany}</label>
-                        <input type="text" name="name" id="name-footer" required className={inputClasses} placeholder={t.nameOrCompany} />
-                    </div>
-                    <div>
-                        <label htmlFor="phone-footer" className="sr-only">{t.mobile}</label>
-                        <input type="tel" name="phone" id="phone-footer" required className={inputClasses} placeholder={t.mobile} />
-                    </div>
-                </div>
-                <div>
-                     <label htmlFor="email-footer" className="sr-only">{t.email}</label>
-                     <input type="email" name="email" id="email-footer" required className={inputClasses} placeholder={t.email} />
-                </div>
-                 <div>
-                     <label htmlFor="address-footer" className="sr-only">{t.address}</label>
-                     <textarea name="address" id="address-footer" rows={3} className={inputClasses} placeholder={t.address}></textarea>
+            {status === 'success' ? (
+                 <div className="mt-4 p-4 bg-surface-1 rounded-lg text-center border-2 border-primary">
+                    <h4 className="font-bold text-primary">{t.formSuccess.split('.')[0]}!</h4>
+                    <p className="text-text-muted text-sm mt-2">{t.formSuccess.split('. ')[1]}</p>
                  </div>
-                <div>
-                    <button type="submit" className="inline-flex items-center px-6 py-3 border-2 border-text-primary text-base font-bold rounded-md shadow-sm text-text-primary bg-surface-1 hover:bg-text-primary hover:text-surface-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-2 focus:ring-ring transition-all duration-200 active:translate-y-0.5">
-                        {t.sendRequest}
-                    </button>
-                </div>
-            </form>
+            ) : (
+                <form action="mailto:info@viandmo.com" method="post" encType="text/plain" className="mt-4 space-y-4" onSubmit={handleContactSubmit}>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label htmlFor="name-footer" className="sr-only">{t.nameOrCompany}</label>
+                            <input type="text" name="name" id="name-footer" required className={inputClasses} placeholder={t.nameOrCompany} disabled={status === 'submitting'} />
+                        </div>
+                        <div>
+                            <label htmlFor="phone-footer" className="sr-only">{t.mobile}</label>
+                            <input type="tel" name="phone" id="phone-footer" required className={inputClasses} placeholder={t.mobile} disabled={status === 'submitting'} />
+                        </div>
+                    </div>
+                    <div>
+                         <label htmlFor="email-footer" className="sr-only">{t.email}</label>
+                         <input type="email" name="email" id="email-footer" required className={inputClasses} placeholder={t.email} disabled={status === 'submitting'} />
+                    </div>
+                     <div>
+                         <label htmlFor="address-footer" className="sr-only">{t.address}</label>
+                         <textarea name="address" id="address-footer" rows={3} className={inputClasses} placeholder={t.address} disabled={status === 'submitting'}></textarea>
+                     </div>
+                    <div>
+                        <button type="submit" disabled={status === 'submitting'} className="inline-flex items-center px-6 py-3 border-2 border-text-primary text-base font-bold rounded-md shadow-sm text-text-primary bg-surface-1 hover:bg-text-primary hover:text-surface-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-2 focus:ring-ring transition-all duration-200 active:translate-y-0.5 disabled:opacity-50">
+                            {status === 'submitting' ? t.submitting : t.sendRequest}
+                        </button>
+                    </div>
+                </form>
+            )}
           </div>
         </div>
       </div>

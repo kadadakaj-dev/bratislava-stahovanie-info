@@ -6,11 +6,10 @@ import { PostListSkeleton } from './SkeletonLoader';
 import { Translations } from '../App';
 
 interface PostListProps {
-  onSelectPost: (id: number) => void;
   t: Translations;
 }
 
-const PostList: React.FC<PostListProps> = ({ onSelectPost, t }) => {
+const PostList: React.FC<PostListProps> = ({ t }) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -31,7 +30,7 @@ const PostList: React.FC<PostListProps> = ({ onSelectPost, t }) => {
   return (
     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       {posts.map(post => (
-        <PostCard key={post.id} post={post} onSelectPost={onSelectPost} t={t} />
+        <PostCard key={post.id} post={post} t={t} />
       ))}
     </div>
   );

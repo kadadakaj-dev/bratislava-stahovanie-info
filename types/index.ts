@@ -1,15 +1,10 @@
-// FIX: Add missing Theme enum required by ThemeToggle.tsx
-export enum Theme {
-  Light = 'light',
-  Dark = 'dark',
-}
-
 export interface Post {
   id: number;
   title: string;
   excerpt: string;
   content: string;
   imageUrl: string;
+  imageAlt: string;
   author: string;
   date: string;
   datePublished: string; // ISO 8601 format for schema.org
@@ -22,6 +17,12 @@ export interface Comment {
   author: string;
   content: string;
   date: string;
+}
+
+// FIX: Add missing Theme enum.
+export enum Theme {
+  Light = 'light',
+  Dark = 'dark',
 }
 
 // FIX: Add ChatMessage interface for chatbot component type safety.
