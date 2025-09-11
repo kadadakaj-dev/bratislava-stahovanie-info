@@ -14,6 +14,7 @@ const Chatbot: React.FC<{ t: Translations }> = ({ t }) => {
     const [error, setError] = useState<string | null>(null);
     const chatPanelRef = useRef<HTMLDivElement>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const openButtonRef = useRef<HTMLButtonElement>(null);
 
     // Initialize chat on component mount
     useEffect(() => {
@@ -31,15 +32,45 @@ const Chatbot: React.FC<{ t: Translations }> = ({ t }) => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
     
-    // Focus management for accessibility
+    // Focus management and body scroll lock for accessibility
     useEffect(() => {
         if (isOpen) {
-            chatPanelRef.current?.querySelector('textarea')?.focus();
-            document.body.style.overflow = 'hidden';
-        } else {
-             document.body.style.overflow = '';
+            const focusableElements = chatPanelRef.current?.querySelectorAll('textarea, button');
+            if (focusableElements && focusableElements.length > 0) {
+                const firstElement = focusableElements[0] as HTMLElement;
+                const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+                const handleKeyDown = (e: KeyboardEvent) => {
+                    if (e.key === 'Escape') {
+                        handleCloseChat();
+                    }
+                    if (e.key === 'Tab') {
+                        if (e.shiftKey) {
+                            if (document.activeElement === firstElement) {
+                                lastElement.focus();
+                                e.preventDefault();
+                            }
+                        } else {
+                            if (document.activeElement === lastElement) {
+                                firstElement.focus();
+                                e.preventDefault();
+                            }
+                        }
+                    }
+                };
+
+                const panel = chatPanelRef.current;
+                panel?.addEventListener('keydown', handleKeyDown);
+                firstElement.focus();
+                document.body.style.overflow = 'hidden';
+
+                return () => {
+                    panel?.removeEventListener('keydown', handleKeyDown);
+                    document.body.style.overflow = '';
+                    openButtonRef.current?.focus();
+                };
+            }
         }
-        return () => { document.body.style.overflow = ''; }
     }, [isOpen]);
 
     const handleSendMessage = useCallback(async (e: React.FormEvent) => {
@@ -69,10 +100,11 @@ const Chatbot: React.FC<{ t: Translations }> = ({ t }) => {
             }
         } catch (err) {
             console.error(err);
-            setError(t.chatbot.errorResponse);
+             const errorMessage = t.chatbot.errorResponse;
+             setError(errorMessage);
              setMessages(prev => prev.map(msg => 
                 msg.id === modelResponseId 
-                    ? { ...msg, text: t.chatbot.errorResponse }
+                    ? { ...msg, text: errorMessage }
                     : msg
             ));
         } finally {
@@ -81,7 +113,6 @@ const Chatbot: React.FC<{ t: Translations }> = ({ t }) => {
     }, [input, isLoading, t]);
     
     const handleOpenChat = () => {
-        // FIX: Replaced 'analytics' with 'analyticsService' to call the correct service.
         analyticsService.trackEvent('open_chatbot');
         setIsOpen(true);
     };
@@ -91,12 +122,12 @@ const Chatbot: React.FC<{ t: Translations }> = ({ t }) => {
         setIsOpen(false);
     };
 
-    // FIX: Added the missing JSX return statement to complete the component and fix the type error.
     return (
         <>
             {/* Chatbot Toggle Button */}
             <div className="fixed bottom-6 right-6 z-[1000]">
                 <button
+                    ref={openButtonRef}
                     onClick={handleOpenChat}
                     className={`transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none scale-90' : 'opacity-100 scale-100'} bg-primary text-on-primary w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:brightness-110 active:translate-y-0.5`}
                     aria-label={t.chatbot.openChat}

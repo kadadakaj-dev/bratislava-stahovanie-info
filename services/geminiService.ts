@@ -2,11 +2,14 @@ import { GoogleGenAI, GenerateContentResponse, Chat } from "@google/genai";
 import { Post } from "../types";
 import { Translations } from "../App";
 
-// Safely access the API key to prevent a ReferenceError in browser environments.
-const apiKey = typeof process !== 'undefined' ? process.env.API_KEY : undefined;
+// The API key is sourced from the environment variable `process.env.API_KEY`.
+// This is a hard requirement and is assumed to be configured in the execution environment.
+const apiKey = process.env.API_KEY;
+
 if (!apiKey) {
     console.error("API_KEY environment variable not set. AI features will not work.");
 }
+// Initialize the GoogleGenAI client. The apiKey is mandatory.
 const ai = new GoogleGenAI({ apiKey: apiKey || "" });
 
 let chat: Chat | null = null;

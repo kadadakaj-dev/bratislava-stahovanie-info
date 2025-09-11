@@ -10,9 +10,6 @@ export const sk = {
     publishedOn: 'Publikované:',
     sharePost: 'Zdieľať tento príspevok',
     shareOn: (name: string) => `Zdieľať na ${name}`,
-    aiSummary: 'Zhrnutie pomocou AI',
-    summarizeGemini: 'Zhrnúť s Gemini',
-    generating: 'Generujem...',
     comments: 'Komentáre',
     noComments: 'Zatiaľ žiadne komentáre.',
     beFirstComment: 'Buďte prvý, kto sa podelí o svoje myšlienky!',
@@ -25,8 +22,6 @@ export const sk = {
     submitting: 'Odosielam...',
     formError: 'Prosím, vyplňte vaše meno aj komentár.',
     postNotFound: 'Príspevok sa nenašiel.',
-    summaryError: 'Ospravedlňujeme sa, momentálne nie je možné vygenerovať zhrnutie. Skúste to prosím neskôr.',
-    summaryUnavailable: 'Funkcia zhrnutia pomocou AI je momentálne nedostupná, pretože nie je nakonfigurovaný API kľúč.',
     footerRights: 'Všetky práva vyhradené.',
     footerBuiltWith: 'Vytvorené s React, Tailwind CSS a Gemini AI.',
     services: 'Služby',
@@ -251,16 +246,6 @@ export const sk = {
             }
         ]
     },
-    chatbot: {
-      title: 'AI Asistent',
-      welcomeMessage: 'Dobrý deň! Som AI asistent VI&MO. Ako vám dnes môžem pomôcť so sťahovaním, vypratávaním alebo cenovou ponukou?',
-      placeholder: 'Napíšte svoju otázku...',
-      openChat: 'Otvoriť chat asistenta',
-      closeChat: 'Zavrieť chat',
-      errorInit: 'Nepodarilo sa spustiť AI asistenta.',
-      errorResponse: 'Ospravedlňujeme sa, nastala chyba. Skúste to prosím znova.',
-    },
-    // FIX: Renamed 'about' object to 'aboutPageContent' to avoid duplicate key error.
     aboutPageContent: {
         heroTitle: 'O nás – VI&MO',
         heroSubtitle: 'Pevné ruky & poctivý prístup',
@@ -279,6 +264,16 @@ export const sk = {
         ctaButtonPrimary: 'Cenová ponuka',
         ctaButtonSecondary: 'Kontaktujte nás',
         ctaButtonTertiary: 'Referencie'
+    },
+    // FIX: Add translations for chatbot component.
+    chatbot: {
+        welcomeMessage: 'Dobrý deň! Som váš AI asistent VI&MO. Ako vám môžem pomôcť so sťahovaním alebo upratovaním?',
+        errorInit: 'Chyba pri inicializácii AI asistenta.',
+        errorResponse: 'Ospravedlňujeme sa, vyskytla sa chyba. Skúste to prosím neskôr.',
+        title: 'AI Asistent',
+        placeholder: 'Opýtajte sa ma niečo...',
+        openChat: 'Otvoriť chat',
+        closeChat: 'Zatvoriť chat',
     },
     // SEO Titles
     seoTitleHome: 'VI&MO | Sťahovanie, Upratovanie a Vypratávanie v Bratislave',

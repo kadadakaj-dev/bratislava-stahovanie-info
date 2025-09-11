@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Chatbot from './components/chatbot/Chatbot'; // Import the new Chatbot component
 import { Theme } from './types';
 import { offlineService } from './services/offlineService';
 import { seoService } from './services/seoService';
@@ -23,6 +22,7 @@ const ServicesPage = lazy(() => import('./components/ServicesPage'));
 const PricingPage = lazy(() => import('./components/PricingPage'));
 const ReferencesPage = lazy(() => import('./components/ReferencesPage'));
 const AboutPage = lazy(() => import('./components/AboutPage'));
+const Chatbot = lazy(() => import('./components/chatbot/Chatbot'));
 
 const LoadingSpinner = () => (
     <div className="flex justify-center items-center h-64" aria-label="Loading content">
@@ -160,7 +160,9 @@ function App() {
         </Suspense>
       </main>
       <Footer t={t} onNavigate={handleNavigate}/>
-      <Chatbot t={t} />
+      <Suspense fallback={null}>
+        <Chatbot t={t} />
+      </Suspense>
     </div>
   );
 }

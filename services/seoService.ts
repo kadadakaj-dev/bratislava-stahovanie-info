@@ -40,7 +40,6 @@ const updateCanonicalLink = (href: string) => {
  * Injects or updates the JSON-LD schema script in the document's head.
  */
 const injectJsonLd = (schema: object) => {
-    // FIX: Cast the result of getElementById to HTMLScriptElement to satisfy TypeScript's type checker when accessing the 'type' property.
     let script = document.getElementById('schema-ld') as HTMLScriptElement | null;
     if (!script) {
         script = document.createElement('script');

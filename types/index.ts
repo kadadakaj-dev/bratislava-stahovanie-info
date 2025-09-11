@@ -23,6 +23,13 @@ export interface Comment {
   date: string;
 }
 
+// FIX: Add ChatMessage interface for chatbot component type safety.
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'model';
+  text: string;
+}
+
 export interface QuoteFormData {
   id?: string; // Used for offline queue
   name: string;
@@ -45,10 +52,4 @@ export interface QuoteFormData {
   };
   notes: string;
   gdpr: boolean;
-}
-
-export interface ChatMessage {
-  id: string;
-  role: 'user' | 'model';
-  text: string;
 }

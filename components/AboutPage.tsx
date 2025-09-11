@@ -23,7 +23,6 @@ const AboutPage: React.FC<AboutPageProps> = ({ t, onNavigate }) => {
     <div className="space-y-16 md:space-y-24">
       {/* Hero Block */}
       <header className="text-center">
-        {/* FIX: Use t.aboutPageContent to access nested translation properties */}
         <p className="text-lg font-bold text-accent mb-2">{t.aboutPageContent.heroSubtitle}</p>
         <h1 id="about-heading" className="text-4xl sm:text-6xl font-extrabold text-text-primary mb-4 tracking-tight">{t.aboutPageContent.heroTitle}</h1>
         <p className="max-w-3xl mx-auto text-lg text-text-muted">{t.aboutPageContent.heroText}</p>

@@ -10,9 +10,6 @@ export const en = {
     publishedOn: 'on',
     sharePost: 'Share this post',
     shareOn: (name: string) => `Share on ${name}`,
-    aiSummary: 'AI-Powered Summary',
-    summarizeGemini: 'Summarize with Gemini',
-    generating: 'Generating...',
     comments: 'Comments',
     noComments: 'No comments yet.',
     beFirstComment: 'Be the first to share your thoughts!',
@@ -25,8 +22,6 @@ export const en = {
     submitting: 'Submitting...',
     formError: 'Please fill in both your name and comment.',
     postNotFound: 'Post not found.',
-    summaryError: 'Sorry, I couldn\'t generate a summary at this moment. Please try again later.',
-    summaryUnavailable: 'The AI summarization feature is currently unavailable because the API key is not configured.',
     footerRights: 'All Rights Reserved.',
     footerBuiltWith: 'Built with React, Tailwind CSS, and Gemini AI.',
     services: 'Services',
@@ -251,16 +246,6 @@ export const en = {
             }
         ]
     },
-    chatbot: {
-      title: 'AI Assistant',
-      welcomeMessage: 'Hello! I am the VI&MO AI assistant. How can I help you today with moving, clearing, or getting a price quote?',
-      placeholder: 'Type your question...',
-      openChat: 'Open chat assistant',
-      closeChat: 'Close chat',
-      errorInit: 'Failed to initialize the AI assistant.',
-      errorResponse: 'Sorry, an error occurred. Please try again.',
-    },
-    // FIX: Renamed 'about' object to 'aboutPageContent' to avoid duplicate key error.
     aboutPageContent: {
         heroTitle: 'About Us – VI&MO',
         heroSubtitle: 'Strong Hands & Honest Approach',
@@ -279,6 +264,16 @@ export const en = {
         ctaButtonPrimary: 'Price Quote',
         ctaButtonSecondary: 'Contact Us',
         ctaButtonTertiary: 'References'
+    },
+    // FIX: Add translations for chatbot component.
+    chatbot: {
+        welcomeMessage: 'Hello! I am your VI&MO AI assistant. How can I help you with your moving or cleaning needs?',
+        errorInit: 'Error initializing AI assistant.',
+        errorResponse: 'Sorry, an error occurred. Please try again later.',
+        title: 'AI Assistant',
+        placeholder: 'Ask me anything...',
+        openChat: 'Open Chat',
+        closeChat: 'Close Chat',
     },
     // SEO Titles
     seoTitleHome: 'VI&MO | Moving, Cleaning, and Clearing Services in Bratislava',

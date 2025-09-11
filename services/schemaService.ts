@@ -17,7 +17,6 @@ const generateBreadcrumbs = (view: View, t: Translations, post?: Post) => {
 
     switch (view) {
         case 'about':
-            // FIX: Use the simple t.about string for the breadcrumb name, as t.about is no longer an object.
             itemListElement.push({ "@type": "ListItem", "position": 2, "name": t.about, "item": `${BASE_URL}/#about` });
             break;
         case 'services':
@@ -141,8 +140,7 @@ export const generateSchema = (view: View, t: Translations, post?: Post) => {
         breadcrumbSchema,
     ];
     if (pageSchema) {
-        // FIX: Explicitly type schemaGraph as object[] to allow pushing different schema types.
-        (schemaGraph as object[]).push(pageSchema);
+        schemaGraph.push(pageSchema);
     }
 
     return {

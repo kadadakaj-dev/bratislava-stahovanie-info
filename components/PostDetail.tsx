@@ -2,14 +2,12 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Post, Comment } from '../types';
 import { getPostById } from '../services/blogService';
 import { getCommentsByPostId, addComment } from '../services/commentService';
-import { summarizePost } from '../services/geminiService';
-import { PostDetailSkeleton, SummarySkeleton } from './SkeletonLoader';
-import { ArrowLeftIcon, SparklesIcon } from '../constants';
+import { PostDetailSkeleton } from './SkeletonLoader';
+import { ArrowLeftIcon } from '../constants';
 import SocialShare from './SocialShare';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import { Translations } from '../App';
-import { analyticsService } from '../services/analyticsService';
 
 interface PostDetailProps {
   postId: number;
@@ -21,8 +19,6 @@ const PostDetail: React.FC<PostDetailProps> = ({ postId, onBack, t }) => {
   const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [isSummarizing, setIsSummarizing] = useState<boolean>(false);
-  const [summary, setSummary] = useState<string>('');
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,29 +31,9 @@ const PostDetail: React.FC<PostDetailProps> = ({ postId, onBack, t }) => {
       setPost(fetchedPost || null);
       setComments(fetchedComments);
       setLoading(false);
-      setSummary(''); // Reset summary on new post
     };
     fetchPostAndComments();
   }, [postId]);
-
-  const handleSummarize = useCallback(async () => {
-    if (!post) return;
-    
-    analyticsService.trackEvent('click_summarize', { post_id: post.id, post_title: post.title });
-
-    setIsSummarizing(true);
-    setSummary(''); // Clear previous summary
-    const generatedSummary = await summarizePost(post);
-    if (generatedSummary.startsWith("The AI summarization feature")) {
-       setSummary(t.summaryUnavailable);
-    } else if (generatedSummary.startsWith("Sorry, I couldn't")) {
-        setSummary(t.summaryError);
-    }
-    else {
-        setSummary(generatedSummary);
-    }
-    setIsSummarizing(false);
-  }, [post, t]);
 
   const handleCommentSubmit = useCallback(async (commentData: { author: string; content: string }) => {
     const newComment = await addComment({ ...commentData, postId });
@@ -103,26 +79,6 @@ const PostDetail: React.FC<PostDetailProps> = ({ postId, onBack, t }) => {
         
         <div className="mt-12 pt-8 border-t border-border space-y-10">
             <SocialShare post={post} t={t} />
-
-            <section aria-labelledby="ai-summary-heading">
-                <h3 id="ai-summary-heading" className="text-2xl font-bold text-text-primary mb-4">{t.aiSummary}</h3>
-                <button
-                    onClick={handleSummarize}
-                    disabled={isSummarizing}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-surface-1 font-bold rounded-md shadow-sm hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-surface-1 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:translate-y-0.5"
-                >
-                    <SparklesIcon className={`w-5 h-5 ${isSummarizing ? 'animate-spin' : ''}`} />
-                    {isSummarizing ? t.generating : t.summarizeGemini}
-                </button>
-
-                {isSummarizing && <SummarySkeleton />}
-                
-                {!isSummarizing && summary && (
-                     <div className="mt-6 p-4 bg-accent/10 border-l-4 border-accent rounded-r-lg" role="status">
-                        <p className="text-text-primary">{summary}</p>
-                     </div>
-                )}
-            </section>
 
             <div className="pt-8 border-t border-border">
               <h3 className="text-2xl font-bold text-text-primary mb-6" id="comments-heading">{t.comments}</h3>
