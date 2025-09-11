@@ -2,8 +2,8 @@ import { GoogleGenAI, GenerateContentResponse, Chat } from "@google/genai";
 import { Post } from "../types";
 import { Translations } from "../App";
 
-// Assume API key is set in the environment.
-const apiKey = process.env.API_KEY;
+// Safely access the API key to prevent a ReferenceError in browser environments.
+const apiKey = typeof process !== 'undefined' ? process.env.API_KEY : undefined;
 if (!apiKey) {
     console.error("API_KEY environment variable not set. AI features will not work.");
 }

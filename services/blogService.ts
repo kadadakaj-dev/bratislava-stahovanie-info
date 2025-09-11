@@ -236,6 +236,55 @@ const mockPosts: Post[] = [
     datePublished: '2024-06-04T11:00:00+02:00',
     tags: ['sťahovanie firiem', 'kancelária', 'biznis', 'logistika'],
   },
+  {
+    id: 4,
+    title: "Veľké upratovanie pred sťahovaním: Ako na odpad a nepotrebné veci v Bratislave",
+    excerpt: "Sťahovanie nie je len o krabiciach, ale aj o triedení. Od vypratania garáže po odvoz starej kuchyne – zistite, ako efektívne zvládnuť odpad a prečo je prenájom kontajnera často najlepšie riešenie.",
+    content: `
+      <p class="lead text-lg text-text-muted">Každé <strong>sťahovanie do nového bytu v Bratislave</strong> so sebou prináša jedinečnú príležitosť: zbaviť sa všetkého, čo už nepotrebujete. Či už ide o <strong>vypratávanie garáže</strong>, likvidáciu starého nábytku alebo odvoz odpadu po rekonštrukcii, správny prístup vám ušetrí čas, peniaze a nervy. Poďme sa pozrieť, ako na to efektívne.</p>
+      
+      <h2 id="triedenie">Začnite triedením: Menej je viac</h2>
+      <p>Predtým, než začnete čokoľvek baliť, prejdite si všetky svoje veci. Buďte nekompromisní. Ak ste niečo nepoužili viac ako rok, je malá šanca, že to budete potrebovať v novom domove. Tento proces je kľúčový najmä pri špecifických situáciách, ako je <strong>sťahovanie študentov</strong>, kde je priestor limitovaný, alebo pri komplexnom <strong>presťahovaní firmy</strong>.</p>
+      <ul>
+        <li><strong>Predajte alebo darujte:</strong> Funkčné veci, ktoré už nepotrebujete, môžu potešiť niekoho iného. Skúste online bazáre alebo miestne charity.</li>
+        <li><strong>Recyklujte:</strong> Správna <strong>recyklácia nábytku</strong> a spotrebičov je dnes už nevyhnutnosťou.</li>
+        <li><strong>Vyhoďte:</strong> Všetko ostatné patrí do odpadu. A tu prichádza na rad logistika.</li>
+      </ul>
+
+      <h2 id="odvoz-odpadu">Odvoz odpadu: Možnosti v Bratislave</h2>
+      <p>Keď máte vytriedený odpad, stojíte pred otázkou, ako sa ho zbaviť. V Bratislave máte niekoľko možností:</p>
+      
+      <div class="my-8 p-6 bg-surface-2 rounded-lg border-l-4 border-accent">
+        <h4 class="font-bold text-text-primary">Plánovaný vs. pohotovostný zvoz</h4>
+        <p class="text-sm text-text-muted">Mesto Bratislava poskytuje pravidelné <strong>termíny vývozu odpadu</strong>, vrátane veľkoobjemového. Ak vám však tieto termíny nevyhovujú, napríklad pri <strong>lacnom last minute sťahovaní</strong>, ideálnym riešením je <strong>pohotovostný zvoz odpadu</strong>, ktorý si môžete objednať u profesionálnej firmy.</p>
+      </div>
+
+      <h3 id="prenajom-kontajnera">Prenájom kontajnera: Najefektívnejšie riešenie</h3>
+      <p>Pre väčšie objemy odpadu je jednoznačne najlepšou voľbou <strong>prenájom minikontajnera v Bratislave</strong>. Prečo?</p>
+      <ul>
+        <li><strong>Pohodlie:</strong> Kontajner vám privezú priamo pred dom a po naplnení ho odvezú.</li>
+        <li><strong>Flexibilita:</strong> Môžete si vybrať veľkosť kontajnera presne podľa vašich potrieb.</li>
+        <li><strong>Univerzálnosť:</strong> Ideálne riešenie pre <strong>zber stavebného odpadu po rekonštrukcii</strong>, <strong>odvoz záhradného odpadu</strong>, ale aj pre veľké vypratávanie kancelárií.</li>
+      </ul>
+      <p>Potrebujete sa zbaviť bioodpadu? Žiadny problém, stačí si objednať <strong>prenájom kontajnera na bioodpad</strong>.</p>
+
+      <h2 id="specificky-odpad">Riešenie pre špecifický odpad a služby</h2>
+      <p>Niektoré veci si vyžadujú špeciálny prístup. Profesionálna firma ako VI&MO vám pomôže aj s týmito úlohami:</p>
+      <ul>
+        <li><strong>Odvoz starej kuchyne a likvidácia spotrebičov:</strong> Zabezpečíme demontáž, odvoz a ekologickú likvidáciu.</li>
+        <li><strong>Odvoz kovového odpadu:</strong> Postaráme sa o staré radiátory, vane a iný kovový šrot.</li>
+        <li><strong>Objednať odvoz nábytku s montážou:</strong> Ak potrebujete presunúť len pár kusov, no neviete si poradiť s ich demontážou, sme tu pre vás.</li>
+        <li><strong>Bezpečná likvidácia chemického odpadu:</strong> Staré farby, riedidlá a iné nebezpečné látky musia byť zlikvidované odborne.</li>
+      </ul>
+
+      <p class="mt-8">Správne naplánovaný <strong>odvoz odpadu</strong> je neoddeliteľnou súčasťou bezproblémového sťahovania. Ušetrí vám nielen starosti, ale aj peniaze za sťahovanie vecí, ktoré v skutočnosti nepotrebujete. Plánujete <strong>sťahovanie cez víkend</strong> a potrebujete všetko zorganizovať naraz? Kontaktujte nás a my vám pripravíme komplexné riešenie na mieru – od balenia až po finálne upratanie a odvoz odpadu.</p>
+    `,
+    imageUrl: 'https://picsum.photos/seed/odpad4/800/400',
+    author: 'VI&MO Tím',
+    date: '18. júna 2024',
+    datePublished: '2024-06-18T09:00:00+02:00',
+    tags: ['odvoz odpadu Bratislava', 'vypratávanie', 'prenájom kontajnera'],
+  },
 ];
 
 /**
