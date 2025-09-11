@@ -59,7 +59,7 @@ export const sk = {
         {
             icon: 'BuildingOfficeIcon',
             title: 'Sťahovanie firiem',
-            usp: 'Spoľahlivé firemné sťahovanie s minimálnym výpadkom prevádzky. Presťahujeme kancelárie, sklady aj obchodné priestory – efektívne a v dohodnutom čase.',
+            usp: 'Spoľahlivé firemné sťahovanie s minimálnym výpadkom prevádzky. Presťahujeme kanceláriie, sklady aj obchodné priestory – efektívne a v dohodnutom čase.',
             featuresTitle: 'Efektívny plán firemného presunu',
             features: [
                 { text: 'Časovanie s minimálnym výpadkom prevádzky' },

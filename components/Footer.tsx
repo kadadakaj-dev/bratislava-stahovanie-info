@@ -114,7 +114,7 @@ const Footer: React.FC<FooterProps> = ({ t, onNavigate }) => {
                  <div>
                      <label htmlFor="address-footer" className="sr-only">{t.address}</label>
                      <textarea name="address" id="address-footer" rows={3} className={inputClasses} placeholder={t.address}></textarea>
-                </div>
+                 </div>
                 <div>
                     <button type="submit" className="inline-flex items-center px-6 py-3 border-2 border-text-primary text-base font-bold rounded-md shadow-sm text-text-primary bg-surface-1 hover:bg-text-primary hover:text-surface-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-2 focus:ring-ring transition-all duration-200 active:translate-y-0.5">
                         {t.sendRequest}

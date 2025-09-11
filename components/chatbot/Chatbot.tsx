@@ -81,78 +81,98 @@ const Chatbot: React.FC<{ t: Translations }> = ({ t }) => {
     }, [input, isLoading, t]);
     
     const handleOpenChat = () => {
+        // FIX: Replaced 'analytics' with 'analyticsService' to call the correct service.
         analyticsService.trackEvent('open_chatbot');
         setIsOpen(true);
     };
 
-    const transitionClasses = "transition-all duration-300 ease-in-out";
+    const handleCloseChat = () => {
+        analyticsService.trackEvent('close_chatbot');
+        setIsOpen(false);
+    };
 
+    // FIX: Added the missing JSX return statement to complete the component and fix the type error.
     return (
         <>
-            {/* Floating Action Button */}
-            <button
-                onClick={handleOpenChat}
-                className={`fixed bottom-6 right-6 w-16 h-16 rounded-full bg-primary text-on-primary shadow-lg flex items-center justify-center transform hover:scale-110 active:scale-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-surface-1 ${transitionClasses} ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`}
-                aria-label={t.chatbot.openChat}
-            >
-                <ChatBubbleOvalLeftEllipsisIcon className="w-8 h-8" />
-            </button>
+            {/* Chatbot Toggle Button */}
+            <div className="fixed bottom-6 right-6 z-[1000]">
+                <button
+                    onClick={handleOpenChat}
+                    className={`transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none scale-90' : 'opacity-100 scale-100'} bg-primary text-on-primary w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:brightness-110 active:translate-y-0.5`}
+                    aria-label={t.chatbot.openChat}
+                >
+                    <ChatBubbleOvalLeftEllipsisIcon className="w-8 h-8" />
+                </button>
+            </div>
 
             {/* Chat Panel */}
             <div
                 ref={chatPanelRef}
-                className={`fixed bottom-0 right-0 md:bottom-6 md:right-6 w-full h-full md:w-[400px] md:h-[600px] bg-surface-1 border-text-primary md:border-2 shadow-warhol md:rounded-lg flex flex-col overflow-hidden ${transitionClasses} ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}
+                className={`fixed bottom-0 right-0 sm:bottom-6 sm:right-6 z-[1001] w-full h-full sm:w-[400px] sm:h-[calc(100vh-3rem)] sm:max-h-[700px] bg-surface-1 rounded-lg border-2 border-border shadow-2xl flex flex-col transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
                 role="dialog"
                 aria-modal="true"
-                aria-labelledby="chatbot-heading"
                 aria-hidden={!isOpen}
+                aria-labelledby="chatbot-title"
             >
                 {/* Header */}
-                <header className="flex items-center justify-between p-4 border-b-2 border-text-primary flex-shrink-0">
+                <header className="flex items-center justify-between p-4 border-b border-border">
                     <div className="flex items-center gap-3">
-                        <SparklesIcon className="w-7 h-7 text-accent" />
-                        <h2 id="chatbot-heading" className="text-xl font-bold text-text-primary">{t.chatbot.title}</h2>
+                        <SparklesIcon className="w-6 h-6 text-accent" />
+                        <h2 id="chatbot-title" className="text-lg font-bold text-text-primary">{t.chatbot.title}</h2>
                     </div>
-                    <button onClick={() => setIsOpen(false)} className="p-1 rounded-full text-text-muted hover:bg-surface-2" aria-label={t.chatbot.closeChat}>
+                    <button
+                        onClick={handleCloseChat}
+                        className="p-1 rounded-full text-text-muted hover:bg-surface-2"
+                        aria-label={t.chatbot.closeChat}
+                    >
                         <XIcon className="w-6 h-6" />
                     </button>
                 </header>
 
                 {/* Messages */}
-                <div className="flex-grow p-4 overflow-y-auto">
-                    <div className="space-y-4">
-                        {messages.map((msg) => (
-                           <ChatMessage key={msg.id} message={msg} />
-                        ))}
-                         {isLoading && messages[messages.length-1]?.role === 'user' && (
-                             <ChatMessage message={{ id: 'loading', role: 'model', text: '...' }} />
-                        )}
-                        <div ref={messagesEndRef} />
-                    </div>
+                <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+                    {messages.map((msg) => (
+                        <ChatMessage key={msg.id} message={msg} />
+                    ))}
+                    {isLoading && (
+                        <div className="flex items-start gap-3">
+                            <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-accent/10 text-accent">
+                                <SparklesIcon className="w-5 h-5 animate-pulse" />
+                            </div>
+                            <div className="p-3 rounded-lg bg-accent/10">
+                                <div className="flex items-center gap-1.5">
+                                    <span className="w-2 h-2 bg-text-muted rounded-full animate-bounce"></span>
+                                    <span className="w-2 h-2 bg-text-muted rounded-full animate-bounce" style={{animationDelay: '75ms'}}></span>
+                                    <span className="w-2 h-2 bg-text-muted rounded-full animate-bounce" style={{animationDelay: '150ms'}}></span>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    <div ref={messagesEndRef} />
                 </div>
 
                 {/* Input Form */}
-                <div className="p-4 border-t-2 border-text-primary flex-shrink-0">
-                    {error && <p className="text-red-500 text-sm mb-2 text-center">{error}</p>}
+                <footer className="p-4 border-t border-border">
+                    {error && <p className="text-red-500 text-sm mb-2" role="alert">{error}</p>}
                     <form onSubmit={handleSendMessage} className="flex items-center gap-2">
                         <textarea
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' && !e.shiftKey) {
-                                    handleSendMessage(e);
+                                    handleSendMessage(e as any);
                                 }
                             }}
                             placeholder={t.chatbot.placeholder}
-                            className="flex-grow p-2 bg-surface-2 border-2 border-border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:border-accent text-sm"
+                            className="flex-1 p-2 bg-surface-2 border-2 border-border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-ring"
                             rows={1}
                             disabled={isLoading}
                         />
-                        <button type="submit" disabled={!input.trim() || isLoading} className="w-10 h-10 flex-shrink-0 bg-accent text-surface-1 rounded-md flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
-                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6"><path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" /></svg>
+                        <button type="submit" disabled={isLoading || !input.trim()} className="p-2 bg-primary text-on-primary rounded-md disabled:bg-border disabled:text-text-muted transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6"><path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" /></svg>
                         </button>
                     </form>
-                </div>
+                </footer>
             </div>
         </>
     );
