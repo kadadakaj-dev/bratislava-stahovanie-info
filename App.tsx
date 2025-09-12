@@ -22,7 +22,6 @@ const ServicesPage = lazy(() => import('./components/ServicesPage'));
 const PricingPage = lazy(() => import('./components/PricingPage'));
 const ReferencesPage = lazy(() => import('./components/ReferencesPage'));
 const AboutPage = lazy(() => import('./components/AboutPage'));
-const Chatbot = lazy(() => import('./components/chatbot/Chatbot'));
 
 const LoadingSpinner = () => (
     <div className="flex justify-center items-center h-64" aria-label="Loading content">
@@ -105,7 +104,6 @@ function App() {
 
   useEffect(() => {
     offlineService.initDB().then(() => {
-      console.log('Offline DB initialized.');
       if (navigator.onLine) {
         offlineService.processQueue();
       }
@@ -122,13 +120,11 @@ function App() {
     }
 
     switch(currentView) {
-        // FIX: Pass required 'onNavigate' prop to ServicesPage.
         case 'services': return <ServicesPage t={t} onNavigate={handleNavigate} />;
         case 'pricing': return <PricingPage t={t} />;
         case 'references': return <ReferencesPage t={t} />;
         case 'about': return <AboutPage t={t} />;
         case 'blog': return <PostList t={t} />;
-        // FIX: Pass required 'onNavigate' prop to ServicesPage.
         default: return <ServicesPage t={t} onNavigate={handleNavigate} />;
     }
   };
@@ -138,7 +134,6 @@ function App() {
       <a href="#main-content" className="absolute z-[9999] -translate-y-full focus:translate-y-0 p-3 bg-primary text-on-primary font-bold transition-transform duration-300">
         {t.skipToContent}
       </a>
-      {/* FIX: Pass selectedPostId to Header component. */}
       <Header 
         locale={locale}
         setLocale={setLocale}
@@ -152,9 +147,6 @@ function App() {
         </Suspense>
       </main>
       <Footer t={t} />
-      <Suspense fallback={null}>
-        <Chatbot t={t} />
-      </Suspense>
     </div>
   );
 }

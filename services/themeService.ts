@@ -21,11 +21,11 @@ ${shadowVariables}
         transition: fill 0.2s ease-in-out;
     }
     .wa-icon-link .wa-icon {
-        fill: rgb(var(--surface-1)); /* White */
+        fill: rgb(var(--white));
     }
     .wa-icon-link:hover .wa-bg,
     .wa-icon-link:focus-visible .wa-bg {
-        fill: rgb(var(--primary)); /* Theme lime green */
+        fill: rgb(var(--accent));
     }
     
     /* Enhanced Facebook Icon Style */
@@ -34,11 +34,11 @@ ${shadowVariables}
         transition: fill 0.2s ease-in-out;
     }
     .fb-icon-link .fb-icon {
-        fill: rgb(var(--surface-1)); /* White */
+        fill: rgb(var(--white));
     }
     .fb-icon-link:hover .fb-bg,
     .fb-icon-link:focus-visible .fb-bg {
-        fill: rgb(var(--primary)); /* Theme lime green */
+        fill: rgb(var(--accent));
     }
 
     /* Halftone Pattern Overlay */

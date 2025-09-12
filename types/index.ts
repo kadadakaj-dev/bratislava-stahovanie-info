@@ -1,3 +1,9 @@
+// FIX: Add missing Theme enum.
+export enum Theme {
+    Light = 'light',
+    Dark = 'dark',
+}
+
 export interface Post {
   id: number;
   title: string;
@@ -19,13 +25,6 @@ export interface Comment {
   date: string;
 }
 
-// FIX: Add missing Theme enum.
-export enum Theme {
-  Light = 'light',
-  Dark = 'dark',
-}
-
-// FIX: Add ChatMessage interface for chatbot component type safety.
 export interface ChatMessage {
   id: string;
   role: 'user' | 'model';

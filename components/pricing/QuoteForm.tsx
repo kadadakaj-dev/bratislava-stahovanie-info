@@ -81,7 +81,6 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ t, formData, setFormData, initial
         if (navigator.onLine) {
             try {
                 // Mock API call
-                console.log("Submitting form data online:", formData);
                 await new Promise(res => setTimeout(res, 1500));
                 analyticsService.trackEvent('submit_quote_form', { ...analyticsProperties, status: 'success' });
                 setStatus('success');
@@ -94,7 +93,6 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ t, formData, setFormData, initial
                 setStatusMessage(t.formQueued);
             }
         } else {
-            console.log("Submitting form data offline.");
             await offlineService.addRequestToQueue(formData);
             analyticsService.trackEvent('submit_quote_form', { ...analyticsProperties, status: 'queued' });
             setStatus('queued');

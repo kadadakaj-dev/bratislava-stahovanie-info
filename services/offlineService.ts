@@ -23,7 +23,6 @@ const initDB = (): Promise<boolean> => {
 
         request.onsuccess = (event) => {
             db = (event.target as IDBOpenDBRequest).result;
-            console.log("Database opened successfully");
             resolve(true);
         };
 
@@ -45,7 +44,6 @@ const addRequestToQueue = async (data: QuoteFormData): Promise<void> => {
         const request = store.add(requestData);
 
         request.onsuccess = () => {
-            console.log("Request added to offline queue");
             resolve();
         };
 
@@ -59,10 +57,8 @@ const addRequestToQueue = async (data: QuoteFormData): Promise<void> => {
 const processQueue = async (): Promise<void> => {
     if (!db) await initDB();
     if (!navigator.onLine) {
-        console.log("Offline, skipping queue processing.");
         return;
     }
-    console.log("Online, processing offline queue...");
 
     const transaction = db.transaction([STORE_NAME], 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
@@ -81,10 +77,8 @@ const processQueue = async (): Promise<void> => {
                 // if (!response.ok) throw new Error('Server error');
                 
                 // Mocking API call success
-                console.log('Simulating API call for queued request:', req);
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 
-                console.log('Successfully sent queued request:', req.id);
                 // Remove from queue on success
                 const deleteTransaction = db.transaction([STORE_NAME], 'readwrite');
                 const deleteStore = deleteTransaction.objectStore(STORE_NAME);

@@ -59,7 +59,6 @@ export const startChat = (t: Translations) => {
               systemInstruction,
             },
         });
-        console.log("Chat started with system prompt.");
     } catch (error) {
         console.error("Cannot start chat:", error);
         throw error;

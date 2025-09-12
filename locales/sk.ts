@@ -265,7 +265,6 @@ export const sk = {
         ctaButtonSecondary: 'Kontaktujte nás',
         ctaButtonTertiary: 'Referencie'
     },
-    // FIX: Add translations for chatbot component.
     chatbot: {
         welcomeMessage: 'Dobrý deň! Som váš AI asistent VI&MO. Ako vám môžem pomôcť so sťahovaním alebo upratovaním?',
         errorInit: 'Chyba pri inicializácii AI asistenta.',

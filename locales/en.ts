@@ -265,7 +265,6 @@ export const en = {
         ctaButtonSecondary: 'Contact Us',
         ctaButtonTertiary: 'References'
     },
-    // FIX: Add translations for chatbot component.
     chatbot: {
         welcomeMessage: 'Hello! I am your VI&MO AI assistant. How can I help you with your moving or cleaning needs?',
         errorInit: 'Error initializing AI assistant.',

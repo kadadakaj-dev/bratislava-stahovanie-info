@@ -15,10 +15,8 @@
  * @param path The URL path for the page (e.g., '/#services', '/#blog/1').
  */
 const trackPageView = (pageName: string, path: string): void => {
-  console.log(`%c[Analytics] Page View: %c${pageName}`, 'color: #008980; font-weight: bold;', 'color: inherit;', { path });
-  // Production implementation example:
-  // window.gtag('event', 'page_view', { page_title: pageName, page_path: path });
-  // window.plausible('pageview');
+  // This is disabled for production. 
+  // Replace with a real analytics provider call if needed.
 };
 
 /**
@@ -27,10 +25,8 @@ const trackPageView = (pageName: string, path: string): void => {
  * @param properties An object with additional data about the event.
  */
 const trackEvent = (eventName: string, properties: Record<string, any> = {}): void => {
-  console.log(`%c[Analytics] Event: %c${eventName}`, 'color: #35D86D; font-weight: bold;', 'color: inherit;', properties);
-  // Production implementation example:
-  // window.gtag('event', eventName, properties);
-  // window.plausible(eventName, { props: properties });
+  // This is disabled for production.
+  // Replace with a real analytics provider call if needed.
 };
 
 export const analyticsService = {
