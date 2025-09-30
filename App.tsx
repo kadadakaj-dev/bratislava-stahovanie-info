@@ -10,6 +10,7 @@ import { useOfflineQueue } from './hooks/useOfflineQueue';
 import { useSeoSync } from './hooks/useSeoSync';
 import { useFocusHeading } from './hooks/useFocusHeading';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { useSlowImages } from './hooks/useSlowImages';
 
 const translations = { sk, en };
 // Intent-based lazy load (Chatbot only when user likely to interact)
@@ -75,6 +76,8 @@ function App() {
   useSeoSync(currentView, selectedPostId, t);
   useOfflineQueue();
   useFocusHeading([currentView, selectedPostId]);
+  // Track slow-loading images globally
+  useSlowImages({ thresholdMs: 2500, sampleRatio: 1 });
 
   // Centralized SEO, Schema, and Page View Tracking
   useEffect(() => {
