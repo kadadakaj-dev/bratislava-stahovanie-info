@@ -50,6 +50,23 @@ function App() {
     themeService.applyTheme();
   }, []);
 
+  // Delegate click tracking for tel: links (click_call)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const anchor = target.closest('a[href^="tel:"]') as HTMLAnchorElement | null;
+      if (anchor) {
+        analyticsService.trackEvent('click_call', {
+          page: currentView,
+          placement: anchor.dataset.placement || 'unknown'
+        });
+      }
+    };
+    document.addEventListener('click', handler);
+    return () => document.removeEventListener('click', handler);
+  }, [currentView]);
+
   useEffect(() => {
     localStorage.setItem('locale', locale);
     document.documentElement.lang = locale;

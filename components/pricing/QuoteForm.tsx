@@ -84,25 +84,28 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ t, formData, setFormData, initial
         const analyticsProperties = {
             service_type: formData.serviceType,
             has_notes: formData.notes.trim().length > 0,
+            from_floor: formData.fromFloor,
+            to_floor: formData.toFloor,
+            extra_services: Object.entries(formData.extraServices).filter(([_, v]) => v).map(([k]) => k),
         };
 
         if (navigator.onLine) {
             try {
                 // Mock API call
                 await new Promise(res => setTimeout(res, 1500));
-                analyticsService.trackEvent('submit_quote_form', { ...analyticsProperties, status: 'success' });
+                analyticsService.trackEvent('form_submit', { form: 'quote', status: 'success', ...analyticsProperties });
                 setStatus('success');
                 setStatusMessage(t.formSuccess);
             } catch (error) {
                 console.error("API call failed, adding to offline queue.", error);
                 await offlineService.addRequestToQueue(formData);
-                analyticsService.trackEvent('submit_quote_form', { ...analyticsProperties, status: 'queued' });
+                analyticsService.trackEvent('form_submit', { form: 'quote', status: 'queued', ...analyticsProperties });
                 setStatus('queued');
                 setStatusMessage(t.formQueued);
             }
         } else {
             await offlineService.addRequestToQueue(formData);
-            analyticsService.trackEvent('submit_quote_form', { ...analyticsProperties, status: 'queued' });
+            analyticsService.trackEvent('form_submit', { form: 'quote', status: 'queued', ...analyticsProperties });
             setStatus('queued');
             setStatusMessage(t.formQueued);
         }

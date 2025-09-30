@@ -207,3 +207,37 @@ export const BookOpenIcon = ({ className }: { className?: string }) => (
   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
 </svg>
 );
+
+// Keyword strategy constants (SEO v1)
+export const KEYWORDS = {
+  primary: 'sťahovanie Bratislava',
+  secondary: [
+    'odvoz odpadu Bratislava',
+    'vypratávanie Bratislava',
+    'sťahovanie bytov Bratislava',
+    'kancelárske sťahovanie Bratislava'
+  ],
+  longtail: [
+    'sťahovanie 3 izbového bytu Bratislava',
+    'odvoz starého nábytku Bratislava',
+    'vypratávanie pivnice Bratislava',
+    'cena sťahovania Bratislava',
+    'ako zabaliť krehké veci pri sťahovaní'
+  ],
+  districts: [
+    'Ružinov','Petržalka','Nové Mesto','Karlova Ves','Dúbravka',
+    'Rača','Staré Mesto','Vrakuňa','Podunajské Biskupice','Lamač',
+    'Vajnory','Záhorská Bystrica','Jarovce','Rusovce','Čunovo'
+  ],
+  serviceCombos: [
+    'sťahovanie a odvoz odpadu Bratislava',
+    'sťahovanie s likvidáciou nábytku',
+    'kompletné sťahovacie služby Bratislava'
+  ],
+  qnaSeed: [
+    'Koľko stojí sťahovanie v Bratislave?',
+    'Ako dlho trvá sťahovanie 3 izbového bytu?',
+    'Ako pripraviť nábytok na sťahovanie?',
+    'Kam s nepotrebným nábytkom po sťahovaní?'
+  ]
+} as const;

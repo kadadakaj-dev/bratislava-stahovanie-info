@@ -1,6 +1,7 @@
 import { Translations, View } from "../App";
 import { Post } from "../types";
 import { pricingData } from "../components/pricing/PricingGrid";
+import { KEYWORDS } from "../constants";
 
 const BASE_URL = "https://viandmo.com";
 
@@ -95,6 +96,12 @@ const generatePageSchema = (view: View, t: Translations, post?: Post) => {
 };
 
 export const generateSchema = (view: View, t: Translations, post?: Post) => {
+    const bratislavaDistricts = [
+        'Staré Mesto', 'Ružinov', 'Petržalka', 'Nové Mesto', 'Karlova Ves', 'Dúbravka', 'Rača', 'Vajnory', 'Devín', 'Devínska Nová Ves', 'Záhorská Bystrica', 'Podunajské Biskupice', 'Vrakuňa', 'Jarovce', 'Rusovce', 'Čunovo'
+    ];
+
+    const satelliteTowns = ['Senec', 'Pezinok', 'Malacky'];
+
     const movingCompanySchema = {
         "@type": "MovingCompany",
         "@id": `${BASE_URL}#company`,
@@ -117,19 +124,19 @@ export const generateSchema = (view: View, t: Translations, post?: Post) => {
         },
         "areaServed": [
             { "@type": "City", "name": "Bratislava" },
-            { "@type": "City", "name": "Ružinov" },
-            { "@type": "City", "name": "Petržalka" },
-            { "@type": "City", "name": "Nové Mesto" },
-            { "@type": "City", "name": "Rača" },
-            { "@type": "City", "name": "Karlova Ves" },
-            { "@type": "City", "name": "Dúbravka" },
-            { "@type": "City", "name": "Senec" },
-            { "@type": "City", "name": "Pezinok" },
-            { "@type": "City", "name": "Malacky" }
+            ...bratislavaDistricts.map(d => ({ "@type": "City", "name": d }))
         ],
         "priceRange": "€€",
         "logo": `${BASE_URL}/public/icons/icon-512x512.png`,
-        "image": "https://picsum.photos/seed/stahovanie1/1200/630"
+        "image": "https://picsum.photos/seed/stahovanie1/1200/630",
+        "knowsAbout": [
+            "Sťahovanie bytov",
+            "Kancelárske sťahovanie",
+            "Odvoz odpadu",
+            "Vypratávanie priestorov",
+            "Balenie a logistika",
+            "Likvidácia nábytku"
+        ]
     };
     
     const serviceSchema = {
@@ -148,6 +155,22 @@ export const generateSchema = (view: View, t: Translations, post?: Post) => {
             "availability": "https://schema.org/InStock"
         }
     };
+
+    // Granular service entities derived from keyword clusters (primary + secondary)
+    const granularServices = [KEYWORDS.primary, ...KEYWORDS.secondary].map(kw => ({
+        "@type": "Service",
+        "@id": `${BASE_URL}#service-${encodeURIComponent(kw)}`,
+        "name": kw,
+        "serviceType": kw,
+        "provider": { "@id": `${BASE_URL}#company` },
+        "areaServed": { "@type": "City", "name": "Bratislava" },
+        "offers": {
+            "@type": "Offer",
+            "priceCurrency": "EUR",
+            "price": Math.min(...pricingData.map(p => p.price)),
+            "availability": "https://schema.org/InStock"
+        }
+    }));
     
     const breadcrumbSchema = generateBreadcrumbs(view, t, post);
     const pageSchema = generatePageSchema(view, t, post);
@@ -163,9 +186,42 @@ export const generateSchema = (view: View, t: Translations, post?: Post) => {
         }))
     } : null;
     
+    // Separate service for satellite towns (service area extension)
+    const satelliteService = {
+        "@type": "Service",
+        "@id": `${BASE_URL}#moving-service-satellites`,
+        "serviceType": "Moving service (satellite towns)",
+        "provider": { "@id": `${BASE_URL}#company` },
+        "areaServed": satelliteTowns.map(town => ({ "@type": "City", "name": town })),
+        "name": t.services + ' – Satelitné Lokality',
+        "description": t.servicesDescription,
+        "offers": {
+            "@type": "AggregateOffer",
+            "lowPrice": Math.min(...pricingData.map(p => p.price)),
+            "priceCurrency": "EUR",
+            "offerCount": pricingData.length,
+            "availability": "https://schema.org/InStock"
+        }
+    };
+
+    // OfferCatalog aggregating all service offers (improves commercial entity linking)
+    const offerCatalog = {
+        "@type": "OfferCatalog",
+        "@id": `${BASE_URL}#offer-catalog`,
+        "name": "Ponuka služieb sťahovania a logistiky",
+        "itemListElement": [
+            { "@id": `${BASE_URL}#moving-service` },
+            ...granularServices.map(s => ({ "@id": s['@id'] })),
+            { "@id": `${BASE_URL}#moving-service-satellites` }
+        ]
+    };
+
     const schemaGraph: object[] = [
         movingCompanySchema,
         serviceSchema,
+        ...granularServices,
+        satelliteService,
+        offerCatalog,
         breadcrumbSchema,
     ];
     if (pageSchema) {

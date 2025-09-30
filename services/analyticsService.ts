@@ -14,9 +14,12 @@
 // Example names: 'nav_page_view', 'cta_click', 'web_vital', 'form_submit', 'chatbot_open'
 // Properties SHOULD be flat, primitive or small arrays.
 
+export const ANALYTICS_VERSION = 1;
+
 interface AnalyticsPayload {
   event: string;
   ts: number; // epoch ms
+  v: number; // analytics schema version
   props?: Record<string, any>;
 }
 
@@ -34,7 +37,7 @@ let customTransport: Transport | null = null;
 export const setAnalyticsTransport = (t: Transport) => { customTransport = t; };
 
 const emit = (event: string, props?: Record<string, any>) => {
-  const payload: AnalyticsPayload = { event, ts: Date.now(), props };
+  const payload: AnalyticsPayload = { event, ts: Date.now(), v: ANALYTICS_VERSION, props };
   (customTransport || consoleTransport)(payload);
 };
 

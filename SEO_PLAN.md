@@ -2,7 +2,6 @@
 
 Cieľ: Seed topical authority, zachytiť long‑tail dopyty, pripraviť škálovateľnú architektúru pre 4–9 mesačný rast a konverzie (500–1000 kvalifikovaných dopytov postupne po akumulácii autority).
 
----
 ## Prehľad Fáz
 
 | Fáza | Deň | Strategický Cieľ | Kľúčové Výstupy |
@@ -17,7 +16,6 @@ Cieľ: Seed topical authority, zachytiť long‑tail dopyty, pripraviť škálov
 | Interné Prelinkovanie | priebežne | Posilnenie siló | Huby, tagy, kontextové odkazy |
 | Meranie | 1–30 | Základné eventy & dashboards | track: form_submit, click_call, chat_open, scroll_75, blog_to_form |
 
----
 ## Detailný Deň-Po-Dni Rozpis
 
 ### Dni 1–3: Audit & Setup
@@ -82,10 +80,12 @@ Každý článok: 900–1500 slov (how-to 1200–1700), 1 CTA mid + 1 CTA end, i
 - Trust prvky: Poistenie, licencie, GDPR, kontakt (click-to-call event).
 
 ### Priebežne: Interné Prelinkovanie
+
 - Po publikovaní novej stránky: prosadiť 2–3 spätné interné odkazy zo starších článkov (re-edit vlny).
-- Sledovať orphan pages (skript / manuálny audit). 
+- Sledovať orphan pages (skript / manuálny audit).
 
 ### Meranie (Základné Eventy)
+
 | Event Name | Kedy | Parametre |
 |------------|------|-----------|
 | form_submit | Quote form success | source (page), services_selected, estimated_distance |
@@ -97,27 +97,25 @@ Každý článok: 900–1500 slov (how-to 1200–1700), 1 CTA mid + 1 CTA end, i
 | lead_magnet_download | Stiahnutie PDF | page, asset="plan-30" |
 
 ---
-## Entitná & Semantická Vrstva (Implementačné Pokyny)
-- Zachovať prirodzenú densitu – žiadne  keyword stuffing.
-- Každá hlavná entita aspoň 1× v prvých 200 slovách relevantnej stránky.
-- Alt text obrázkov: opis + kontext + lokalita ak dáva zmysel.
-- FAQ: otázky formou prirodzenej reči (napr. "Koľko trvá sťahovanie 3-izbového bytu v Ružinove?").
-
----
 ## Interné Linkovanie – Štandardy
+
 - 1 Pilier ↔ 6–10 podporujúcich stránok.
 - Cieľ: Každá stránka (okrem právnych) má min. 2 interné príchodzie odkazy.
 - Nepoužívať identický anchor vo všetkých odkazoch (variačné frázy: "cenník sťahovania", "náklady na presun").
 
 ---
+ 
 ## Štruktúra Promptov (Rekapitulácia)
+
 - MASTER PROMPT pre pilier / landing.
 - BLOG PROMPT – volí intent + generuje štruktúru.
 - LOCAL LANDING PROMPT – geo špecifiká.
 - UPDATE PROMPT – reoptimalizácie po dátach z GSC.
 
 ---
+ 
 ## Kontrola Pred Publikáciou (Checklist)
+
 - [ ] Meta Title <= 60 znakov + lokalita + benefit
 - [ ] Meta Description <= 155 znakov, CTA-ish
 - [ ] H1 unikátne (nie skopírovaný Title)
@@ -129,44 +127,81 @@ Každý článok: 900–1500 slov (how-to 1200–1700), 1 CTA mid + 1 CTA end, i
 - [ ] Manuálna faktická verifikácia (časy, ceny, proces)
 
 ---
+ 
 ## KPI & Reporting Štruktúra
+
 - Týždenný log: počet nových URL, indexované, impressions (GSC), leads (events -> form_submit), CTR long-tail queries.
 - 30-dňové vyhodnotenie: ktoré klastre získali najrýchlejšiu trakciu, úprava priorít.
 
 ---
+ 
 ## Ďalšie Fázy Po 30 Dňoch (Náčrt)
+
 - Rozšíriť landingy na všetky zvyšné mestské časti.
 - Pridať video obsah (návody, proces sťahovania) – potenciál pre VideoObject schema.
 - Budovanie externých odkazov: lokálne portály, partneri (realitky, správcovia budov).
 - Lead nurturing: e‑mail sekvencie pre stiahnutie PDF.
 
 ---
+ 
 ## Rýchle Prompty (Copy‑Paste Set)
 
 ### Pilier
-```
+
+```text
 POUZI MASTER PROMPT. TEMA: Stahovanie Bratislava – Kompletny Sprievodca. CIEL: Edukovat + konvertovat. DLZKA: 2200 slov. OUTPUT: Markdown + JSON-LD.
 ```
 
 ### Lokálny Landing (Ružinov)
-```
+
+```text
 POUZI LOCAL LANDING PROMPT. SLUZBA: Stahovanie. MESTSKA CAST: Ruzinov. TONY: profesionalny, empatia. DLZKA: 1400 slov.
 ```
 
 ### Blog (How-To)
-```
+
+```text
 POUZI BLOG PROMPT. TYP: how-to. KEYWORD: ako zabalit krehke veci pri stahovani. DLZKA: 1300 slov.
 ```
 
 ### Reoptimalizácia
-```
+
+```text
 POUZI UPDATE PROMPT. STRANKA: /stahovanie-bratislava. VSTUP: (vloz markdown). KONKURENCIA: (URL1, URL2). GSC QUERIES: (vloz). OUTPUT: JSON navrhov.
 ```
 
 ---
+ 
 ## Poznámky
+
 - Reálne konverzie závisia od rýchlosti implementácie a diferenciácie ponuky.
 - Nedeklarovať garancie typu "900%" – sú mimo kontrolu.
 
 ---
 *Dokument generovaný ako základ exekúcie. Aktualizuj iteratívne podľa dát.*
+
+---
+ 
+## Stav Implementácie Eventov (Operational Analytics Matrix)
+
+| Event | Status | Implementácia (Súbor / Mechanizmus) | Trigger Podmienka | Payload Polia (aktuálne) | Poznámky / Ďalšie Kroky |
+|-------|--------|--------------------------------------|--------------------|---------------------------|--------------------------|
+| form_submit | Implemented | `components/pricing/QuoteForm.tsx` | Úspešné odoslanie alebo offline queue fallback | form, status, service_type, has_notes, from_floor, to_floor, extra_services[] | Zvážiť pridanie odhadov vzdialenosti (n/a zatiaľ) |
+| click_call | Implemented | Delegovaný listener v `App.tsx` | Klik na `a[href^="tel:"]` | page, placement | Pokryť prípad tel link v obsahu článku (už implicitne) |
+| chat_open | Implemented | `components/chatbot/Chatbot.tsx` | Prvé otvorenie chat okna | page | Zachovať ako baseline otvorenie |
+| chat_toggle_open | Implemented | `components/chatbot/Chatbot.tsx` | Každé otvorenie po toggle | page | Voliteľné pre frekvenciu používania |
+| chat_toggle_close | Implemented | `components/chatbot/Chatbot.tsx` | Zavretie chat okna | page | Retencia & UX analýza |
+| scroll_75 | Implemented | Listener v `App.tsx` + `analyticsService.trackScroll75Once` | Prvý vstup do >=75% viewport depth | page, depth | Rozšíriteľné o čas od loadu (future) |
+| blog_to_form | Implemented | `components/PostDetail.tsx` | Klik na CTA anchor v článku | page, post_id | Overiť mapovanie post_id -> slug konzistentné |
+| sticky_cta_click | Implemented | `components/pricing/StickyCta.tsx` | Klik na floating CTA prvok (email/quote) | page, variant | Variants: email, quote_form |
+| lead_magnet_download | Implemented | `components/LeadMagnetDownload.tsx` | Stiahnutie / klik na download tlačidlo | page, asset | Placeholder PDF – nahradiť reálnym súborom |
+| web_vital | Implemented | `services/webVitalsService.ts` / `analyticsService.trackWebVital` | Report z web-vitals API | name, value, id, rating | Pridať sampling rate ak vznikne objem |
+| error_boundary | Implemented | `components/ErrorBoundary.tsx` | Zachytenie runtime chyby | message, component_stack | Skrátené dĺžky (200/500) |
+| offline_queue_flush | Implemented | `services/offlineService.ts` | Flush queued requests pri online | count, offline_ms | Track offline dĺžku ak dostupná |
+| image_load_slow | Idea | (observer hook) | > threshold (napr. 2.5s) | src, time_to_load | Možné použiť na optimalizáciu obrázkov |
+
+Poznámka: Všetky eventy teraz nesú verziu schémy `v` (ANALYTICS_VERSION=1) pre budúcu spätne kompatibilnú evolúciu.
+
+Legenda statusov: Implemented / Planned / Idea (brainstorm, nie je v pláne sprintu).
+
+Maintain: Ak sa mení schéma payloadu, verziovať v `analyticsService` (napr. `analytics_version: 1`).

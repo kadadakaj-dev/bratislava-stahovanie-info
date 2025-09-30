@@ -1,8 +1,11 @@
 import React, { PropsWithChildren } from 'react';
+import { analyticsService } from '../services/analyticsService';
 
 interface ErrorBoundaryState { hasError: boolean; error?: Error }
 
-export class ErrorBoundary extends React.Component<PropsWithChildren<unknown>, ErrorBoundaryState> {
+interface ErrorBoundaryProps extends PropsWithChildren<any> {}
+
+export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = { hasError: false };
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
@@ -14,6 +17,13 @@ export class ErrorBoundary extends React.Component<PropsWithChildren<unknown>, E
     if (process.env.NODE_ENV !== 'production') {
       console.error('ErrorBoundary caught error', error, info);
     }
+    try {
+      analyticsService.trackEvent('error_boundary', {
+        message: error.message.substring(0, 200),
+        component_stack: info.componentStack.substring(0, 500)
+      });
+    // eslint-disable-next-line no-empty
+    } catch {}
   }
 
   render() {

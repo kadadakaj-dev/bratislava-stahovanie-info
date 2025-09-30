@@ -1,4 +1,5 @@
 import { QuoteFormData } from "../types";
+import { analyticsService } from "./analyticsService";
 
 const DB_NAME = 'viandmo-requests';
 const DB_VERSION = 1;
@@ -54,6 +55,13 @@ const addRequestToQueue = async (data: QuoteFormData): Promise<void> => {
     });
 };
 
+let lastOfflineTimestamp: number | null = null;
+
+// Track when we go offline to compute offline duration later
+window.addEventListener('offline', () => {
+    lastOfflineTimestamp = Date.now();
+});
+
 const processQueue = async (): Promise<void> => {
     if (!db) await initDB();
     if (!navigator.onLine) {
@@ -66,6 +74,8 @@ const processQueue = async (): Promise<void> => {
 
     getAllRequest.onsuccess = async () => {
         const requests = getAllRequest.result;
+        const count = requests.length;
+        const offlineDuration = lastOfflineTimestamp ? Date.now() - lastOfflineTimestamp : null;
         for (const req of requests) {
             try {
                 // In a real app, this would be a fetch call to your API endpoint
@@ -87,6 +97,10 @@ const processQueue = async (): Promise<void> => {
             } catch (error) {
                 console.error('Failed to send queued request, will retry later:', req.id, error);
             }
+        }
+        if (count > 0) {
+            analyticsService.trackEvent('offline_queue_flush', { count, offline_ms: offlineDuration });
+            lastOfflineTimestamp = null;
         }
     };
 };

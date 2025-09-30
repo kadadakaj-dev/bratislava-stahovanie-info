@@ -3,7 +3,7 @@ import { Translations } from '../../App';
 import { ChatMessage as ChatMessageType } from '../../types';
 import { ChatBubbleOvalLeftEllipsisIcon, XIcon, SparklesIcon } from '../../constants';
 import { startChat, sendChatMessage } from '../../services/geminiService';
-import { analyticsService } from '../../services/analyticsService';
+import { analyticsService, trackChatOpen } from '../../services/analyticsService';
 import ChatMessage from './ChatMessage';
 
 const Chatbot: React.FC<{ t: Translations }> = ({ t }) => {
@@ -108,13 +108,16 @@ const Chatbot: React.FC<{ t: Translations }> = ({ t }) => {
     }, [input, isLoading, t]);
     
     const handleOpenChat = () => {
-        analyticsService.trackEvent('open_chatbot');
+        if (!hasEverOpened) {
+            trackChatOpen(location.hash || '#');
+        }
+        analyticsService.trackEvent('chat_toggle_open');
         setIsOpen(true);
         setHasEverOpened(true);
     };
 
     const handleCloseChat = () => {
-        analyticsService.trackEvent('close_chatbot');
+        analyticsService.trackEvent('chat_toggle_close');
         setIsOpen(false);
     };
 
