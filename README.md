@@ -1,9 +1,8 @@
-
 # VI&MO PWA | bratislava-stahovanie.info
 
 > Oficiálna PWA aplikácia spoločnosti VI&MO. Ponúkame profesionálne sťahovacie, upratovacie a vypratávacie služby v Bratislave. Získajte cenovú ponuku, prečítajte si náš blog.
 
-Toto je zdrojový kód pre modernú Progressive Web App (PWA) vytvorenú pre spoločnosť VI&MO, ktorá sa špecializuje na sťahovacie a súvisiace služby. Aplikácia je navrhnutá tak, aby bola rýchla, spoľahlivá, responzívna a plne funkčná aj v offline režime.
+Toto je zdrojový kód pre modernú Progressive Web App (PWA) vytvorenú pre spoločnosť VI&MO, ktorá sa špecializuje na sťahovacie a súvisiace služby. Aplikácia je navrhnutá tak, aby bola rýchla, dostupná a SEO optimalizovaná.
 
 ---
 
@@ -20,6 +19,31 @@ Toto je zdrojový kód pre modernú Progressive Web App (PWA) vytvorenú pre spo
 - **Responzívne Obrázky:** Automaticky generovaný `srcset` a `sizes` pre optimalizáciu LCP a šírky prenosu + podpora AVIF / WebP fallback.
 - **Inteligentné Prefetchovanie:** Komponenty a trasy sa predbiehajú pri hover / focus a počas idle času.
 - **Adaptívny Tmavý Režim:** Tri režimy (Svetlý / Tmavý / Auto podľa systému) s perzistenciou v localStorage.
+
+---
+
+## 📊 Stručné zhrnutie SEO optimalizácie
+
+Projekt je špičkovým príkladom moderného SEO pre lokálne služby v Bratislave. Automatizuje generovanie meta tagov, kľúčových slov a štruktúrovaných dát. Vďaka centralizovanej správe obsahu, pokročilej optimalizácii obrázkov a responzívnym komponentom dosahuje výborné hodnotenia v Core Web Vitals. Aplikácia je navrhnutá s dôrazom na topical authority (blog seed, pillars, landing pages pre mestské časti), interné prelinkovanie a analytiku konverzných akcií. Výnimočnosť spočíva v kombinácii PWA štandardov (offline podpora, Service Worker), accessibility a detailného SEO checklistu pri každom novom obsahu.
+
+### Ďalšie možnosti vylepšenia SEO v tejto aplikácii
+
+- Automatizované generovanie FAQ sekcií podľa kľúčových slov a typických otázok zákazníkov (s podporou Rich Results).
+- Automatická detekcia a oprava slabých meta popisov (príliš krátke/dlhé, duplicity).
+- Analýza interného prelinkovania a odporúčanie nových interných odkazov na základe tém a klastrov.
+- Generovanie OpenGraph a Twitter Card meta tagov pre lepšie zdieľanie na sociálnych sieťach.
+- Automatický monitoring pozícií vybraných kľúčových slov (napr. integrácia so SERP API).
+- Vylepšený audit accessibility a implementácia navrhovaných zmien (napr. overenie kontrastu, kontrola alt textov).
+- Dynamické generovanie breadcrumbs vo formáte JSON-LD a vizuálne na stránkach.
+- Správa a optimalizácia hreflang tagov pre viacjazyčný obsah.
+- Automatické sledovanie a reportovanie chýb (404, 5xx) s návrhmi na redirect alebo opravu.
+- Automatické generovanie sitemap.xml a jeho update po pridaní nového obsahu.
+
+#### Prompt na brainstorming alebo zadanie pre AI/pomocníka:
+
+> Navrhni ďalšie možnosti vylepšenia SEO pre modernú PWA aplikáciu poskytujúcu lokálne služby (napr. sťahovanie v Bratislave), ktorá už obsahuje dynamické meta tagy, štruktúrované dáta, centralizované kľúčové slová, blog seed, optimalizované obrázky a základné analytické eventy. Zameraj sa na nové trendy (AI v SEO, E-E-A-T, topical authority, automatizované obsahové plánovanie, monitoring, accessibility, viacjazyčné SEO, automatizované prelinkovanie, monitoring indexovateľnosti a chybných stránok, AI generovanie FAQ, OpenGraph optimalizácia, atď.) a vypíš konkrétne, technicky uskutočniteľné návrhy, ktoré by mohli priniesť priamy prínos pre pozície vo vyhľadávačoch a zlepšiť UX.
+
+---
 
 ## 🛠️ Použité Technológie (Tech Stack)
 
@@ -124,14 +148,14 @@ git add .
 git commit -m "Initial commit"
 ```
 
-1. **Prepojte lokálny projekt s GitHub repozitárom:**
+3. **Prepojte lokálny projekt s GitHub repozitárom:**
     - Skopírujte URL vášho novovytvoreného GitHub repozitára a zadajte príkaz (nahraďte URL):
 
 ```bash
 git remote add origin https://github.com/vas-username/viandmo-pwa.git
 ```
 
-1. **Nahrajte kód na GitHub:**
+4. **Nahrajte kód na GitHub:**
     - Odošlite váš lokálny kód na GitHub:
 
 ```bash
@@ -142,14 +166,14 @@ git branch -M main
 git push -u origin main
 ```
 
-1. **Nezabudnite na `.gitignore`:**
+5. **Nezabudnite na `.gitignore`:**
     - Súbor je už súčasťou repozitára a obsahuje bežné výnimky (`.env`, `node_modules`, `dist`, atď.).
 
 ---
 
 ## 🔒 Bezpečnosť API kľúča
 
-API kľúč je vložený do klienta počas buildu (static replacement). Pre verejnú produkciu odporúčame nasadiť vlastný proxy backend, ktorý bezpečne komunikuje s Gemini API a na frontend posiela len výsledky.
+API kľúč je vložený do klienta počas buildu (static replacement). Pre verejnú produkciu odporúčame nasadiť vlastný proxy backend, ktorý bezpečne komunikuje s Gemini API a na frontend neposiela kľúč.
 
 ---
 
@@ -229,7 +253,6 @@ Implementované v `services/themeService.ts` + prepínač `components/ThemeToggl
 - `stale-while-revalidate` pre obrázky s jednoduchým obmedzením veľkosti (`IMAGE_CACHE_MAX_ENTRIES`).
 - Možnosť ďalšieho rozšírenia pre normalizáciu variantov (aktuálne priamy key podľa URL).
 
-
 ---
 
 ## 🗺️ Roadmap (Ideas)
@@ -244,66 +267,3 @@ Implementované v `services/themeService.ts` + prepínač `components/ThemeToggl
 Ak máte otázky alebo návrhy na zlepšenie, vytvorte prosím issue alebo pull request. ✨
 
 Teraz je váš kód na GitHube a môžete pokračovať nasadením na Vercel podľa návodu vyššie.
-
- 
-## 🔍 SEO & Keyword Strategy (v1)
-
-Centralizované kľúčové slová sú v `KEYWORDS` (súbor `constants.tsx`).
-
-Klastre:
-
-- Primárny: sťahovanie Bratislava
-- Sekundárne: odvoz odpadu, vypratávanie, sťahovanie bytov, kancelárske sťahovanie
-- Long‑tail: (výber) sťahovanie 3 izbového bytu, odvoz starého nábytku, cena sťahovania, ako zabaliť krehké veci
-- Mestské časti: Ružinov, Petržalka, Nové Mesto, Karlova Ves, Dúbravka, Rača, Staré Mesto, …
-
-Meta Generation:
-
-- Implementované helpery v `seoService.ts`: `buildServiceTitle`, `buildDistrictTitle`, `buildKeywordMeta()`
-- Kanonické URL držané v rámci hash routingu (#segmenty) – pri prechode na čisté path URL aktualizovať `BASE_URL` a canonical.
-
-Schema.org:
-
-- MovingCompany + Service + granular Service entity pre každé hlavné kľúčové slovo.
-- `knowsAbout` rozširuje semantickú relevantnosť.
-- Satelitné mestá ako samostatný Service uzol.
-
-Interné Linkovanie (štandard):
-
-- Každý nový článok: 1 pilier + 1 horizontálny + 1 konverzný odkaz.
-
-FAQ odporúčanie: 4–8 otázok, odpoveď 50–80 slov, prirodzený jazyk.
-
-### 📊 Events Taxonomy (Aktuálna Implementácia)
-
-| Event | Kedy | Kľúčové polia |
-|-------|------|---------------|
-| form_submit | Úspešné alebo queued odoslanie formulára | form, status, service_type, from_floor, to_floor, extra_services[] |
-| click_call | Klik na tel: link | page, placement |
-| chat_open | Prvé otvorenie chat okna | page |
-| chat_toggle_open / chat_toggle_close | Opakované otvorenie / zatvorenie | page |
-| scroll_75 | Prvé prekročenie 75% | page, depth |
-| blog_to_form | Klik z blogu na CTA k formuláru | page, post_id |
-| web_vital | Web Vitals report | name, value, id, rating |
-| sticky_cta_click | (Plánované) | page, variant |
-| lead_magnet_download | (Plánované) | page, asset |
-| error_boundary | (Plánované) | message, component_stack |
-| offline_queue_flush | (Plánované) | count, duration_offline |
-
-Rozšírenia v backlogu: sampling pre web_vital, image_load_slow diagnostika.
-
-Verzionovanie payloadu: pri zmene schémy > pridaj `analytics_version` do odosielaného objektu.
-
- 
-## 🧪 Rýchly QA Checklist (SEO + UX)
-
-- [ ] Title <= 60 znakov, obsahuje lokalitu ak relevantné
-- [ ] Meta Description <= 155 znakov + benefit / CTA
-- [ ] Jednoznačný H1 (nezhodný s Title 1:1)
-- [ ] 1× primárne kľúčové slovo do 150 slov
-- [ ] 2+ interné odkazy (hub + horizontálny + konverzný)
-- [ ] Obrázky: alt popisuje obsah a (ak relevantné) lokalitu
-- [ ] JSON-LD validné (Rich Results Test)
-- [ ] Rýchlosť: LCP < 2.5s (DevTools Lighthouse alebo Web Vitals eventy)
-- [ ] Form submit funguje online + offline queue
-
