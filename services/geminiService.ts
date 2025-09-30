@@ -1,10 +1,8 @@
 import { Post } from "../types";
 import { Translations } from "../App";
-import { Chat } from "@google/genai";
-import * as apiService from './apiService';
-
-
-let chat: Chat | null = null;
+// Refactored to use server proxy endpoint instead of direct SDK in bundle.
+// Streaming simulation: accumulate result after fetch for now (could extend with real streaming via server-sent events).
+let chatStarted = false;
 
 const buildSystemPrompt = (t: Translations): string => {
     return `
@@ -51,40 +49,29 @@ const buildSystemPrompt = (t: Translations): string => {
 
 
 export const startChat = (t: Translations) => {
-    try {
-        const systemInstruction = buildSystemPrompt(t);
-        chat = apiService.createChatInstance({
-            model: 'gemini-2.5-flash',
-            config: {
-              systemInstruction,
-            },
-        });
-    } catch (error) {
-        console.error("Cannot start chat:", error);
-        throw error;
-    }
+    chatStarted = true; // System prompt stored locally; sent with each request minimally.
+    sessionStorage.setItem('viandmo_system_prompt', buildSystemPrompt(t));
 };
 
 export const sendChatMessage = async (message: string): Promise<AsyncGenerator<string, void, unknown>> => {
-    if (!chat) {
-        throw new Error("Chat is not initialized. Call startChat first.");
-    }
-
-    try {
-        const responseStream = await chat.sendMessageStream({ message });
-        
-        async function* streamGenerator(): AsyncGenerator<string, void, unknown> {
-            for await (const chunk of responseStream) {
-                yield chunk.text;
-            }
+        if (!chatStarted) {
+            throw new Error('Chat not initialized');
         }
-        
-        return streamGenerator();
-
-    } catch (error) {
-        console.error("Error sending chat message:", error);
-        throw new Error("Failed to get a response from the AI assistant.");
-    }
+        try {
+            const systemInstruction = sessionStorage.getItem('viandmo_system_prompt') || '';
+            const res = await fetch('/api/ai-proxy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: `${systemInstruction}\nUser: ${message}\nAssistant:`, model: 'gemini-2.5-flash' })
+            });
+            if (!res.ok) throw new Error('Proxy request failed');
+            const data = await res.json();
+            async function* gen() { yield data.text as string; }
+            return gen();
+        } catch (e) {
+            console.error(e);
+            throw new Error('Failed to get a response from the AI assistant.');
+        }
 };
 
 
@@ -98,18 +85,17 @@ export const summarizePost = async (post: Post): Promise<string> => {
     
     **Zhrnutie:**`;
 
-    try {
-        const response = await apiService.callGeminiSummarize(prompt, {
-            temperature: 0.5,
-            topP: 0.95,
-            topK: 64,
-            maxOutputTokens: 150,
-            thinkingConfig: { thinkingBudget: 50 },
-        });
-        
-        return response.text.trim();
-    } catch (error) {
-        console.error("Error summarizing post:", error);
-        return "Sorry, I couldn't generate a summary at this moment. Please try again later.";
-    }
+        try {
+            const res = await fetch('/api/ai-proxy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt, model: 'gemini-2.5-flash', config: { maxOutputTokens: 150 } })
+            });
+            if (!res.ok) throw new Error('Proxy summarize failed');
+            const data = await res.json();
+            return (data.text || '').trim();
+        } catch (error) {
+            console.error('Error summarizing post:', error);
+            return "Sorry, I couldn't generate a summary at this moment. Please try again later.";
+        }
 };

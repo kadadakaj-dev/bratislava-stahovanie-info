@@ -22,22 +22,26 @@ const PostCard: React.FC<PostCardProps> = ({ post, t }) => {
            <span className="sr-only">{t.readMoreAria(post.title)}</span>
         </a>
         <div className="duotone-wrapper">
-             <img 
-                className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105" 
-                src={post.imageUrl} 
-                alt={post.imageAlt}
-                loading="lazy"
-                decoding="async"
-            />
+       <img 
+        className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105" 
+        src={post.imageUrl} 
+        alt={post.imageAlt}
+        loading="lazy"
+        decoding="async"
+        width="640"
+        height="256"
+      />
         </div>
       <div className="p-6 flex flex-col flex-grow">
-        <div className="flex flex-wrap gap-2 mb-3">
-            {post.tags.map(tag => (
-                <span key={tag} className="text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded-full">
-                    {tag}
-                </span>
-            ))}
-        </div>
+    {post.tags.length > 0 && (
+      <div className="flex flex-wrap gap-2 mb-3">
+        {post.tags.map(tag => (
+          <span key={tag} className="text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded-full">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
         <h3 
             id={`post-title-${post.id}`}
             className="text-xl font-bold text-text-primary mb-2 group-hover:text-accent transition-colors"

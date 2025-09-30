@@ -29,70 +29,70 @@ Toto je zdrojový kód pre modernú Progressive Web App (PWA) vytvorenú pre spo
 
 ## 🚀 Lokálne Spustenie (Local Development)
 
-Keďže projekt nevyužíva tradičný build systém ako Vite alebo Create React App, na jeho spustenie lokálne stačí jednoduchý HTTP server.
+Projekt používa **Vite** pre vývoj a build (skripty `dev`, `build`, `preview`).
 
 **Požiadavky:**
-- Nainštalovaný [Node.js](https://nodejs.org/)
 
-**Postup:**
+- Nainštalovaný [Node.js](https://nodejs.org/) (odporúčané LTS)
 
-1.  **Klonujte repozitár:**
-    ```bash
-    git clone https://github.com/vas-username/vas-repozitar.git
-    cd vas-repozitar
-    ```
+**Rýchly štart:**
 
-2.  **Nastavte premenné prostredia:**
-    - Skopírujte súbor `.env.example` a premenujte ho na `.env`.
-    - V súbore `.env` doplňte váš `API_KEY` pre Google Gemini. Ak API kľúč nemáte, AI funkcie (chatbot) nebudú fungovať, ale zvyšok aplikácie áno.
-      ```
-      API_KEY=VÁŠ_API_KĽÚČ_SEM
-      ```
+```bash
+git clone https://github.com/vas-username/vas-repozitar.git
+cd vas-repozitar
+cp .env.example .env   # vyplňte kľúč
+npm install
+npm run dev
+```
 
-3.  **Nainštalujte a spustite lokálny server:**
-    - Odporúčame použiť balíček `serve`, ktorý je veľmi jednoduchý.
-    ```bash
-    # Nainštalujte serve globálne (stačí raz)
-    npm install -g serve
+Otvorí sa (alebo použite) URL: `http://localhost:5173` (predvolený port Vite).
 
-    # Spustite server v koreňovom adresári projektu
-    serve .
-    ```
+### Konfigurácia API kľúča
 
-4.  **Otvorte aplikáciu v prehliadači:**
-    - Server vám vypíše lokálnu adresu, zvyčajne `http://localhost:3000`. Otvorte ju vo vašom prehliadači.
+V súbore `.env` nastavte:
+
+```bash
+GEMINI_API_KEY=VÁŠ_API_KĽÚČ
+```
+Premenná `GEMINI_API_KEY` je preferovaná. Pre spätnú kompatibilitu je akceptované aj `API_KEY`, ale odporúča sa prejsť na nové meno.
+
+Ak kľúč nenastavíte, AI funkcie (chat / sumarizácia) budú vypnuté, ostatná funkcionalita funguje normálne.
+
+### Dostupné skripty
+
+| Skript | Popis |
+| ------ | ------ |
+| `npm run dev` | Vývojový server s HMR |
+| `npm run build` | Produkčný build do `dist/` |
+| `npm run preview` | Náhľad produkčného buildu |
+
+### Produkčný build lokálne
+
+```bash
+npm run build
+npm run preview
+```
+Potom otvorte URL z výstupu (typicky `http://localhost:4173`).
 
 ---
 
 ## ☁️ Nasadenie na Vercel (Deployment to Vercel)
 
-Vercel je ideálna platforma pre hosting tejto aplikácie, pretože ponúka štedrý bezplatný plán a je dokonale optimalizovaná pre statické weby a moderné frontendové frameworky.
+**Build proces je potrebný** (Vite). Vercel ho spustí automaticky.
 
-**Postup krok za krokom:**
+**Kľúčové nastavenia:**
 
-1.  **Zaregistrujte sa na Vercel:**
-    - Prejdite na [vercel.com](https://vercel.com/) a zaregistrujte sa pomocou vášho GitHub, GitLab alebo Bitbucket účtu.
+- Build Command: `npm run build`
+- Output Directory: `dist`
+- Install Command: (ponechať default – `npm install`)
+- Node version: (voliteľne) nastaviť podľa `.nvmrc` ak pridáte
 
-2.  **Vytvorte nový projekt:**
-    - Vo vašom Vercel Dashboarde kliknite na **"Add New..." -> "Project"**.
+**Environment Variables:**
 
-3.  **Importujte Git Repozitár:**
-    - Nájdite a vyberte váš GitHub repozitár s kódom aplikácie.
+- Názov: `GEMINI_API_KEY` (alebo dočasne `API_KEY`)
+- V prostrediach Production / Preview / Development nastavte rovnako podľa potreby.
 
-4.  **Nakonfigurujte projekt:**
-    - **Framework Preset:** Vercel by mal automaticky rozpoznať, že ide o statický projekt. Ak nie, zvoľte **"Other"**.
-    - **Build and Output Settings:** Keďže tento projekt nemá buildovací krok, môžete tieto nastavenia nechať prázdne alebo ich vypnúť. Vercel automaticky nasadí obsah repozitára ako statické súbory.
-    - **Environment Variables (DÔLEŽITÉ):**
-        - Prejdite do sekcie **"Environment Variables"**.
-        - Pridajte novú premennú s menom `API_KEY`.
-        - Do hodnoty (value) vložte váš Google Gemini API kľúč.
-        - Kliknite na **"Add"**.
-
-5.  **Nasaďte aplikáciu:**
-    - Kliknite na tlačidlo **"Deploy"**.
-    - Vercel automaticky stiahne kód, nastaví prostredie a nasadí vašu aplikáciu. Po dokončení vám poskytne unikátnu URL adresu (napr. `nazov-projektu.vercel.app`).
-
-Každý ďalší `git push` do hlavnej vetvy (main/master) automaticky spustí nové nasadenie s aktuálnymi zmenami.
+Po deploy bude aplikácia dostupná na generovanej Vercel URL. Každý push do `main` spustí nový build.
 
 ---
 
@@ -102,51 +102,72 @@ Ak ste kód dostali ako ZIP súbor a chcete ho nahrať na GitHub pre jednoduché
 
 **Postup:**
 
-1.  **Vytvorte nový repozitár na GitHub:**
+1. **Vytvorte nový repozitár na GitHub:**
     - Prihláste sa na [github.com](https://github.com) a kliknite na **"New repository"**.
     - Pomenujte repozitár (napr. `viandmo-pwa`), zvoľte, či má byť verejný alebo súkromný, a kliknite na **"Create repository"**.
 
-2.  **Inicializujte Git lokálne:**
+2. **Inicializujte Git lokálne:**
     - Otvorte terminál v koreňovom adresári vášho projektu a zadajte príkazy:
-    ```bash
-    # Inicializuje Git v projekte
-    git init
 
-    # Pridá všetky súbory do prvého commitu
-    git add .
+```bash
+# Inicializuje Git v projekte
+git init
 
-    # Vytvorí prvý commit
-    git commit -m "Initial commit"
-    ```
+# Pridá všetky súbory do prvého commitu
+git add .
 
-3.  **Prepojte lokálny projekt s GitHub repozitárom:**
+# Vytvorí prvý commit
+git commit -m "Initial commit"
+```
+
+1. **Prepojte lokálny projekt s GitHub repozitárom:**
     - Skopírujte URL vášho novovytvoreného GitHub repozitára a zadajte príkaz (nahraďte URL):
-    ```bash
-    git remote add origin https://github.com/vas-username/viandmo-pwa.git
-    ```
 
-4.  **Nahrajte kód na GitHub:**
+```bash
+git remote add origin https://github.com/vas-username/viandmo-pwa.git
+```
+
+1. **Nahrajte kód na GitHub:**
     - Odošlite váš lokálny kód na GitHub:
-    ```bash
-    # Prepne hlavnú vetvu na "main" (moderný štandard)
-    git branch -M main
 
-    # Nahrá kód do "main" vetvy na GitHube
-    git push -u origin main
-    ```
+```bash
+# Prepne hlavnú vetvu na "main" (moderný štandard)
+git branch -M main
 
-5.  **Nezabudnite na `.gitignore`:**
-    - Uistite sa, že máte v projekte súbor `.gitignore`, ktorý zabráni nahrávaniu citlivých a nepotrebných súborov na GitHub. Mal by obsahovať minimálne:
-    ```
-    # Súbor s citlivými údajmi
-    .env
+# Nahrá kód do "main" vetvy na GitHube
+git push -u origin main
+```
 
-    # Závislosti (ak by ste ich v budúcnosti pridali)
-    node_modules
+1. **Nezabudnite na `.gitignore`:**
+    - Súbor je už súčasťou repozitára a obsahuje bežné výnimky (`.env`, `node_modules`, `dist`, atď.).
 
-    # Build výstupy (ak by ste pridali build proces)
-    dist
-    build
-    ```
+---
+
+## 🔒 Bezpečnosť API kľúča
+
+API kľúč je vložený do klienta počas buildu (static replacement). Pre verejnú produkciu odporúčame nasadiť vlastný proxy backend, ktorý bezpečne komunikuje s Gemini API a na frontend posiela len výsledky.
+
+---
+
+## 🧪 Testovanie (Manual Smoke Suggestions)
+
+1. Načítať domovskú stránku (bez chýb v konzole).
+2. Prepínať jazyk SK/EN (texty sa zmenia).
+3. Použiť formulár cenovej ponuky – odoslanie bez pripojenia (simulate offline) -> požiadavka sa uloží.
+4. AI Chat komponent: pri nevyplnenom kľúči zobraziť vhodnú chybu / fallback.
+5. PWA: "Add to Home Screen" prompt (Chrome / Android) a offline načítanie základných stránok.
+
+---
+
+## 🗺️ Roadmap (Ideas)
+
+- CI (GitHub Actions) pre lint / build.
+- Backend proxy pre AI volania.
+- Jednotkové testy (Vitest / React Testing Library).
+- Monitorovanie výkonu (Web Vitals export).
+
+---
+
+Ak máte otázky alebo návrhy na zlepšenie, vytvorte prosím issue alebo pull request. ✨
 
 Teraz je váš kód na GitHube a môžete pokračovať nasadením na Vercel podľa návodu vyššie.

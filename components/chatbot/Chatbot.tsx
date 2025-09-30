@@ -17,15 +17,17 @@ const Chatbot: React.FC<{ t: Translations }> = ({ t }) => {
     const openButtonRef = useRef<HTMLButtonElement>(null);
 
     // Initialize chat on component mount
+    const hasApiKey = Boolean(process.env.GEMINI_API_KEY || process.env.API_KEY);
     useEffect(() => {
+        if (!hasApiKey) return; // Do not initialize chat
         try {
-            startChat(t);
-            setMessages([{ id: 'init', role: 'model', text: t.chatbot.welcomeMessage }]);
+          startChat(t);
+          setMessages([{ id: 'init', role: 'model', text: t.chatbot.welcomeMessage }]);
         } catch (e) {
-            console.error(e);
-            setError(t.chatbot.errorInit);
+          console.error(e);
+          setError(t.chatbot.errorInit);
         }
-    }, [t]);
+    }, [t, hasApiKey]);
 
     // Auto-scroll to the latest message
     useEffect(() => {
@@ -125,6 +127,7 @@ const Chatbot: React.FC<{ t: Translations }> = ({ t }) => {
     return (
         <>
             {/* Chatbot Toggle Button */}
+            {hasApiKey && (
             <div className="fixed bottom-6 right-6 z-[1000]">
                 <button
                     ref={openButtonRef}
@@ -135,8 +138,10 @@ const Chatbot: React.FC<{ t: Translations }> = ({ t }) => {
                     <ChatBubbleOvalLeftEllipsisIcon className="w-8 h-8" />
                 </button>
             </div>
+            )}
 
             {/* Chat Panel */}
+            {hasApiKey && (
             <div
                 ref={chatPanelRef}
                 className={`fixed bottom-0 right-0 sm:bottom-6 sm:right-6 z-[1001] w-full h-full sm:w-[400px] sm:h-[calc(100vh-3rem)] sm:max-h-[700px] bg-surface-1 rounded-lg border-2 border-border shadow-2xl flex flex-col transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
@@ -204,7 +209,13 @@ const Chatbot: React.FC<{ t: Translations }> = ({ t }) => {
                         </button>
                     </form>
                 </footer>
-            </div>
+                        </div>
+                        )}
+                        {!hasApiKey && (
+                            <div className="fixed bottom-6 right-6 z-[1000] text-xs text-text-muted bg-surface-2 p-3 rounded shadow" aria-live="polite">
+                                AI asistent momentálne nie je dostupný.
+                            </div>
+                        )}
         </>
     );
 };

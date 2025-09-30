@@ -100,7 +100,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ postId, t }) => {
       </header>
       
       <div className="duotone-wrapper">
-        <img className="w-full h-64 md:h-96 object-cover" src={post.imageUrl} alt={post.imageAlt} />
+        <img className="w-full h-64 md:h-96 object-cover" src={post.imageUrl} alt={post.imageAlt} width="1200" height="480" loading="lazy" decoding="async" />
       </div>
 
       <div className="p-4 sm:p-6 lg:p-8" ref={contentRef}>

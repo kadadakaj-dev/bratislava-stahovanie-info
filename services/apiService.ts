@@ -4,10 +4,11 @@ import { GoogleGenAI, GenerateContentResponse, Chat } from "@google/genai";
 // In a real production app, the API key would be stored securely on a server,
 // and this client-side code would call an endpoint on that server.
 // For this project, we isolate the API key here to abstract it from the rest of the app.
-const apiKey = process.env.API_KEY;
+// Preferred variable name: GEMINI_API_KEY (backwards compatible with legacy API_KEY)
+const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
 
 if (!apiKey) {
-    console.error("API_KEY environment variable not set. AI features will not work.");
+    console.error("GEMINI_API_KEY / API_KEY environment variable not set. AI features will not work.");
 }
 
 const ai = new GoogleGenAI({ apiKey: apiKey || "" });

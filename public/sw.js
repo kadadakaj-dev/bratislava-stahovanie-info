@@ -1,4 +1,6 @@
-const CACHE_NAME = 'viandmo-pwa-v2'; // Incremented version for cache busting
+const CACHE_NAME = 'viandmo-pwa-v3'; // Increment version for new strategy
+const RUNTIME_API_CACHE = 'viandmo-api-v1';
+const IMAGE_CACHE = 'viandmo-img-v1';
 const urlsToCache = [
   '.',
   'index.html',
@@ -38,24 +40,54 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const { request } = event;
 
-  // For HTML pages, use Network Falling Back to Cache strategy
+  // Network first for navigation requests (app shell fallback)
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request)
-        .then(response => {
-          // If response is good, clone it and cache it for offline use
-          if (response.ok) {
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME).then(cache => {
-              cache.put(request, responseToCache);
-            });
+      (async () => {
+        try {
+          const net = await fetch(request);
+          if (net && net.ok) {
+            const clone = net.clone();
+            caches.open(CACHE_NAME).then(c => c.put(request, clone));
+            return net;
           }
-          return response;
-        })
-        .catch(() => {
-          // If network fails, serve the page from the cache
-          return caches.match(request.url) || caches.match('.');
-        })
+          throw new Error('Bad response');
+        } catch {
+          return (await caches.match(request)) || (await caches.match('.')) || new Response('<h1>Offline</h1>', { headers: { 'Content-Type': 'text/html' }});
+        }
+      })()
+    );
+    return;
+  }
+
+  // API proxy network-first with fallback to cache
+  if (request.url.includes('/api/ai-proxy')) {
+    event.respondWith(
+      (async () => {
+        try {
+          const net = await fetch(request);
+          const clone = net.clone();
+            caches.open(RUNTIME_API_CACHE).then(c => c.put(request, clone));
+            return net;
+        } catch {
+          return (await caches.match(request)) || new Response(JSON.stringify({ error: 'Offline' }), { status: 503 });
+        }
+      })()
+    );
+    return;
+  }
+
+  // Images: stale-while-revalidate separate cache
+  if (request.destination === 'image') {
+    event.respondWith(
+      (async () => {
+        const cached = await caches.match(request);
+        const fetchPromise = fetch(request).then(net => {
+          caches.open(IMAGE_CACHE).then(c => c.put(request, net.clone()));
+          return net;
+        }).catch(() => cached);
+        return cached || fetchPromise;
+      })()
     );
     return;
   }

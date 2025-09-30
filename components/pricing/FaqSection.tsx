@@ -8,7 +8,8 @@ const faqs = [
     { q: 'faqQ3', a: 'faqA3' },
 ];
 
-const FaqItem = ({ q, a }: { q: string; a: string }) => {
+interface FaqItemProps { q: string; a: string }
+const FaqItem: React.FC<FaqItemProps> = ({ q, a }) => {
     const [isOpen, setIsOpen] = useState(false);
     return (
         <div className="border-b border-border">
@@ -32,9 +33,15 @@ const FaqSection: React.FC<{ t: Translations }> = ({ t }) => {
                 <QuestionMarkCircleIcon className="w-8 h-8"/>
                 {t.faqTitle}
             </h2>
-            <div className="max-w-3xl mx-auto bg-surface-1 rounded-lg border-2 border-text-primary p-4 sm:p-8">
-                {faqs.map(faq => <FaqItem key={faq.q} q={t[faq.q as keyof Translations] as string} a={t[faq.a as keyof Translations] as string}/>)}
-            </div>
+                        <div className="max-w-3xl mx-auto bg-surface-1 rounded-lg border-2 border-text-primary p-4 sm:p-8">
+                                {faqs.map(({ q, a }) => (
+                                    <FaqItem
+                                        key={q}
+                                        q={t[q as keyof Translations] as string}
+                                        a={t[a as keyof Translations] as string}
+                                    />
+                                ))}
+                        </div>
       </section>
     );
 };

@@ -25,8 +25,12 @@ const trackPageView = (pageName: string, path: string): void => {
  * @param properties An object with additional data about the event.
  */
 const trackEvent = (eventName: string, properties: Record<string, any> = {}): void => {
-  // This is disabled for production.
-  // Replace with a real analytics provider call if needed.
+  // Placeholder: send to console for now (can integrate Plausible, GA4, etc.)
+  if (process.env.NODE_ENV !== 'production') {
+    console.debug('[analytics]', eventName, properties);
+  } else {
+    // No-op for production until a real provider is integrated.
+  }
 };
 
 export const analyticsService = {
