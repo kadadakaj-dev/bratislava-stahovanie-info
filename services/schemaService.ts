@@ -50,6 +50,16 @@ const generatePageSchema = (view: View, t: Translations, post?: Post) => {
                     "acceptedAnswer": { "@type": "Answer", "text": t[faq.a as keyof Translations] as string }
                 }))
             };
+        case 'services':
+            return {
+                "@type": "WebPage",
+                "name": t.services,
+                "description": t.servicesDescription,
+                "primaryImageOfPage": {
+                    "@type": "ImageObject",
+                    "url": "https://picsum.photos/seed/stahovanie1/1200/630"
+                }
+            };
         case 'references':
             return {
                 "@type": "WebPage",
@@ -87,11 +97,17 @@ const generatePageSchema = (view: View, t: Translations, post?: Post) => {
 export const generateSchema = (view: View, t: Translations, post?: Post) => {
     const movingCompanySchema = {
         "@type": "MovingCompany",
+        "@id": `${BASE_URL}#company`,
         "name": "VI and MO s. r. o.",
         "url": BASE_URL,
         "telephone": "+421-911-275-755",
         "email": "info@viandmo.com",
         "description": t.seoDescHome,
+        "sameAs": [
+            "https://www.facebook.com/",
+            "https://www.instagram.com/",
+            "https://www.linkedin.com/"
+        ],
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "Karpatské námestie 7770/10A",
@@ -118,8 +134,9 @@ export const generateSchema = (view: View, t: Translations, post?: Post) => {
     
     const serviceSchema = {
         "@type": "Service",
+        "@id": `${BASE_URL}#moving-service`,
         "serviceType": "Moving service",
-        "provider": { "@id": BASE_URL },
+        "provider": { "@id": `${BASE_URL}#company` },
         "areaServed": { "@type": "City", "name": "Bratislava" },
         "name": t.services,
         "description": t.servicesDescription,
@@ -128,11 +145,23 @@ export const generateSchema = (view: View, t: Translations, post?: Post) => {
             "lowPrice": Math.min(...pricingData.map(p => p.price)),
             "priceCurrency": "EUR",
             "offerCount": pricingData.length,
+            "availability": "https://schema.org/InStock"
         }
     };
     
     const breadcrumbSchema = generateBreadcrumbs(view, t, post);
     const pageSchema = generatePageSchema(view, t, post);
+
+    // Add a lightweight FAQ block on homepage/services if none triggered by view
+    const homepageFaq = view === 'services' ? {
+        "@type": "FAQPage",
+        "@id": `${BASE_URL}#faq-home`,
+        "mainEntity": faqs.slice(0,2).map(faq => ({
+            "@type": "Question",
+            "name": t[faq.q as keyof Translations] as string,
+            "acceptedAnswer": { "@type": "Answer", "text": t[faq.a as keyof Translations] as string }
+        }))
+    } : null;
     
     const schemaGraph: object[] = [
         movingCompanySchema,
@@ -141,6 +170,9 @@ export const generateSchema = (view: View, t: Translations, post?: Post) => {
     ];
     if (pageSchema) {
         schemaGraph.push(pageSchema);
+    }
+    if (homepageFaq) {
+        schemaGraph.push(homepageFaq);
     }
 
     return {

@@ -17,6 +17,9 @@ Toto je zdrojový kód pre modernú Progressive Web App (PWA) vytvorenú pre spo
 - **Viacjazyčnosť:** Plná podpora pre slovenčinu a angličtinu.
 - **Dynamické SEO:** Meta tagy a JSON-LD štruktúrované dáta sa generujú dynamicky pre lepšiu indexáciu vo vyhľadávačoch.
 - **Prístupnosť (Accessibility):** Dôraz na sémantické HTML, ARIA atribúty a navigáciu pomocou klávesnice.
+- **Responzívne Obrázky:** Automaticky generovaný `srcset` a `sizes` pre optimalizáciu LCP a šírky prenosu + podpora AVIF / WebP fallback.
+- **Inteligentné Prefetchovanie:** Komponenty a trasy sa predbiehajú pri hover / focus a počas idle času.
+- **Adaptívny Tmavý Režim:** Tri režimy (Svetlý / Tmavý / Auto podľa systému) s perzistenciou v localStorage.
 
 ## 🛠️ Použité Technológie (Tech Stack)
 
@@ -24,6 +27,7 @@ Toto je zdrojový kód pre modernú Progressive Web App (PWA) vytvorenú pre spo
 - **Štýlovanie:** Tailwind CSS
 - **AI Asistent (voliteľne):** Google Gemini API
 - **Offline Úložisko:** IndexedDB
+- **Optimalizácia Obrázkov:** Dynamické `srcset` generovanie (utility `utils/image.ts`)
 
 ---
 
@@ -156,6 +160,75 @@ API kľúč je vložený do klienta počas buildu (static replacement). Pre vere
 3. Použiť formulár cenovej ponuky – odoslanie bez pripojenia (simulate offline) -> požiadavka sa uloží.
 4. AI Chat komponent: pri nevyplnenom kľúči zobraziť vhodnú chybu / fallback.
 5. PWA: "Add to Home Screen" prompt (Chrome / Android) a offline načítanie základných stránok.
+6. Overiť prepínanie témy (Svetlá / Tmavá / Auto) a zachovanie preferencie po reload.
+7. Skontrolovať, že `<picture>` elementy servírujú AVIF/WebP (DevTools > Network > Img, stĺpec Type).
+8. Simulovať pomalé pripojenie a overiť, že prefetch nespôsobuje blokovanie hlavného obsahu (Network panel – Priority = Low).
+
+---
+
+## ♻️ Optimalizácia Obrázkov (Responsive Images)
+
+Implementovaná je utilita `utils/image.ts`:
+
+- Deteguje pomer strán z URL `picsum.photos/seed/.../width/height`.
+- Generuje `srcset` pre viacero šírok (konfigurácia podľa komponentu).
+- Produkuje zdroje AVIF a WebP + fallback JPEG cez `<picture>`.
+- Nastavuje `sizes` pre lepšie rozhodovanie prehliadača.
+- Nastavené `decoding="async"`, `loading="lazy"` a vhodný `fetchPriority`.
+
+Refaktorované komponenty:
+- `PostCard` (náhľadové karty)
+- `PostDetail` (hero obrázok článku)
+
+Ak pridáte ďalšie obrázky, použite:
+
+```ts
+const responsive = generateResponsiveImage({
+    url: originalUrl,
+    widths: [320, 640, 960],
+    sizes: '(max-width: 640px) 100vw, 50vw',
+    loading: 'lazy',
+    fetchPriority: 'low'
+});
+```
+
+Potom v JSX:
+
+```tsx
+<picture>
+    {responsive.pictureSources.map(s => <source key={s.type} type={s.type} srcSet={s.srcSet} sizes={responsive.img.sizes} />)}
+    <img {...responsive.img} alt="..." />
+</picture>
+```
+
+---
+
+## ⚡ Prefetch & Performance
+
+Súbor `utils/prefetch.ts` implementuje registráciu trás a komponentov pre prefetch.
+
+- `prefetch(id, loader)` sa volá pri hover/focus navigačného linku.
+- Idle prefetch sa plánuje cez `requestIdleCallback` / timeout fallback.
+- Minimalizuje blokujúce zdroje (len dynamické importy / API volania podľa potreby).
+
+---
+
+## 🌗 Tmavý Režim (Dark Mode)
+
+Implementované v `services/themeService.ts` + prepínač `components/ThemeToggle.tsx`.
+
+- Režimy: `light`, `dark`, `auto` (nasleduje systém `prefers-color-scheme`).
+- Persistencia: `localStorage` kľúč `viandmo-theme`.
+- CSS premenlivé tokeny sa injektujú pri inicializácii a pri zmene témy.
+
+---
+
+## 🧱 Service Worker Vylepšenia
+
+- Segmentované cache: shell / static / api / images / fonts.
+- `stale-while-revalidate` pre obrázky s jednoduchým obmedzením veľkosti (`IMAGE_CACHE_MAX_ENTRIES`).
+- Možnosť ďalšieho rozšírenia pre normalizáciu variantov (aktuálne priamy key podľa URL).
+
 
 ---
 

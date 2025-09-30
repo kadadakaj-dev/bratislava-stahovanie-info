@@ -3,6 +3,12 @@ export interface Theme {
   colors: {
     [key: string]: string;
   };
+  semantic?: {
+    info: string;
+    success: string;
+    warning: string;
+    danger: string;
+  };
   fonts: {
     sans: string;
     fontFeatureSettings: string;
@@ -16,6 +22,9 @@ export interface Theme {
     halftoneOpacity: number;
     duotoneOpacity: number;
   };
+  spacing?: Record<string, string>;
+  radius?: Record<string, string>;
+  motion?: Record<string, string>;
 }
 
 const vibrantViandmo: Theme = {
@@ -39,6 +48,12 @@ const vibrantViandmo: Theme = {
     '--border': '0 83 156 / 0.15',
     '--ring': 'var(--tangerine)',
   },
+  semantic: {
+    info: '2 132 199',
+    success: '5 150 105',
+    warning: '217 119 6',
+    danger: '220 38 38',
+  },
   fonts: {
     sans: "'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
     fontFeatureSettings: '"calt", "liga", "ss01", "cv10"',
@@ -52,6 +67,9 @@ const vibrantViandmo: Theme = {
     halftoneOpacity: 0.03,
     duotoneOpacity: 0.9,
   },
+  spacing: { xs: '4px', sm: '8px', md: '16px', lg: '24px', xl: '40px', '2xl': '56px' },
+  radius: { sm: '4px', md: '8px', lg: '14px', pill: '999px' },
+  motion: { ease: 'cubic-bezier(0.4,0,0.2,1)', fast: '120ms', base: '200ms', slow: '320ms' }
 };
 
 const warhol4DX: Theme = {
@@ -73,6 +91,12 @@ const warhol4DX: Theme = {
     '--border': '0 56 68 / 0.12',
     '--ring': 'var(--lime-viandmo)',
   },
+  semantic: {
+    info: '2 132 199',
+    success: '5 150 105',
+    warning: '217 119 6',
+    danger: '220 38 38',
+  },
   fonts: {
     sans: "'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
     fontFeatureSettings: '"calt", "liga", "ss01", "cv10"',
@@ -86,11 +110,43 @@ const warhol4DX: Theme = {
     halftoneOpacity: 0.04,
     duotoneOpacity: 0.85,
   },
+  spacing: { xs: '4px', sm: '8px', md: '16px', lg: '24px', xl: '40px', '2xl': '56px' },
+  radius: { sm: '4px', md: '8px', lg: '14px', pill: '999px' },
+  motion: { ease: 'cubic-bezier(0.4,0,0.2,1)', fast: '120ms', base: '200ms', slow: '320ms' }
+};
+
+// Dark mode variant derived from Vibrant theme
+const darkViandmo: Theme = {
+  ...vibrantViandmo,
+  name: 'Vibrant Viandmo Dark',
+  colors: {
+    '--black': '0 0 0',
+    '--white': '255 255 255',
+    '--sapphire': '34 121 199',
+    '--tangerine': '255 161 53',
+    '--sky-blue': '20 32 44',
+    '--slate-gray': '165 173 181',
+    '--surface-1': '24 32 38',
+    '--surface-2': '34 44 54',
+    '--text-primary': 'var(--white)',
+    '--text-secondary': 'var(--tangerine)',
+    '--text-muted': '165 173 181',
+    '--primary': 'var(--sapphire)',
+    '--accent': 'var(--tangerine)',
+    '--on-primary': 'var(--black)',
+    '--border': '255 255 255 / 0.14',
+    '--ring': 'var(--tangerine)',
+  },
+  effects: {
+    halftoneOpacity: 0.05,
+    duotoneOpacity: 0.75,
+  }
 };
 
 export const themes: { [key: string]: Theme } = {
   'Vibrant Viandmo': vibrantViandmo,
   'Warhol 4D-X': warhol4DX,
+  'Vibrant Viandmo Dark': darkViandmo,
 };
 
 export const activeTheme: Theme = themes['Vibrant Viandmo'];

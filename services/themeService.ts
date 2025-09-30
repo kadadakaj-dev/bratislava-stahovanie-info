@@ -1,9 +1,40 @@
-import { activeTheme, Theme } from '../theme/theme.config';
+import { activeTheme, themes, Theme as ThemeConfig } from '../theme/theme.config';
 
-const generateThemeCss = (theme: Theme): string => {
+export type UserThemePreference = 'light' | 'dark' | 'auto';
+
+const THEME_STORAGE_KEY = 'ui-theme-pref';
+
+const resolveTheme = (pref: UserThemePreference): ThemeConfig => {
+  if (pref === 'auto') {
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return themes['Vibrant Viandmo Dark'] || activeTheme;
+    }
+    return activeTheme;
+  }
+  if (pref === 'dark') return themes['Vibrant Viandmo Dark'] || activeTheme;
+  return activeTheme; // light fallback
+};
+
+const generateThemeCss = (theme: ThemeConfig): string => {
   const colorVariables = Object.entries(theme.colors)
     .map(([key, value]) => `      ${key}: ${value};`)
     .join('\n');
+
+  const semanticVariables = theme.semantic ? Object.entries(theme.semantic)
+    .map(([k,v]) => `      --color-${k}: ${v};`)
+    .join('\n') : '';
+
+  const spacingVariables = theme.spacing ? Object.entries(theme.spacing)
+    .map(([k,v]) => `      --space-${k}: ${v};`)
+    .join('\n') : '';
+
+  const radiusVariables = theme.radius ? Object.entries(theme.radius)
+    .map(([k,v]) => `      --radius-${k}: ${v};`)
+    .join('\n') : '';
+
+  const motionVariables = theme.motion ? Object.entries(theme.motion)
+    .map(([k,v]) => `      --motion-${k}: ${v};`)
+    .join('\n') : '';
     
   const shadowVariables = Object.entries(theme.shadows)
     .map(([key, value]) => `      ${key}: ${value};`)
@@ -12,7 +43,11 @@ const generateThemeCss = (theme: Theme): string => {
   return `
     :root {
 ${colorVariables}
+${semanticVariables}
 ${shadowVariables}
+${spacingVariables}
+${radiusVariables}
+${motionVariables}
     }
 
     /* Enhanced WhatsApp Icon Style */
@@ -85,8 +120,15 @@ ${shadowVariables}
     }
 
     body {
-        font-family: ${theme.fonts.sans};
-        font-feature-settings: ${theme.fonts.fontFeatureSettings};
+      font-family: ${theme.fonts.sans};
+      font-feature-settings: ${theme.fonts.fontFeatureSettings};
+    }
+
+    /* Dark mode auto support (prefers-color-scheme) if dark variant exists */
+    @media (prefers-color-scheme: dark) {
+      :root[data-theme-auto='true'] {
+        /* Could dynamically swap to dark theme if implemented */
+      }
     }
     
     .faq-answer {
@@ -95,8 +137,9 @@ ${shadowVariables}
   `;
 };
 
-const applyTheme = (): void => {
-  const themeCss = generateThemeCss(activeTheme);
+const applyTheme = (pref: UserThemePreference = 'light'): void => {
+  const themeObj = resolveTheme(pref);
+  const themeCss = generateThemeCss(themeObj);
   let styleElement = document.getElementById('app-theme');
 
   if (!styleElement) {
@@ -106,8 +149,33 @@ const applyTheme = (): void => {
   }
 
   styleElement.textContent = themeCss;
+  document.documentElement.dataset.theme = pref;
+  if (pref === 'auto') {
+    document.documentElement.dataset.themeAuto = 'true';
+  } else {
+    delete document.documentElement.dataset.themeAuto;
+  }
+};
+
+export const initTheme = (): UserThemePreference => {
+  let stored: UserThemePreference | null = null;
+  if (typeof window !== 'undefined') {
+    stored = (localStorage.getItem(THEME_STORAGE_KEY) as UserThemePreference) || null;
+  }
+  const pref: UserThemePreference = stored || 'light';
+  applyTheme(pref);
+  return pref;
+};
+
+export const setUserTheme = (pref: UserThemePreference) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(THEME_STORAGE_KEY, pref);
+  }
+  applyTheme(pref);
 };
 
 export const themeService = {
   applyTheme,
+  initTheme,
+  setUserTheme,
 };

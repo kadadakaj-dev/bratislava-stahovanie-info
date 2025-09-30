@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { analyticsService } from './services/analyticsService';
+import { analyticsService, trackScroll75Once } from './services/analyticsService';
 import { sk } from './locales/sk';
 import { en } from './locales/en';
 import { themeService } from './services/themeService';
@@ -12,6 +12,8 @@ import { useFocusHeading } from './hooks/useFocusHeading';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 const translations = { sk, en };
+// Intent-based lazy load (Chatbot only when user likely to interact)
+const ChatbotLazy = lazy(() => import('./components/chatbot/Chatbot'));
 
 export type Locale = 'sk' | 'en';
 export type Translations = typeof translations.sk;
@@ -68,6 +70,20 @@ function App() {
     analyticsService.trackPageView(pageName, path);
   }, [currentView, selectedPostId]);
 
+  // Scroll depth 75% event once per view
+  useEffect(() => {
+    const handler = () => {
+      const scrollPos = window.scrollY + window.innerHeight;
+      const total = document.documentElement.scrollHeight;
+      if (total > 0 && scrollPos / total >= 0.75) {
+        trackScroll75Once(currentView);
+        window.removeEventListener('scroll', handler);
+      }
+    };
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, [currentView]);
+
   const handleNavigate = (view: View) => navigate(view);
 
   const renderContent = () => {
@@ -84,6 +100,28 @@ function App() {
         default: return <ServicesPage t={t} onNavigate={handleNavigate} />;
     }
   };
+
+  // Preload Chatbot after idle or when user scrolls near bottom
+  useEffect(() => {
+    let aborted = false;
+    const idleCallback = (cb: () => void) => 'requestIdleCallback' in window ? (window as any).requestIdleCallback(cb, { timeout: 3000 }) : setTimeout(cb, 1200);
+    idleCallback(() => {
+      if (!aborted) {
+        import('./components/chatbot/Chatbot');
+      }
+    });
+    const handleScroll = () => {
+      if (aborted) return;
+      const scrollPos = window.scrollY + window.innerHeight;
+      const threshold = document.body.offsetHeight * 0.6;
+      if (scrollPos >= threshold) {
+        import('./components/chatbot/Chatbot');
+        window.removeEventListener('scroll', handleScroll);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => { aborted = true; window.removeEventListener('scroll', handleScroll); };
+  }, []);
 
   return (
     <div className="bg-surface-1 text-text-primary min-h-screen flex flex-col transition-colors duration-300">
@@ -105,6 +143,10 @@ function App() {
         </ErrorBoundary>
       </main>
       <Footer t={t} />
+      {/* Chatbot portal (lazy) */}
+      <Suspense fallback={null}>
+        <ChatbotLazy t={t} />
+      </Suspense>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { VMLogo, MenuIcon, XIcon, FacebookIcon, WhatsAppIcon, InformationCircleIcon, RectangleStackIcon, TagIcon, UserGroupIcon, BookOpenIcon } from '../constants';
 import { Locale, Translations, View } from '../App';
 import { analyticsService } from '../services/analyticsService';
+import { prefetch, scheduleIdlePrefetch } from '../utils/prefetch';
 
 interface HeaderProps {
   locale: Locale;
@@ -77,6 +78,11 @@ const Header: React.FC<HeaderProps> = ({ locale, setLocale, t, currentView, sele
     { href: '#blog', text: t.blog, icon: <BookOpenIcon className="w-6 h-6" />, view: 'blog' },
   ];
 
+  // Idle prefetch of the two most probable next pages (heuristic)
+  useEffect(() => {
+    scheduleIdlePrefetch(['pricing','references']);
+  }, []);
+
   return (
     <>
       <header className="bg-surface-1/80 backdrop-blur-md sticky top-0 z-30 transition-colors duration-300 border-b border-border">
@@ -94,19 +100,19 @@ const Header: React.FC<HeaderProps> = ({ locale, setLocale, t, currentView, sele
             </a>
             <div className="flex items-center gap-2 md:gap-4">
               <nav className="hidden md:flex items-center gap-1 md:gap-2">
-                  <a href="#about" className={`${navLinkClasses} ${currentView === 'about' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'about' ? 'page' : undefined}>
+          <a href="#about" onMouseEnter={() => prefetch('about')} onFocus={() => prefetch('about')} className={`${navLinkClasses} ${currentView === 'about' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'about' ? 'page' : undefined}>
                       {t.about}
                   </a>
-                  <a href="#services" className={`${navLinkClasses} ${currentView === 'services' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'services' ? 'page' : undefined}>
+          <a href="#services" onMouseEnter={() => prefetch('services')} onFocus={() => prefetch('services')} className={`${navLinkClasses} ${currentView === 'services' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'services' ? 'page' : undefined}>
                       {t.services}
                   </a>
-                  <a href="#pricing" className={`${navLinkClasses} ${currentView === 'pricing' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'pricing' ? 'page' : undefined}>
+          <a href="#pricing" onMouseEnter={() => prefetch('pricing')} onFocus={() => prefetch('pricing')} className={`${navLinkClasses} ${currentView === 'pricing' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'pricing' ? 'page' : undefined}>
                       {t.pricing}
                   </a>
-                  <a href="#references" className={`${navLinkClasses} ${currentView === 'references' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'references' ? 'page' : undefined}>
+          <a href="#references" onMouseEnter={() => prefetch('references')} onFocus={() => prefetch('references')} className={`${navLinkClasses} ${currentView === 'references' ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'references' ? 'page' : undefined}>
                       {t.referencie}
                   </a>
-                  <a href="#blog" className={`${navLinkClasses} ${currentView === 'blog' && selectedPostId === null ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'blog' && selectedPostId === null ? 'page' : undefined}>
+          <a href="#blog" onMouseEnter={() => prefetch('blog')} onFocus={() => prefetch('blog')} className={`${navLinkClasses} ${currentView === 'blog' && selectedPostId === null ? activeLinkClasses : inactiveLinkClasses}`} aria-current={currentView === 'blog' && selectedPostId === null ? 'page' : undefined}>
                       {t.blog}
                   </a>
               </nav>

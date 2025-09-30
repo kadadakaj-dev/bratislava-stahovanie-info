@@ -9,6 +9,8 @@ import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import { Translations } from '../App';
 import { sanitizeHtml } from '../utils/sanitizer';
+import { generateResponsiveImage } from '../utils/image';
+import { trackBlogToForm } from '../services/analyticsService';
 
 interface PostDetailProps {
   postId: number;
@@ -100,11 +102,43 @@ const PostDetail: React.FC<PostDetailProps> = ({ postId, t }) => {
       </header>
       
       <div className="duotone-wrapper">
-        <img className="w-full h-64 md:h-96 object-cover" src={post.imageUrl} alt={post.imageAlt} width="1200" height="480" loading="lazy" decoding="async" />
+        {(() => {
+          const responsive = generateResponsiveImage({
+            url: post.imageUrl,
+            widths: [640, 800, 960, 1200, 1600],
+            sizes: '(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px',
+            loading: 'lazy',
+            fetchPriority: 'low'
+          });
+          return (
+            <picture>
+              {responsive.pictureSources.map(s => (
+                <source key={s.type} type={s.type} srcSet={s.srcSet} sizes={responsive.img.sizes} />
+              ))}
+              <img
+                className="w-full h-64 md:h-96 object-cover"
+                src={responsive.img.src}
+                srcSet={responsive.img.srcSet}
+                sizes={responsive.img.sizes}
+                width={responsive.img.width}
+                height={responsive.img.height}
+                alt={post.imageAlt}
+                loading={responsive.img.loading}
+                decoding={responsive.img.decoding}
+                fetchPriority={responsive.img.fetchPriority}
+              />
+            </picture>
+          );
+        })()}
       </div>
 
       <div className="p-4 sm:p-6 lg:p-8" ref={contentRef}>
-        <div className="prose prose-lg dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: cleanContent }} />
+        <div className="prose prose-lg dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: cleanContent }} onClick={(e) => {
+          const target = e.target as HTMLAnchorElement;
+          if (target && target.tagName === 'A' && target.getAttribute('href')?.includes('quote') ) {
+            trackBlogToForm(`#blog/${post.id}`, post.id);
+          }
+        }} />
         
         <div className="mt-12 pt-8 border-t border-border space-y-10">
             <SocialShare post={post} t={t} />

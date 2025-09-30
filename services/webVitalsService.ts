@@ -1,18 +1,29 @@
 import { onCLS, onFID, onLCP, onINP, onTTFB, CLSMetric, FIDMetric, LCPMetric, INPMetric, TTFBMetric } from 'web-vitals';
-import { analyticsService } from './analyticsService';
+import { trackWebVital } from './analyticsService';
 
 type AnyMetric = CLSMetric | FIDMetric | LCPMetric | INPMetric | TTFBMetric | { name: string; value: number; id: string };
 
+// Sampling ratio (avoid flooding analytics in high traffic). 1 = 100%.
+const SAMPLE_RATIO = 1;
+
+const round = (val: number) => Math.round(val * 100) / 100; // 2 decimals
+
+const shouldSample = () => {
+  if (SAMPLE_RATIO >= 1) return true;
+  return Math.random() < SAMPLE_RATIO;
+};
+
 const report = (metric: AnyMetric) => {
   try {
-    analyticsService.trackEvent('web_vital', {
+    if (!shouldSample()) return;
+    trackWebVital({
       name: metric.name,
-      value: metric.value,
+      value: round(metric.value as number),
       id: metric.id,
-      rating: (metric as any).rating
+      rating: (metric as any).rating,
     });
-  } catch (e) {
-    // swallow
+  } catch {
+    // no-op
   }
 };
 
