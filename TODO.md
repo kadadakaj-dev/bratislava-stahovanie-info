@@ -1,6 +1,7 @@
 # TODO: Ensure Blogs, Sections, and Pages Work Perfectly
 
 ## Plan Steps
+
 1. Update App.tsx: Improve routing error handling, add fade-in animations for page transitions, ensure no layout shifts.
 2. Enhance useRouting.ts: Add validation for invalid postIds, handle back/forward buttons.
 3. PostList.tsx: Refine grid responsiveness (1 mobile, 2 tablet, 3 desktop), add fade-in for cards, optimize loading.
@@ -12,6 +13,7 @@
 9. User interactions: Enhance buttons, comments, social share, chatbot with better feedback.
 
 ## Progress
+
 - [ ] Step 1: Update App.tsx
 - [ ] Step 2: Enhance useRouting.ts
 - [ ] Step 3: Update PostList.tsx

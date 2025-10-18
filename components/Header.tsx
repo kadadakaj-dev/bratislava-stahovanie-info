@@ -49,10 +49,11 @@ const Header: React.FC<HeaderProps> = ({ locale, setLocale, t, currentView, sele
       menuNode.addEventListener('keydown', handleKeyDown);
       firstElement.focus();
 
+      const currentOpenButton = openButtonRef.current;
       return () => {
         menuNode.removeEventListener('keydown', handleKeyDown);
-        if (document.body.contains(openButtonRef.current)) {
-           openButtonRef.current?.focus();
+        if (document.body.contains(currentOpenButton)) {
+           currentOpenButton?.focus();
         }
         document.body.style.overflow = '';
       };

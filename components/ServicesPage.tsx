@@ -15,7 +15,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ t, onNavigate }) => {
 
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    (document as any).querySelector('footer')?.scrollIntoView({ behavior: 'smooth' });
+    (document.querySelector('footer') as HTMLElement)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (

@@ -12,7 +12,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ t }) => {
 
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    (document as any).querySelector('footer')?.scrollIntoView({ behavior: 'smooth' });
+    (document.querySelector('footer') as HTMLElement)?.scrollIntoView({ behavior: 'smooth' });
   };
     
   return (
