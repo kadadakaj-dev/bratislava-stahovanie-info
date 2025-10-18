@@ -1,30 +1,75 @@
-import { useEffect, useState } from 'react';
+
+// 2025-10-18: Blog URLs refactored, numeric prefixes removed, slugs used for routing, redirects added for SEO
+import { useEffect, useState, useCallback } from 'react';
 import { View } from '../App';
+import { getAllBlogSlugs, getSlugFromOldId } from '../services/blogService';
+
 
 export const useRouting = () => {
   const [view, setView] = useState<View>('services');
-  const [postId, setPostId] = useState<number | null>(null);
+  const [blogSlug, setBlogSlug] = useState<string | null>(null);
+  const [isValidRoute, setIsValidRoute] = useState<boolean>(true);
+
+  // Helper: returns true if string is a valid blog slug
+  const isValidBlogSlug = (slug: string) => getAllBlogSlugs().includes(slug);
+
+  // Helper: returns slug for old numeric blog id (if exists)
+  const getRedirectSlug = (idStr: string) => getSlugFromOldId(idStr);
+
+  const parseHash = useCallback(() => {
+    const hash = window.location.hash.slice(1);
+    const [path, param] = hash.split('/');
+    const validViews: View[] = ['blog', 'services', 'pricing', 'references', 'about'];
+    if (validViews.includes(path as View)) {
+      const newView = path as View;
+      if (newView === 'blog' && param) {
+        // If param is a valid slug, use it
+        if (isValidBlogSlug(param)) {
+          setView('blog');
+          setBlogSlug(param);
+          setIsValidRoute(true);
+        } else if (/^\d+/.test(param)) {
+          // If param is old numeric id, redirect to slug
+          const redirectSlug = getRedirectSlug(param);
+          if (redirectSlug) {
+            window.location.hash = `#blog/${redirectSlug}`;
+            return;
+          } else {
+            setView('blog');
+            setBlogSlug(null);
+            setIsValidRoute(false);
+          }
+        } else {
+          setView('blog');
+          setBlogSlug(null);
+          setIsValidRoute(false);
+        }
+      } else {
+        setView(newView);
+        setBlogSlug(null);
+        setIsValidRoute(true);
+      }
+    } else {
+      setView('services');
+      setBlogSlug(null);
+      setIsValidRoute(false);
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
 
   useEffect(() => {
-    const parseHash = () => {
-      const hash = window.location.hash.slice(1);
-      const [path, idStr] = hash.split('/');
-      const validViews: View[] = ['blog', 'services', 'pricing', 'references', 'about'];
-      if (validViews.includes(path as View)) {
-        const newView = path as View;
-        const newPostId = newView === 'blog' && idStr && !isNaN(parseInt(idStr)) ? parseInt(idStr) : null;
-        setView(newView);
-        setPostId(newPostId);
-      } else {
-        setView('services');
-        setPostId(null);
-      }
-      window.scrollTo(0, 0);
-    };
     parseHash();
     window.addEventListener('hashchange', parseHash);
     return () => window.removeEventListener('hashchange', parseHash);
+  }, [parseHash]);
+
+
+  // New: navigate using slug for blog, else as before
+  const navigate = useCallback((v: View, slug?: string) => {
+    const hash = slug ? `#${v}/${slug}` : `#${v}`;
+    window.location.hash = hash;
   }, []);
 
-  return { view, postId, navigate: (v: View) => { window.location.hash = `#${v}`; } };
+  return { view, blogSlug, isValidRoute, navigate };
 };

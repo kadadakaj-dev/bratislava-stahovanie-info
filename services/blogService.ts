@@ -1,91 +1,138 @@
 import { Post } from '../types';
 
-const mockPosts: Post[] = [
+// 2025-10-18: Blog URLs refactored, slug helpers added for routing and redirects
+// --- Blog slug helpers for routing/redirects (2025-10-18) ---
+// Use only in frontend for routing, or server-side for sitemap/redirects
+export function getAllBlogSlugs(): string[] {
+  return [
+    'kontrolny-zoznam-stahovanie',
+    'kolko-stoji-stahovanie-bratislava',
+    'ako-naplanovat-stahovanie',
+    'problem-so-starym-nabytkom',
+    'ako-vybrat-stahovaciu-firmu',
+    'stahovanie-studentov',
+    'stahovanie-seniorov',
+    'ako-usetrit-pri-stahovani',
+    'odvoz-odpadu-po-stahovani',
+    'ako-zvladnut-stahovanie-firmy',
+    'stahovanie-v-ruzine',
+    'ako-zabranit-poskodeniu-nabytku',
+    'stahovanie-do-noveho-mesta',
+    'ako-pripravit-deti-na-stahovanie',
+    // ...pridať ďalšie podľa obsahu blogu
+  ];
+}
+
+export function getSlugFromOldId(idStr: string): string | null {
+  const idToSlug: Record<string, string> = {
+    '02': 'kontrolny-zoznam-stahovanie',
+    '03': 'kolko-stoji-stahovanie-bratislava',
+    '04': 'ako-naplanovat-stahovanie',
+    '05': 'problem-so-starym-nabytkom',
+    '06': 'ako-vybrat-stahovaciu-firmu',
+    '07': 'stahovanie-studentov',
+    '08': 'stahovanie-seniorov',
+    '09': 'ako-usetrit-pri-stahovani',
+    '10': 'odvoz-odpadu-po-stahovani',
+    '11': 'ako-zvladnut-stahovanie-firmy',
+    '12': 'stahovanie-v-ruzine',
+    '13': 'ako-zabranit-poskodeniu-nabytku',
+    '14': 'stahovanie-do-noveho-mesta',
+    '15': 'ako-pripravit-deti-na-stahovanie',
+  };
+  return idToSlug[idStr] || null;
+}
+
+const mockPosts = [
+      
+              excerpt: "Plánujete sťahovanie v rámci Bratislavy alebo do nej? Tu nájdete všetko, čo potrebujete vedieť – od výberu správnej firmy, cez ceny, až po praktické tipy na balenie. Objavte, ako sa presťahovať rýchlo, lacno a bez stresu.",
+            <div class="flex-shrink-0 w-12 h-12 bg-accent/10 text-accent rounded-full flex items-center justify-center">
+              tags: ['vypratávanie', 'pivnica', 'organizácia', 'urob si sám'],
   {
     id: 1,
+    slug: 'kontrolny-zoznam-stahovanie',
     title: "Sťahovanie Bratislava: Kompletný sprievodca pre bezproblémový presun",
     excerpt: "Plánujete sťahovanie v rámci Bratislavy alebo do nej? Tu nájdete všetko, čo potrebujete vedieť – od výberu správnej firmy, cez ceny, až po praktické tipy na balenie. Objavte, ako sa presťahovať rýchlo, lacno a bez stresu.",
-    content: `
-      <p class="lead text-lg text-text-muted">Sťahovanie patrí medzi najstresujúcejšie životné udalosti. Krabice, chaos, logistika – to všetko môže byť zdrvujúce. Najmä v dynamickom meste ako Bratislava, kde sa život nikdy nezastaví. Ale nemusí to tak byť. So správnym plánovaním a spoľahlivým partnerom sa môže stať sťahovanie vzrušujúcim začiatkom novej kapitoly. Tento kompletný sprievodca vám ukáže, ako zvládnuť <strong>sťahovanie v Bratislave</strong> efektívne a bez zbytočných starostí.</p>
-      
-      <h2 id="ako-vybrat">Ako si vybrať tú najlepšiu sťahovaciu firmu?</h2>
-      <p>Výber správnej sťahovacej služby je kľúčový. V Bratislave pôsobí desiatky firiem, no nie všetky ponúkajú rovnakú kvalitu. Na čo sa zamerať?</p>
-      
-      <div class="grid md:grid-cols-2 gap-6 my-8">
-        <div class="flex items-start gap-4 p-4 bg-surface-2 rounded-lg">
-            <div class="flex-shrink-0 w-12 h-12 bg-accent/10 text-accent rounded-full flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            </div>
-            <div>
-                <h4 class="font-bold text-text-primary">Recenzie a referencie</h4>
-                <p class="text-sm text-text-muted">Hľadajte reálne hodnotenia na Googli alebo sociálnych sieťach. Spokojní zákazníci sú najlepšou vizitkou. Nebojte sa opýtať firmy na konkrétne referencie.</p>
-            </div>
-        </div>
-        <div class="flex items-start gap-4 p-4 bg-surface-2 rounded-lg">
-             <div class="flex-shrink-0 w-12 h-12 bg-accent/10 text-accent rounded-full flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 7.756a4.5 4.5 0 010 8.488M7.5 10.5h5.25m-5.25 3h5.25M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            </div>
-            <div>
-                <h4 class="font-bold text-text-primary">Transparentná cenotvorba</h4>
-                <p class="text-sm text-text-muted">Seriózna firma vám poskytne detailnú cenovú ponuku bez skrytých poplatkov. Vyžiadajte si ju vopred a písomne. Viac o cenách nájdete v sekcii <a href="#cennik">Cenník sťahovania</a>.</p>
-            </div>
-        </div>
-        <div class="flex items-start gap-4 p-4 bg-surface-2 rounded-lg">
-            <div class="flex-shrink-0 w-12 h-12 bg-accent/10 text-accent rounded-full flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg>
-            </div>
-            <div>
-                <h4 class="font-bold text-text-primary">Rozsah služieb</h4>
-                <p class="text-sm text-text-muted">Potrebujete len prevoz alebo aj balenie, montáž nábytku a likvidáciu starých vecí? Uistite sa, že firma ponúka všetko, čo potrebujete.</p>
-            </div>
-        </div>
-         <div class="flex items-start gap-4 p-4 bg-surface-2 rounded-lg">
-            <div class="flex-shrink-0 w-12 h-12 bg-accent/10 text-accent rounded-full flex items-center justify-center">
-               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75h6m-6 4.5h6m-6-8.25h6M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5M3.75 17.25h16.5" /></svg>
-            </div>
-            <div>
-                <h4 class="font-bold text-text-primary">Poistenie</h4>
-                <p class="text-sm text-text-muted">Overte si, či má firma poistenie zodpovednosti za škodu. Nehody sa stávajú a je dôležité, aby bol váš majetok chránený.</p>
-            </div>
-        </div>
-      </div>
-      
-      <h3>Prieskum spokojnosti zákazníkov (2023)</h3>
-      <p>Na základe nášho prieskumu medzi 100 nedávno presťahovanými obyvateľmi Bratislavy sme zistili, čo sú pre nich najdôležitejšie faktory pri výbere <strong>sťahovacej služby</strong>.</p>
-      <div class="space-y-4 my-6">
-        <div>
-          <div class="flex justify-between mb-1">
-            <span class="text-base font-medium text-text-primary">Spoľahlivosť a dochvíľnosť</span>
-            <span class="text-sm font-medium text-text-secondary">92%</span>
-          </div>
+    content: `<p class="lead text-lg text-text-muted">Sťahovanie patrí medzi najstresujúcejšie životné udalosti...</p>`,
+    imageUrl: 'https://picsum.photos/seed/stahovanie1/800/400',
+    imageAlt: 'Sťahovacie krabice naskladané v prázdnej miestnosti pripravené na presun v Bratislave.',
+    author: 'VI&MO Tím',
+    date: '14. mája 2024',
+    datePublished: '2024-05-14T09:00:00+02:00',
+    tags: ['sťahovanie Bratislava', 'sťahovacia služba', 'lacné sťahovanie'],
+  },
+  {
+    id: 2,
+    slug: 'ako-vypratat-pivnicu-efektivne',
+    title: "5 krokov, ako efektívne vypratať pivnicu a získať späť svoj priestor",
+    excerpt: "Je vaša pivnica plná vecí, na ktoré ste už zabudli? Zmeňte ju z tmavého skladiska na funkčný priestor. Náš sprievodca vás prevedie piatimi jednoduchými krokmi k dokonale organizovanej pivnici.",
+    content: `<p class="lead text-lg text-text-muted">Pivnica. Pre niekoho pokladnica, pre iného nočná mora plná pavučín...</p>`,
+    imageUrl: 'https://picsum.photos/seed/vypratavanie2/800/400',
+    imageAlt: 'Preplnená pivnica pred vyprataním plná starých vecí a neporiadku.',
+    author: 'VI&MO Tím',
+    date: '28. mája 2024',
+    datePublished: '2024-05-28T10:00:00+02:00',
+    tags: ['vypratávanie', 'pivnica', 'organizácia', 'urob si sám'],
+  },
+  {
+    id: 3,
+    slug: 'ako-zvladnut-stahovanie-firmy',
+    title: "Sťahovanie firmy bez stresu: Kľúčové tipy pre minimálny výpadok",
+    excerpt: "Presun kancelárie či celého podniku je komplexná operácia. Kľúčom k úspechu je detailné plánovanie a stratégia, ktorá minimalizuje dopad na váš biznis. Prečítajte si naše osvedčené tipy.",
+    content: `<p class="lead text-lg text-text-muted">Sťahovanie firmy nie je len o prenose stolov a počítačov...</p>`,
+    imageUrl: 'https://picsum.photos/seed/firma3/800/400',
+    imageAlt: 'Moderná kancelária s pracovníkmi baliacimi počítače a vybavenie do krabíc pred sťahovaním firmy.',
+    author: 'VI&MO Tím',
+    date: '4. júna 2024',
+    datePublished: '2024-06-04T11:00:00+02:00',
+    tags: ['sťahovanie firiem', 'kancelária', 'biznis', 'logistika'],
+  },
+  {
+    id: 4,
+    slug: 'odvoz-odpadu-po-stahovani',
+    title: "Veľké upratovanie pred sťahovaním: Ako na odpad a nepotrebné veci v Bratislave",
+    excerpt: "Sťahovanie nie je len o krabiciach, ale aj o triedení. Od vypratania garáže po odvoz starej kuchyne – zistite, ako efektívne zvládnuť odpad a prečo je prenájom kontajnera často najlepšie riešenie.",
+    content: `<p class="lead text-lg text-text-muted">Každé sťahovanie do nového bytu v Bratislave so sebou prináša jedinečnú príležitosť...</p>`,
+    imageUrl: 'https://picsum.photos/seed/odpad4/800/400',
+    imageAlt: 'Veľký kontajner na odpad pristavený pred domom počas vypratávania pred sťahovaním.',
+    author: 'VI&MO Tím',
+    date: '18. júna 2024',
+    datePublished: '2024-06-18T09:00:00+02:00',
+    tags: ['odvoz odpadu Bratislava', 'vypratávanie', 'prenájom kontajnera'],
+  },
+          id: 3,
+          slug: 'ako-zvladnut-stahovanie-firmy',
+          title: "Sťahovanie firmy bez stresu: Kľúčové tipy pre minimálny výpadok",
+          excerpt: "Presun kancelárie či celého podniku je komplexná operácia. Kľúčom k úspechu je detailné plánovanie a stratégia, ktorá minimalizuje dopad na váš biznis. Prečítajte si naše osvedčené tipy.",
+          content: `
+            <p class="lead text-lg text-text-muted">Sťahovanie firmy nie je len o prenose stolov a počítačov. Je to logistická výzva, kde hlavným cieľom je kontinuita prevádzky. Akýkoľvek výpadok znamená stratu produktivity a peňazí. Ako teda zabezpečiť, aby presun prebehol hladko a vaši zamestnanci mohli v pondelok ráno začať pracovať akoby sa nič nedialo? Odpoveďou je precízne plánovanie.</p>
           <div class="w-full bg-surface-2 rounded-full h-2.5 progress-bar">
-            <div class="bg-accent h-2.5 rounded-full progress-bar-inner" style="width: 0%" data-width="92%"></div>
-          </div>
-        </div>
-        <div>
-          <div class="flex justify-between mb-1">
-            <span class="text-base font-medium text-text-primary">Cena</span>
-            <span class="text-sm font-medium text-text-secondary">85%</span>
-          </div>
-          <div class="w-full bg-surface-2 rounded-full h-2.5 progress-bar">
+          imageUrl: 'https://picsum.photos/seed/firma3/800/400',
+          imageAlt: 'Moderná kancelária s pracovníkmi baliacimi počítače a vybavenie do krabíc pred sťahovaním firmy.',
+          author: 'VI&MO Tím',
+          date: '4. júna 2024',
+          datePublished: '2024-06-04T11:00:00+02:00',
+          tags: ['sťahovanie firiem', 'kancelária', 'biznis', 'logistika'],
+        },
             <div class="bg-accent h-2.5 rounded-full progress-bar-inner" style="width: 0%" data-width="85%"></div>
           </div>
         </div>
-        <div>
-          <div class="flex justify-between mb-1">
-            <span class="text-base font-medium text-text-primary">Opatrné zaobchádzanie s majetkom</span>
-            <span class="text-sm font-medium text-text-secondary">78%</span>
-          </div>
-          <div class="w-full bg-surface-2 rounded-full h-2.5 progress-bar">
             <div class="bg-accent h-2.5 rounded-full progress-bar-inner" style="width: 0%" data-width="78%"></div>
-          </div>
-        </div>
-      </div>
-
-      <h2 id="cennik">Cenník sťahovania v Bratislave: S čím počítať?</h2>
-      <p>Cena za sťahovanie sa odvíja od viacerých faktorov. Kým niektoré firmy účtujú hodinovú sadzbu, iné ponúkajú fixnú cenu za celý projekt. Priemerné ceny sa pohybujú v nasledujúcich reláciách:</p>
-      <ul>
+        {
+          id: 4,
+          slug: 'odvoz-odpadu-po-stahovani',
+          title: "Veľké upratovanie pred sťahovaním: Ako na odpad a nepotrebné veci v Bratislave",
+          excerpt: "Sťahovanie nie je len o krabiciach, ale aj o triedení. Od vypratania garáže po odvoz starej kuchyne – zistite, ako efektívne zvládnuť odpad a prečo je prenájom kontajnera často najlepšie riešenie.",
+          content: `
+            <p class="lead text-lg text-text-muted">Každé <strong>sťahovanie do nového bytu v Bratislave</strong> so sebou prináša jedinečnú príležitosť: zbaviť sa všetkého, čo už nepotrebujete. Či už ide o <strong>vypratávanie garáže</strong>, likvidáciu starého nábytku alebo odvoz odpadu po rekonštrukcii, správny prístup vám ušetrí čas, peniaze a nervy. Poďme sa pozrieť, ako na to efektívne.</p>
         <li><strong>Hodinová sadzba (2 pracovníci + auto):</strong> 35 - 50 € / hodina</li>
+          imageUrl: 'https://picsum.photos/seed/odpad4/800/400',
+          imageAlt: 'Veľký kontajner na odpad pristavený pred domom počas vypratávania pred sťahovaním.',
+          author: 'VI&MO Tím',
+          date: '18. júna 2024',
+          datePublished: '2024-06-18T09:00:00+02:00',
+          tags: ['odvoz odpadu Bratislava', 'vypratávanie', 'prenájom kontajnera'],
+        },
         <li><strong>Sťahovanie 1-izbového bytu:</strong> 150 - 250 €</li>
         <li><strong>Sťahovanie 2-izbového bytu:</strong> 250 - 400 €</li>
         <li><strong>Sťahovanie 3-izbového bytu:</strong> 400 - 600 €</li>

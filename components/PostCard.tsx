@@ -21,11 +21,11 @@ const PostCard: React.FC<PostCardProps> = ({ post, t }) => {
   return (
     <article
       className="relative isolate bg-surface-1 rounded-lg border-2 border-text-primary overflow-hidden transition-shadow duration-300 group focus-within:shadow-warhol hover:shadow-warhol flex flex-col"
-      aria-labelledby={`post-title-${post.id}`}
+      aria-labelledby={`post-title-${post.slug}`}
     >
       {/* Clickable overlay link kept first for early focus in DOM */}
       <a
-        href={`#blog/${post.id}`}
+        href={`#blog/${post.slug}`}
         className="absolute inset-0 z-10 focus:outline-none focus-visible:ring-4 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-1"
         aria-label={readMoreLabel}
       >
@@ -76,7 +76,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, t }) => {
           </ul>
         )}
         <h3
-          id={`post-title-${post.id}`}
+          id={`post-title-${post.slug}`}
           className="text-balance text-xl font-bold leading-snug text-text-primary mb-2 motion-safe:transition-colors group-hover:text-accent"
         >
           {post.title}
