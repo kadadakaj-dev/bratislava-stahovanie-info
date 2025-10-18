@@ -4,7 +4,7 @@ import { Post } from '../types';
 // --- Blog slug helpers for routing/redirects (2025-10-18) ---
 // Use only in frontend for routing, or server-side for sitemap/redirects
 export function getAllBlogSlugs(): string[] {
-  return [
+  const slugs: string[] = [
     'kontrolny-zoznam-stahovanie',
     'kolko-stoji-stahovanie-bratislava',
     'ako-naplanovat-stahovanie',
@@ -21,6 +21,7 @@ export function getAllBlogSlugs(): string[] {
     'ako-pripravit-deti-na-stahovanie',
     // ...pridať ďalšie podľa obsahu blogu
   ];
+  return slugs;
 }
 
 export function getSlugFromOldId(idStr: string): string | null {
@@ -40,33 +41,62 @@ export function getSlugFromOldId(idStr: string): string | null {
     '14': 'stahovanie-do-noveho-mesta',
     '15': 'ako-pripravit-deti-na-stahovanie',
   };
-  return idToSlug[idStr] || null;
+  return idToSlug[idStr] ?? null;
 }
 
-const mockPosts: Post[] = [
-];
-
-/**
- * Fetches all blog posts.
- * @returns A promise that resolves to an array of posts.
- */
-export const getPosts = (): Promise<Post[]> => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(mockPosts);
-    }, 500); // Simulate network delay
+function isPostArray(data: unknown): data is Post[] {
+  if (!Array.isArray(data)) return false;
+  return data.every((item: unknown): boolean => {
+    if (typeof item !== 'object' || item === null) return false;
+    const obj = item as Record<string, unknown>;
+    return 'id' in obj && typeof obj.id === 'number' &&
+           'title' in obj && typeof obj.title === 'string' &&
+           'excerpt' in obj && typeof obj.excerpt === 'string' &&
+           'content' in obj && typeof obj.content === 'string' &&
+           'imageUrl' in obj && typeof obj.imageUrl === 'string' &&
+           'imageAlt' in obj && typeof obj.imageAlt === 'string' &&
+           'author' in obj && typeof obj.author === 'string' &&
+           'date' in obj && typeof obj.date === 'string' &&
+           'datePublished' in obj && typeof obj.datePublished === 'string' &&
+           'tags' in obj && Array.isArray(obj.tags) && obj.tags.every((tag: unknown): boolean => typeof tag === 'string');
   });
-};
+}
 
-/**
- * Fetches a single blog post by its ID.
- * @param id The ID of the post to fetch.
- * @returns A promise that resolves to the post or undefined if not found.
- */
-export const getPostById = (id: number): Promise<Post | undefined> => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(mockPosts.find(post => post.id === id));
-      }, 300); // Simulate network delay
-    });
-};
+const mockPosts: Post[] = [];
+
+const BLOG_CACHE_KEY: string = 'blogPosts';
+
+export function getPosts(): Promise<Post[]> {
+  // Check localStorage for cached posts
+  const cachedPosts: string | null = localStorage.getItem(BLOG_CACHE_KEY);
+  if (cachedPosts !== null) {
+    try {
+      const parsed: unknown = JSON.parse(cachedPosts);
+      if (isPostArray(parsed)) {
+        return Promise.resolve(parsed);
+      } else {
+        console.error('Invalid cached blog posts data');
+      }
+    } catch (error: unknown) {
+      console.error('Failed to parse cached blog posts:', error);
+    }
+  }
+
+  // Fallback to loading from markdown files (mock implementation for now)
+  const posts: Post[] = mockPosts; // Replace with actual markdown loading logic
+
+  // Cache the posts in localStorage
+  try {
+    localStorage.setItem(BLOG_CACHE_KEY, JSON.stringify(posts));
+  } catch (error: unknown) {
+    console.error('Failed to cache blog posts:', error);
+  }
+
+  return Promise.resolve(posts);
+}
+
+export function getPostById(id: number): Promise<Post | undefined> {
+  return getPosts().then((posts: Post[]): Post | undefined => {
+    return posts.find((post: Post): boolean => post.id === id) ?? undefined;
+  });
+}
