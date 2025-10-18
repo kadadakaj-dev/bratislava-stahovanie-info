@@ -1,20 +1,18 @@
 import React from 'react';
 import { Translations, View } from '../App';
-import { analyticsService } from '../services/analyticsService';
 
 interface AboutPageProps {
   t: Translations;
 }
 
 const AboutPage: React.FC<AboutPageProps> = ({ t }) => {
-  const handleCtaClick = (targetView: View) => {
-    analyticsService.trackEvent('click_cta', { target: targetView, location: 'about_page_bottom' });
+  const handleCtaClick = (_targetView: View) => {
+    // Analytics removed
   }
 
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    analyticsService.trackEvent('click_cta', { target: 'contact', location: 'about_page_bottom' });
-    document.querySelector('footer')?.scrollIntoView({ behavior: 'smooth' });
+    (document as any).querySelector('footer')?.scrollIntoView({ behavior: 'smooth' });
   };
     
   return (
@@ -39,9 +37,9 @@ const AboutPage: React.FC<AboutPageProps> = ({ t }) => {
 
       {/* Services Grid */}
       <section aria-labelledby="about-services-heading">
-            <div className="grid md:grid-cols-2 gap-8">
-                {t.aboutPageContent.services.map(service => (
-                    <div key={service.title} className="bg-surface-1 rounded-lg border-2 border-text-primary p-6 transition-all duration-300 hover:shadow-warhol">
+            <div className="container grid gap-8 grid-cols-1 @834px:grid-cols-2">
+                {t.aboutPageContent.services.map((service, index) => (
+                    <div key={service.title} className="content-visibility-auto bg-surface-1 rounded-lg border-2 border-text-primary p-6 transition-all duration-300 hover:shadow-warhol animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
                         <h3 className="text-xl font-bold text-text-primary mb-2">{service.title}</h3>
                         <p className="text-text-muted">{service.description}</p>
                     </div>

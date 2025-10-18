@@ -11,10 +11,10 @@ export const useRouting = () => {
   const [isValidRoute, setIsValidRoute] = useState<boolean>(true);
 
   // Helper: returns true if string is a valid blog slug
-  const isValidBlogSlug = (slug: string) => getAllBlogSlugs().includes(slug);
+  const isValidBlogSlug = useCallback((slug: string) => getAllBlogSlugs().includes(slug), []);
 
   // Helper: returns slug for old numeric blog id (if exists)
-  const getRedirectSlug = (idStr: string) => getSlugFromOldId(idStr);
+  const getRedirectSlug = useCallback((idStr: string) => getSlugFromOldId(idStr), []);
 
   const parseHash = useCallback(() => {
     const hash = window.location.hash.slice(1);
@@ -55,7 +55,7 @@ export const useRouting = () => {
       setIsValidRoute(false);
     }
     window.scrollTo(0, 0);
-  }, []);
+  }, [isValidBlogSlug, getRedirectSlug]);
 
 
   useEffect(() => {
@@ -70,6 +70,15 @@ export const useRouting = () => {
     const hash = slug ? `#${v}/${slug}` : `#${v}`;
     window.location.hash = hash;
   }, []);
+
+  // Handle back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      parseHash();
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [parseHash]);
 
   return { view, blogSlug, isValidRoute, navigate };
 };

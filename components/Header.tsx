@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { VMLogo, MenuIcon, XIcon, FacebookIcon, WhatsAppIcon, InformationCircleIcon, RectangleStackIcon, TagIcon, UserGroupIcon, BookOpenIcon } from '../constants';
 import { Locale, Translations, View } from '../App';
-import { analyticsService } from '../services/analyticsService';
 import { prefetch, scheduleIdlePrefetch } from '../utils/prefetch';
 
 interface HeaderProps {
@@ -62,7 +61,7 @@ const Header: React.FC<HeaderProps> = ({ locale, setLocale, t, currentView, sele
   
   const handleLocaleToggle = () => {
       const newLocale = locale === 'sk' ? 'en' : 'sk';
-      analyticsService.trackEvent('toggle_language', { to_locale: newLocale });
+      // Analytics removed
       setLocale(newLocale);
   };
 

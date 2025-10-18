@@ -28,9 +28,11 @@ const PostList: React.FC<PostListProps> = ({ t }) => {
   }
 
   return (
-    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {posts.map(post => (
-        <PostCard key={post.slug} post={post} t={t} />
+    <div className="container grid gap-8 grid-cols-1 @834px:grid-cols-2 @1440px:grid-cols-3">
+      {posts.map((post, index) => (
+        <div key={post.slug} className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+          <PostCard post={post} t={t} />
+        </div>
       ))}
     </div>
   );

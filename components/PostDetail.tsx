@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Post, Comment } from '../types';
 import { getPostById } from '../services/blogService';
-import { getCommentsByPostId, addComment } from '../services/commentService';
 import { PostDetailSkeleton } from './SkeletonLoader';
 import { ArrowLeftIcon } from '../constants';
 import SocialShare from './SocialShare';
@@ -10,7 +9,6 @@ import CommentForm from './CommentForm';
 import { Translations } from '../App';
 import { sanitizeHtml } from '../utils/sanitizer';
 import { generateResponsiveImage } from '../utils/image';
-import { trackBlogToForm } from '../services/analyticsService';
 
 interface PostDetailProps {
   postId: number;
@@ -24,17 +22,14 @@ const PostDetail: React.FC<PostDetailProps> = ({ postId, t }) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchPostAndComments = async () => {
+    const fetchPost = async () => {
       setLoading(true);
-      const [fetchedPost, fetchedComments] = await Promise.all([
-        getPostById(postId),
-        getCommentsByPostId(postId),
-      ]);
+      const fetchedPost = await getPostById(postId);
       setPost(fetchedPost || null);
-      setComments(fetchedComments);
+      setComments([]); // Mock empty comments since service removed
       setLoading(false);
     };
-    fetchPostAndComments();
+    fetchPost();
   }, [postId]);
 
   useEffect(() => {
@@ -65,7 +60,14 @@ const PostDetail: React.FC<PostDetailProps> = ({ postId, t }) => {
   }, [loading]);
 
   const handleCommentSubmit = useCallback(async (commentData: { author: string; content: string }) => {
-    const newComment = await addComment({ ...commentData, postId });
+    // Mock comment submission since service removed
+    const newComment: Comment = {
+      id: Date.now().toString(),
+      postId,
+      author: commentData.author,
+      content: commentData.content,
+      date: new Date().toISOString().split('T')[0],
+    };
     setComments(prevComments => [...prevComments, newComment]);
   }, [postId]);
 
@@ -133,12 +135,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ postId, t }) => {
       </div>
 
       <div className="p-4 sm:p-6 lg:p-8" ref={contentRef}>
-        <div className="prose prose-lg dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: cleanContent }} onClick={(e) => {
-          const target = e.target as HTMLAnchorElement;
-          if (target && target.tagName === 'A' && target.getAttribute('href')?.includes('quote') ) {
-            trackBlogToForm(`#blog/${post.id}`, post.id);
-          }
-        }} />
+        <div className="prose prose-lg dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: cleanContent }} />
         
         <div className="mt-12 pt-8 border-t border-border space-y-10">
             <SocialShare post={post} t={t} />

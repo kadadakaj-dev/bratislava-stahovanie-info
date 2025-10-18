@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FacebookIcon, WhatsAppIcon } from '../constants';
-import { Translations, View } from '../App';
-import { analyticsService } from '../services/analyticsService';
+import { Translations } from '../App';
 
 interface FooterProps {
     t: Translations;
@@ -28,14 +27,14 @@ const Footer: React.FC<FooterProps> = ({ t }) => {
     },
   ];
 
-  const handleSocialClick = (name: string) => {
-    analyticsService.trackEvent('click_social', { social_network: name, location: 'footer' });
+  const handleSocialClick = (_name: string) => {
+    // Analytics removed
   };
-  
+
   const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); 
+    e.preventDefault();
     setStatus('submitting');
-    analyticsService.trackEvent('submit_contact_form', { form_location: 'footer' });
+    // Analytics removed
     
     setTimeout(() => {
         // Since this is a mailto: link, we can't truly know if it was sent.
@@ -79,7 +78,7 @@ const Footer: React.FC<FooterProps> = ({ t }) => {
                     <p>Karpatské námestie 7770/10A</p>
                     <p>831 06 Bratislava - Rača, Slovensko</p>
                     <p>IČO: 56 811 322 | DIČ: 2122461176</p>
-                    <a href="#" className="mt-2 inline-block hover:text-primary underline">{t.privacy}</a>
+                    <button className="mt-2 inline-block hover:text-primary underline bg-transparent border-none cursor-pointer">{t.privacy}</button>
                 </div>
             </div>
              <div className="flex items-center gap-4">

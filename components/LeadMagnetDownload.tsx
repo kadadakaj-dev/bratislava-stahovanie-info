@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { analyticsService } from '../services/analyticsService';
+
 
 interface LeadMagnetDownloadProps {
   assetId?: string; // e.g. 'plan-30'
@@ -12,7 +12,7 @@ export const LeadMagnetDownload: React.FC<LeadMagnetDownloadProps> = ({ assetId 
   const [downloaded, setDownloaded] = useState(false);
 
   const handleDownload = () => {
-    analyticsService.trackEvent('lead_magnet_download', { page: window.location.pathname + window.location.hash, asset: assetId });
+    // Analytics removed
     setDownloaded(true);
     // Placeholder: simulate download; integrate real file path once asset exists
     const blob = new Blob(['Placeholder PDF obsah – nahraďte reálnym súborom.'], { type: 'application/pdf' });

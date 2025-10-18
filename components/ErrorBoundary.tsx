@@ -1,9 +1,10 @@
 import React, { PropsWithChildren } from 'react';
-import { analyticsService } from '../services/analyticsService';
 
 interface ErrorBoundaryState { hasError: boolean; error?: Error }
 
-interface ErrorBoundaryProps extends PropsWithChildren<any> {}
+interface ErrorBoundaryProps extends PropsWithChildren {
+  fallback?: React.ComponentType<{ error?: Error }>;
+}
 
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = { hasError: false };
@@ -17,17 +18,15 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     if (process.env.NODE_ENV !== 'production') {
       console.error('ErrorBoundary caught error', error, info);
     }
-    try {
-      analyticsService.trackEvent('error_boundary', {
-        message: error.message.substring(0, 200),
-        component_stack: info.componentStack.substring(0, 500)
-      });
-    // eslint-disable-next-line no-empty
-    } catch {}
+    // Analytics removed
   }
 
   render() {
     if (this.state.hasError) {
+      if (this.props.fallback) {
+        const FallbackComponent = this.props.fallback;
+        return <FallbackComponent error={this.state.error} />;
+      }
       return (
         <div className="p-8 text-center space-y-4" role="alert">
           <h1 className="text-2xl font-bold">Niečo sa pokazilo</h1>

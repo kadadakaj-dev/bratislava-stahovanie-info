@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
 
     <!-- SEO Meta Tags for VI&MO Services -->
   <title>VI&amp;MO | Sťahovanie, Upratovanie a Vypratávanie v Bratislave</title>
@@ -38,6 +39,24 @@
           scroll-behavior: auto !important;
         }
       }
+
+      /* Container Queries Support */
+      .container {
+        container-type: inline-size;
+      }
+
+      /* Performance Optimizations */
+      .content-visibility-auto {
+        content-visibility: auto;
+        contain-intrinsic-size: 200px;
+      }
+
+      /* Ultra-responsive breakpoints */
+      @media (min-width: 414px) { /* Mobile Large */ }
+      @media (min-width: 834px) { /* Tablet */ }
+      @media (min-width: 1440px) { /* Desktop */ }
+      @media (min-width: 1920px) { /* Desktop Large */ }
+      @media (min-width: 3840px) { /* 4K */ }
     </style>
     <script>
       tailwind.config = {

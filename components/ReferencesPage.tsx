@@ -13,11 +13,11 @@ const ReferencesPage: React.FC<{ t: Translations }> = ({ t }) => {
         </p>
       </header>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="container grid gap-8 grid-cols-1 @834px:grid-cols-2 @1440px:grid-cols-3">
         {t.references.testimonials.map((testimonial, index) => (
-          <figure key={index} className="bg-surface-1 rounded-lg border-2 border-text-primary p-6 flex flex-col h-full transition-all duration-300 hover:shadow-warhol">
+          <figure key={index} className="content-visibility-auto bg-surface-1 rounded-lg border-2 border-text-primary p-6 flex flex-col h-full transition-all duration-300 hover:shadow-warhol animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
             <blockquote className="flex-grow">
-              <p className="text-text-muted italic">"{testimonial.quote}"</p>
+              <p className="text-text-muted italic">&ldquo;{testimonial.quote}&rdquo;</p>
             </blockquote>
             <figcaption className="mt-6 pt-6 border-t border-border">
               <p className="font-bold text-text-primary">{testimonial.author}</p>

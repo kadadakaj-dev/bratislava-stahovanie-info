@@ -3,8 +3,8 @@ import { Translations } from '../../App';
 import { QuoteFormData } from '../../types';
 import { CheckCircleIcon } from '../../constants';
 import { pricingData } from './PricingGrid';
-import { offlineService } from '../../services/offlineService';
-import { analyticsService } from '../../services/analyticsService';
+
+
 
 interface QuoteFormProps {
     t: Translations;
@@ -80,32 +80,22 @@ const QuoteForm: React.FC<QuoteFormProps> = ({ t, formData, setFormData, initial
         }
         setErrors({});
         setStatus('submitting');
-        
-        const analyticsProperties = {
-            service_type: formData.serviceType,
-            has_notes: formData.notes.trim().length > 0,
-            from_floor: formData.fromFloor,
-            to_floor: formData.toFloor,
-            extra_services: Object.entries(formData.extraServices).filter(([_, v]) => v).map(([k]) => k),
-        };
 
         if (navigator.onLine) {
             try {
                 // Mock API call
                 await new Promise(res => setTimeout(res, 1500));
-                analyticsService.trackEvent('form_submit', { form: 'quote', status: 'success', ...analyticsProperties });
+                // Analytics removed
                 setStatus('success');
                 setStatusMessage(t.formSuccess);
             } catch (error) {
-                console.error("API call failed, adding to offline queue.", error);
-                await offlineService.addRequestToQueue(formData);
-                analyticsService.trackEvent('form_submit', { form: 'quote', status: 'queued', ...analyticsProperties });
+                console.error("API call failed, queuing for later.", error);
+                // Offline queue removed
                 setStatus('queued');
                 setStatusMessage(t.formQueued);
             }
         } else {
-            await offlineService.addRequestToQueue(formData);
-            analyticsService.trackEvent('form_submit', { form: 'quote', status: 'queued', ...analyticsProperties });
+            // Offline queue removed
             setStatus('queued');
             setStatusMessage(t.formQueued);
         }

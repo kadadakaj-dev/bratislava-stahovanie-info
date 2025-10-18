@@ -1,5 +1,5 @@
 import React from 'react';
-import { Translations, View } from '../../App';
+import { Translations } from '../../App';
 import { HomeModernIcon, BuildingOfficeIcon, TrashIcon, TruckIcon, BoxIcon, CheckCircleIcon } from '../../constants';
 import FaqItem from './FaqItem';
 

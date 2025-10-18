@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { initWebVitals } from './services/webVitalsService';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -15,5 +14,4 @@ root.render(
   </React.StrictMode>
 );
 
-// Web Vitals reporting
-initWebVitals();
+// Web Vitals reporting removed

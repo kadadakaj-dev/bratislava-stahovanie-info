@@ -1,16 +1,16 @@
 import React from 'react';
 import { Translations } from '../../App';
 import { EnvelopeIcon } from '../../constants';
-import { analyticsService } from '../../services/analyticsService';
+
 
 const StickyCta = ({ t }: { t: Translations }) => {
     const scrollToForm = (e: React.MouseEvent) => {
         e.preventDefault();
-        analyticsService.trackEvent('sticky_cta_click', { variant: 'quote_form', page: window.location.pathname + window.location.hash });
+        // Analytics removed
         document.getElementById('quote-form')?.scrollIntoView({ behavior: 'smooth' });
     };
     const trackEmail = () => {
-        analyticsService.trackEvent('sticky_cta_click', { variant: 'email', page: window.location.pathname + window.location.hash });
+        // Analytics removed
     };
     return (
         <div className="sticky top-16 bg-surface-1/80 backdrop-blur-md shadow-glass py-3 px-4 sm:px-6 lg:px-8 z-40 -mx-4 sm:-mx-6 lg:-mx-8 mb-8 border-b border-border">

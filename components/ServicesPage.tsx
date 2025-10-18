@@ -1,7 +1,6 @@
 import React from 'react';
 import { Translations, View } from '../App';
 import ServiceCard from './services/ServiceCard';
-import { analyticsService } from '../services/analyticsService';
 
 interface ServicesPageProps {
   t: Translations;
@@ -11,14 +10,12 @@ interface ServicesPageProps {
 const ServicesPage: React.FC<ServicesPageProps> = ({ t, onNavigate }) => {
 
   const handleCtaClick = (targetView: View) => {
-    analyticsService.trackEvent('click_cta', { target: targetView, location: 'services_page_bottom' });
     onNavigate(targetView);
   }
 
   const handleContactClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    analyticsService.trackEvent('click_cta', { target: 'contact', location: 'services_page_bottom' });
-    document.querySelector('footer')?.scrollIntoView({ behavior: 'smooth' });
+    (document as any).querySelector('footer')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -30,9 +27,11 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ t, onNavigate }) => {
         </p>
       </header>
 
-      <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+      <div className="container grid gap-8 lg:gap-12 grid-cols-1 @834px:grid-cols-2">
         {t.servicesContent.map((service, index) => (
-            <ServiceCard key={index} service={service} />
+            <div key={index} className="content-visibility-auto animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+              <ServiceCard service={service} />
+            </div>
         ))}
       </div>
 

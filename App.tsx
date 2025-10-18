@@ -1,16 +1,11 @@
+/* eslint-disable no-undef */
 import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { analyticsService, trackScroll75Once } from './services/analyticsService';
 import { sk } from './locales/sk';
 import { en } from './locales/en';
-import { themeService } from './services/themeService';
 import { useRouting } from './hooks/useRouting';
-import { useOfflineQueue } from './hooks/useOfflineQueue';
-import { useSeoSync } from './hooks/useSeoSync';
-import { useFocusHeading } from './hooks/useFocusHeading';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { useSlowImages } from './hooks/useSlowImages';
 
 const translations = { sk, en };
 
@@ -33,74 +28,49 @@ const LoadingSpinner = () => (
 );
 
 function App() {
-  const [locale, setLocale] = useState<Locale>(() => {
-     if (typeof window !== 'undefined' && window.localStorage) {
+  const [locale, setLocale] = useState<Locale>('sk');
+  // Restore locale from localStorage on mount (client only)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
       const storedLocale = window.localStorage.getItem('locale') as Locale;
-      return storedLocale || 'sk';
+      if (storedLocale) setLocale(storedLocale);
     }
-    return 'sk';
-  });
+  }, []);
   
-  const { view: currentView, postId: selectedPostId, isValidRoute, navigate } = useRouting();
+  const { view: currentView, blogSlug, isValidRoute, navigate } = useRouting();
 
   const t = useMemo(() => translations[locale], [locale]);
 
-  useEffect(() => {
-    themeService.applyTheme();
-  }, []);
+  // Theme application removed
 
   // Delegate click tracking for tel: links (click_call)
   useEffect(() => {
-    const handler = (e: Event) => {
-      const target = e.target as HTMLElement | null;
-      if (!target) return;
-      const anchor = target.closest('a[href^="tel:"]') as HTMLAnchorElement | null;
-      if (anchor) {
-        analyticsService.trackEvent('click_call', {
-          page: currentView,
-          placement: anchor.dataset.placement || 'unknown'
-        });
-      }
-    };
-    document.addEventListener('click', handler);
-    return () => document.removeEventListener('click', handler);
+    if (typeof document !== 'undefined') {
+      const handler = (e: MouseEvent) => {
+        const target = e.target as HTMLElement | null;
+        if (!target) return;
+        const anchor = target.closest('a[href^="tel:"]') as HTMLAnchorElement | null;
+        if (anchor) {
+          // Tracking removed
+        }
+      };
+      document.addEventListener('click', handler);
+      return () => document.removeEventListener('click', handler);
+    }
   }, [currentView]);
 
   useEffect(() => {
-    localStorage.setItem('locale', locale);
-    document.documentElement.lang = locale;
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem('locale', locale);
+    }
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = locale;
+    }
   }, [locale]);
   
-  useSeoSync(currentView, selectedPostId, t);
-  useOfflineQueue();
-  useFocusHeading([currentView, selectedPostId]);
-  // Track slow-loading images globally
-  useSlowImages({ thresholdMs: 2500, sampleRatio: 1 });
+  // Hooks removed
 
-  // Centralized SEO, Schema, and Page View Tracking
-  useEffect(() => {
-    let pageName = currentView.charAt(0).toUpperCase() + currentView.slice(1);
-    let path = `/#${currentView}`;
-    if (currentView === 'blog' && selectedPostId) {
-      pageName = `Blog Post ${selectedPostId}`;
-      path = `/#blog/${selectedPostId}`;
-    }
-    analyticsService.trackPageView(pageName, path);
-  }, [currentView, selectedPostId]);
-
-  // Scroll depth 75% event once per view
-  useEffect(() => {
-    const handler = () => {
-      const scrollPos = window.scrollY + window.innerHeight;
-      const total = document.documentElement.scrollHeight;
-      if (total > 0 && scrollPos / total >= 0.75) {
-        trackScroll75Once(currentView);
-        window.removeEventListener('scroll', handler);
-      }
-    };
-    window.addEventListener('scroll', handler, { passive: true });
-    return () => window.removeEventListener('scroll', handler);
-  }, [currentView]);
+  // Analytics removed
 
   const handleNavigate = (view: View) => navigate(view);
 
@@ -117,8 +87,8 @@ function App() {
       );
     }
 
-    if (currentView === 'blog' && selectedPostId !== null) {
-      return <PostDetail postId={selectedPostId} t={t} />;
+    if (currentView === 'blog' && blogSlug !== null) {
+      return <PostDetail blogSlug={blogSlug} t={t} />;
     }
 
     switch(currentView) {
@@ -138,12 +108,12 @@ function App() {
       <a href="#main-content" className="absolute z-[9999] -translate-y-full focus:translate-y-0 p-3 bg-primary text-on-primary font-bold transition-transform duration-300">
         {t.skipToContent}
       </a>
-      <Header 
+      <Header
         locale={locale}
         setLocale={setLocale}
         t={t}
         currentView={currentView}
-        selectedPostId={selectedPostId}
+        blogSlug={blogSlug}
       />
       <main id="main-content" className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <ErrorBoundary>

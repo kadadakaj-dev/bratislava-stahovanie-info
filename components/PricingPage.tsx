@@ -34,18 +34,18 @@ const PricingPage: React.FC<{ t: Translations }> = ({ t }) => {
         <InfoBoxes t={t} />
 
         <section id="quote-form" aria-labelledby="quote-form-heading" className="bg-surface-1 rounded-lg border-2 border-text-primary p-8 md:p-12 scroll-mt-24">
-            <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 items-start">
-                <div className="lg:col-span-2">
+            <div className="container grid gap-8 lg:gap-12 items-start grid-cols-1 @1440px:grid-cols-3">
+                <div className="@1440px:col-span-2">
                      <h2 id="quote-form-heading" className="text-2xl sm:text-3xl font-bold text-text-primary mb-2">{t.getQuote}</h2>
                     <p className="text-text-muted mb-8">{t.offerDescriptionShort}</p>
-                    <QuoteForm 
-                        t={t} 
-                        formData={formData} 
+                    <QuoteForm
+                        t={t}
+                        formData={formData}
                         setFormData={setFormData}
                         initialFormState={initialFormState}
                     />
                 </div>
-                <div className="lg:col-span-1">
+                <div className="@1440px:col-span-1">
                    <EstimateWidget t={t} formData={formData} />
                 </div>
             </div>
