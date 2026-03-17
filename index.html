@@ -25,8 +25,38 @@
   <meta property="twitter:image" content="https://picsum.photos/seed/stahovanie1/1200/630">
 
     <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="manifest" href="public/manifest.json">
+  <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#003844">
+    <!-- JSON-LD Structured Data for VI&MO Services -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "VI&MO Sťahovanie Bratislava",
+      "url": "https://viandmo.com",
+      "image": "https://picsum.photos/seed/stahovanie1/1200/630",
+      "description": "Profesionálne sťahovanie bytov a firiem, vypratávanie pivníc a odvoz odpadu, a upratovacie služby v Bratislave a okolí.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Príkladná 123",
+        "addressLocality": "Bratislava",
+        "postalCode": "81101",
+        "addressCountry": "SK"
+      },
+      "telephone": "+421 900 123 456",
+      "priceRange": "€€",
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "48.1486",
+        "longitude": "17.1077"
+      },
+      "openingHours": "Mo-Fr 08:00-18:00",
+      "sameAs": [
+        "https://www.facebook.com/viandmo",
+        "https://www.instagram.com/viandmo"
+      ]
+    }
+    </script>
     <style>
       /* Reduced Motion */
       @media (prefers-reduced-motion: reduce) {
@@ -131,8 +161,7 @@
       }
     </script>
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-    <script type="module" src="index.tsx"></script>
-  <script type="importmap">
+    <script type="importmap">
 {
   "imports": {
     "react": "https://aistudiocdn.com/react@^19.1.1",
@@ -141,7 +170,8 @@
     "@google/genai": "https://aistudiocdn.com/@google/genai@^1.19.0"
   }
 }
-</script>
+    </script>
+    <script type="module" src="index.tsx"></script>
 </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

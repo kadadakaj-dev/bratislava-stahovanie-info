@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { analyticsService } from '../services/analyticsService';
+import { logAnalyticsEvent } from '../services/analyticsService';
 
 interface SlowImageOptions {
   thresholdMs?: number; // default 2500ms
@@ -21,7 +21,7 @@ export const useSlowImages = ({ thresholdMs = 2500, sampleRatio = 1 }: SlowImage
       const src = img.currentSrc || img.src;
       if (!src || seen.has(src)) return; // avoid duplicates for same resource
       seen.add(src);
-      analyticsService.trackEvent('image_load_slow', {
+      logAnalyticsEvent('image_load_slow', {
         src: src.split('?')[0],
         time_to_load: Math.round(duration),
         natural_w: img.naturalWidth,
